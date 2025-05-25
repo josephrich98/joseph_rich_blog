@@ -31,5 +31,5 @@ jobs:
 
     - name: Test jupyter notebooks with nbval
       run: |
-        conda install pytest nbdime
-        pytest -v --nbval-lax notebooks
+        conda install pytest nbdime nbformat nbval
+        pytest -v --nbval notebooks
