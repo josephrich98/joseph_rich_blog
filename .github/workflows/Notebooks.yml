@@ -25,11 +25,22 @@ jobs:
       run: |
         # $CONDA is an environment variable pointing to the root of the miniconda directory
         echo $CONDA/bin >> $GITHUB_PATH
-    - name: Install dependencies
+    - name: Install Python dependencies
       run: |
         conda env update --file environment.yml --name base
+        conda install -c conda-forge pytest nbdime nbformat nbval pandoc
 
-    - name: Test jupyter notebooks with nbval
+    - name: Install LaTeX toolchain (Eisvogel dependencies)
       run: |
-        conda install -c conda-forge pytest nbdime nbformat nbval
-        pytest -v --nbval notebooks
+        sudo apt-get update
+        sudo apt-get install -y --no-install-recommends \
+          texlive-xetex texlive-latex-base texlive-latex-extra \
+          texlive-fonts-recommended texlive-fonts-extra latexmk
+
+    - name: Download Eisvogel template
+      run: |
+        scripts/download_eisvogel.sh
+
+    - name: Run tests (post notebooks + PDF build)
+      run: |
+        pytest -v tests/

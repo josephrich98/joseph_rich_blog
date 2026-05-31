@@ -1,0 +1,18 @@
+source 'https://rubygems.org'
+
+# We deploy to Vercel (not GitHub Pages), so we use plain Jekyll 4 rather than
+# the github-pages gem. The academicpages theme builds cleanly on Jekyll 4 and
+# this keeps the dependency tree small and reproducible.
+gem 'jekyll', '~> 4.3'
+
+group :jekyll_plugins do
+  gem 'jekyll-feed'
+  gem 'jekyll-sitemap'
+  gem 'jekyll-redirect-from'
+  gem 'jekyll-gist'
+  gem 'jekyll-paginate'
+  gem 'jemoji'
+end
+
+# Ruby 3.x no longer ships webrick, which `jekyll serve` needs.
+gem 'webrick', '~> 1.8'

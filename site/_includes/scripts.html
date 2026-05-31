@@ -1,0 +1,10 @@
+<script type="module" src="{{ base_path }}/assets/js/main.min.js"></script>
+
+{% include analytics.html %}
+
+{% comment %}
+  giscus (the "custom" provider) is rendered inside the comments section by
+  comments.html, so skip the footer copy to avoid a duplicate widget. Other
+  providers still load their script here as the theme intends.
+{% endcomment %}
+{% unless site.comments.provider == "custom" %}{% include comments-providers/scripts.html %}{% endunless %}

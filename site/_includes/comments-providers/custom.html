@@ -1,0 +1,28 @@
+<!-- start custom comments snippet: giscus (GitHub Discussions) -->
+{% assign giscus_repo_id = site.giscus.repo_id | default: "" | strip %}
+{% assign giscus_category_id = site.giscus.category_id | default: "" | strip %}
+{% if giscus_repo_id != "" and giscus_category_id != "" %}
+<script src="https://giscus.app/client.js"
+        data-repo="{{ site.repository }}"
+        data-repo-id="{{ site.giscus.repo_id }}"
+        data-category="{{ site.giscus.category | default: 'Comments' }}"
+        data-category-id="{{ site.giscus.category_id }}"
+        data-mapping="{{ site.giscus.discussion_term | default: 'pathname' }}"
+        data-strict="0"
+        data-reactions-enabled="{{ site.giscus.reactions_enabled | default: '1' }}"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="{{ site.giscus.theme | default: 'preferred_color_scheme' }}"
+        data-lang="{{ site.locale | default: 'en' | slice: 0, 2 }}"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+{% else %}
+<p class="notice--warning">
+  <strong>giscus is not configured yet.</strong> Set <code>giscus.repo_id</code>
+  and <code>giscus.category_id</code> in <code>_config.yml</code>
+  (get them from <a href="https://giscus.app">giscus.app</a>).
+</p>
+{% endif %}
+<!-- end custom comments snippet -->

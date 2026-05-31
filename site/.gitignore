@@ -1,0 +1,18 @@
+# Jekyll build output & caches
+_site/
+.jekyll-cache/
+.jekyll-metadata
+.sass-cache/
+
+# Bundler
+.bundle/
+/vendor/
+
+# Local dev files
+local/
+node_modules/
+
+# OS
+.DS_Store
+
+# NOTE: Gemfile.lock is intentionally NOT ignored — Vercel needs it committed.

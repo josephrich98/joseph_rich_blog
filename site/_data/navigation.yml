@@ -1,0 +1,11 @@
+# Header navigation. Order here = order in the masthead.
+# (The site title itself links to the About / home page.)
+main:
+  - title: "Blog"
+    url: /year-archive/
+
+  - title: "Publications"
+    url: /publications/
+
+  - title: "CV"
+    url: /cv/
