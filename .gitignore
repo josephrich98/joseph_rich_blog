@@ -155,6 +155,7 @@ trash/
 data
 runs
 runs/
+posts/template
 posts/*/figures
 posts/*/out
 posts/*/out/

@@ -18,7 +18,7 @@ author:
   avatar           : "profile.png"   # in /images/ — replace with your own headshot
   name             : "Joseph Rich"
   pronouns         :
-  bio              : "Add a short one-line bio here."
+  bio              : "MD/PhD student at USC/Caltech researching multimodal medical AI and bioinformatics methods development."
   location         :
   employer         :
   uri              :
@@ -26,7 +26,7 @@ author:
 
   # Academic profiles
   googlescholar    : "https://scholar.google.com/citations?user=vtDtrHoAAAAJ"
-  orcid            :
+  orcid            : "https://orcid.org/0000-0003-1400-8479"
   pubmed           :
 
   # Code / social

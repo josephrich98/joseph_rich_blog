@@ -50,8 +50,8 @@ why registration, atlas-based priors, and even fixed positional encodings work
 far better here than they would on web images.
 
 [^situs]: Except in *situs inversus* (~1 in 10,000), which is exactly the kind of
-rare but catastrophic edge case a model trained on the canonical prior will get
-confidently wrong. Hold that thought; it returns under heterogeneity.
+    rare but catastrophic edge case a model trained on the canonical prior will get
+    confidently wrong. Hold that thought; it returns under heterogeneity.
 
 **One channel, calibrated.** Most modalities are grayscale, and — crucially —
 the gray values often *mean something physical*. CT is quantitative: each voxel

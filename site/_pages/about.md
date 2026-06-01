@@ -7,16 +7,12 @@ redirect_from:
   - /about.html
 ---
 
-<!-- Replace this placeholder with a paragraph about yourself. -->
-Hi, I'm Joseph Rich. I write here about machine learning, bioinformatics, and
-radiology. This is a placeholder bio — swap it out with a paragraph describing
-who you are, what you work on, and what you write about.
+
+
+Hi, I'm Joseph Rich. I'm getting my MD from USC and my PhD from Caltech in multimodal medical AI and bioinformatics methods development. I plan to pursue a specialty in radiology and a career at the intersection of medicine and machine learning research. I write this blog to share insights from my research, explore new ideas, and engage with the broader community interested in this space.
 
 You can find me on
 [GitHub](https://github.com/josephrich98) and
 [LinkedIn](https://www.linkedin.com/in/joseph-rich-5bb533123/).
 
-Head over to the [Blog](/year-archive/) to read the latest posts, see my
-[Publications](/publications/), or view my [CV](/cv/). Each post is labelled with
-topic tags (machine learning, bioinformatics, radiology, …) that you can click to
-find related posts.
+Head over to the [Blog](/blog/) to read the latest posts, and check out my publications at [Publications](/publications/).

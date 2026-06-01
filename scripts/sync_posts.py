@@ -100,6 +100,36 @@ def split_code_fences(body):
         yield part.startswith("```"), part
 
 
+def fix_footnote_continuations(body):
+    """Indent the continuation lines of multi-line footnote definitions.
+
+    Pandoc accepts an unindented continuation under ``[^id]: ...``, but kramdown
+    keeps only the first line unless the rest is indented — so multi-line
+    footnotes get truncated. Indent each continuation line (up to the next blank
+    line) by four spaces. Lines inside fenced code blocks are left alone."""
+    out = []
+    in_code = False
+    in_footnote = False
+    for line in body.split("\n"):
+        if line.lstrip().startswith("```"):
+            in_code = not in_code
+            in_footnote = False
+            out.append(line)
+        elif in_code:
+            out.append(line)
+        elif re.match(r"^\[\^[^\]]+\]:", line):
+            in_footnote = True
+            out.append(line)
+        elif in_footnote and line.strip() == "":
+            in_footnote = False
+            out.append(line)
+        elif in_footnote and not line[:1].isspace():
+            out.append("    " + line)
+        else:
+            out.append(line)
+    return "\n".join(out)
+
+
 def inline_math_to_kramdown(body):
     """Convert pandoc inline $...$ to kramdown $$...$$, leaving $$ blocks and
     fenced code untouched. kramdown needs $$ delimiters and does not parse
@@ -144,6 +174,7 @@ def sync_post(name):
     dest_img = os.path.join(IMG_ROOT, name)
     body, copied = rewrite_images(body, src_dir, dest_img, name)
 
+    body = fix_footnote_continuations(body)
     body = inline_math_to_kramdown(body)
 
     # Build Jekyll front matter
