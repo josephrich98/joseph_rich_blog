@@ -74,16 +74,16 @@ Replace `files/CV.pdf`; it's linked from the `/cv/` page. Edit the prose in
 ## One-time setup
 
 ### 1. giscus comments
-Discussions are already enabled on `josephrich98/joseph_rich_blog`. Then:
+Already configured. Discussions are enabled on `josephrich98/joseph_rich_blog`,
+the [giscus app](https://github.com/apps/giscus) is installed, and `_config.yml`
+points at the **Announcements** category (`repo_id` + `category_id` filled in
+under `giscus:`).
 
-1. Create a Discussions **category** named **`Comments`** (type: *Announcements*).
-2. Go to <https://giscus.app>, enter the repo `josephrich98/joseph_rich_blog`,
-   choose mapping **pathname** and category **Comments**.
-3. Copy the generated **`data-repo-id`** and **`data-category-id`** into
-   `_config.yml` under `giscus:` (`repo_id` and `category_id`).
-
-Until those two IDs are set, posts show a "giscus is not configured yet" notice
-instead of the comment box.
+To re-point at a different repo or category, go to <https://giscus.app>, enter
+the repo, choose mapping **pathname** and the category, then copy the generated
+**`data-repo-id`** and **`data-category-id`** into `_config.yml`. Until both IDs
+are set, posts show a "giscus is not configured yet" notice instead of the
+comment box.
 
 ### 2. Vercel
 1. In Vercel, **Add New → Project** and import `josephrich98/joseph_rich_blog`.

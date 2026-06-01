@@ -15,7 +15,7 @@ repository               : "josephrich98/joseph_rich_blog"   # used by giscus co
 
 # Site Author — controls the left sidebar profile. Blank fields hide their icon/link.
 author:
-  avatar           : "headshot.png"   # in /images/
+  avatar           : "headshot.jpg"   # in /images/
   name             : "Joseph Rich"
   pronouns         :
   bio              : "MD/PhD student at USC/Caltech researching multimodal medical AI and bioinformatics methods development."
@@ -145,7 +145,7 @@ defaults:
       type: posts
     values:
       layout: single
-      author_profile: true
+      author_profile: false
       read_time: true
       comments: true
       share: true
