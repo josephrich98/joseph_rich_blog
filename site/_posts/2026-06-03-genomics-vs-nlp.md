@@ -113,8 +113,8 @@ $$\sim 10^{-3}$$, human and chimpanzee at $$\sim 10^{-2}$$, while two random DNA
 strings differ at $$0.75$$ and two unrelated English documents at essentially $$1$$.
 The within-species genomic "corpus" is roughly a thousandfold more redundant than
 text. **(b)** Within one genome, single-nucleotide variants and small indels
-dominate as *events* ($$\sim$$4.5M) but touch only a few Mb; structural variants are
-rare as events ($$\sim$$2,500) yet rearrange $$\sim$$20 Mb — the majority of the bases
+dominate as *events* ($$\sim 4.5\text{M}$$) but touch only a few Mb; structural variants are
+rare as events ($$\sim 2{,}500$$) yet rearrange $$\sim 20\,\mathrm{Mb}$$ — the majority of the bases
 that actually differ, and the least
 studied.](/images/posts/genomics-vs-nlp/corpus_redundancy.png)
 
@@ -122,7 +122,7 @@ studied.](/images/posts/genomics-vs-nlp/corpus_redundancy.png)
 gave rise to everyone alive passed through a long period of small **effective
 population size** ($$N_e$$ on the order of $$10^{4}$$) and a series of out-of-Africa
 bottlenecks tens of thousands of years ago (conventionally placed
-$$\sim$$50,000–70,000 years ago). The practical consequence for a modeler is
+$$\sim 50{,}000\text{–}70{,}000$$ years ago). The practical consequence for a modeler is
 profound: **the common variants you see are old and shared.** They are ancestral
 polymorphisms that predate the bottleneck, inherited by everyone and merely
 *reshuffled* into new combinations by recombination each generation. There is not
@@ -344,7 +344,7 @@ there on the page, the semantics of a gene are spread out, context-dependent, an
 much harder to capture in a fixed embedding.
 
 **One gene is many messages.** It is common shorthand that humans have "about
-20,000 genes" — and the protein-coding count, $$\sim$$19,900–20,000 in GENCODE, is
+20,000 genes" — and the protein-coding count, $$\sim 19{,}900\text{–}20{,}000$$ in GENCODE, is
 indeed remarkably small. But that number badly understates the functional
 vocabulary, because **alternative splicing** lets a single gene produce many
 distinct **transcripts** (isoforms). GENCODE annotates well over $$200{,}000$$
@@ -383,8 +383,8 @@ protein scatter at a Spearman correlation in the empirically reported range; eve
 here, fixing the mRNA level leaves protein spanning a wide band, because
 translation and degradation are not observed in the RNA. **(b)** The multiple-
 testing tax: expected false positives at $$\alpha = 0.05$$ *without* correction grow
-linearly with the number of tests — about $$1{,}000$$ across a $$\sim$$20k-gene
-transcriptome and $$\sim$$50{,}000 across a $$\sim$$1M-variant GWAS — which is why
+linearly with the number of tests — about $$1{,}000$$ across a $$\sim 20\text{k}$$-gene
+transcriptome and $$\sim 50{,}000$$ across a $$\sim 1\text{M}$$-variant GWAS — which is why
 genome-wide significance is set near $$5\times 10^{-8}$$.](/images/posts/genomics-vs-nlp/proxy_and_testing.png)
 
 So why does the field overwhelmingly sequence RNA if protein is what matters? Not
