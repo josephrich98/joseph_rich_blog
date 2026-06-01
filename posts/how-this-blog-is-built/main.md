@@ -3,7 +3,7 @@ title: "How This Blog Is Built: A Reproducible Pipeline for Scientific Writing"
 author: "Joseph Rich"
 date: "2026-06-01"
 # Blog metadata (ignored by pandoc/Eisvogel; consumed by scripts/sync_posts.py)
-excerpt: "A tour of the stack behind joseph-rich.com — Vercel, Jekyll, giscus, Jupyter/Colab, conda + Docker, pytest + GitHub Actions, a pre-commit publish hook, and Markdown-with-LaTeX — and the one principle tying them together: a blog post should be as reproducible as the experiment it describes."
+excerpt: "A tour of the stack behind joseph-rich.com — Vercel, Cloudflare, Jekyll, giscus, Jupyter/Colab, conda + Docker, pytest + GitHub Actions, a pre-commit publish hook, and Markdown-with-LaTeX — and the one principle tying them together: a blog post should be as reproducible as the experiment it describes."
 tags:
   - reproducibility
   - tooling
@@ -81,6 +81,15 @@ the math intact in both. Writing in Markdown rather than HTML or a CMS means the
 post is diffable, greppable, reviewable in a pull request, and outlives any
 particular renderer.
 
+I write the posts in Markdown rather than full LaTeX for the same reason: a blog
+post is prose with the occasional equation, not a precisely typeset document. I
+don't need fine control over page breaks, floats, and layout here — I need to get
+words and math down quickly and let the site's theme handle how they look.
+Markdown keeps the source close to the rendered blog layout and stays readable on
+its own. When I write a manuscript, where layout, figure placement, and
+typesetting precision actually matter, I reach for LaTeX in Overleaf instead;
+Markdown is the right altitude for a blog, LaTeX for a paper.
+
 The rest of the directory exists so that the numbers in that prose are
 *defensible*. The notebook produces the figures; the scripts hold any analysis
 worth reusing; the `environment.yml` and `Dockerfile` pin exactly what it takes
@@ -105,6 +114,12 @@ A static site is the right tool here for the same reason a simple model often
 beats a complex one: there is no server to run, no database to corrupt, no
 attack surface to patch. The output is just files.
 
+I started out on WordPress, which is a capable platform — but for a blog that is
+really a pile of version-controlled text and notebooks, a database-backed CMS was
+more moving parts than the job called for. Switching to a static site let the
+writing live in the same Git repository as the analysis, diffable and reviewable
+alongside the code, with nothing to keep patched or running between posts.
+
 ## Vercel for hosting
 
 Those files are served by [Vercel](https://vercel.com/). I point Vercel at the
@@ -119,6 +134,17 @@ site in under a minute, every pull request gets its own preview URL so I can see
 a draft exactly as it will appear before it goes public, and committing
 `Gemfile.lock` keeps Vercel's build byte-for-byte reproducible against my local
 one.
+
+The domain name itself lives at [Cloudflare](https://www.cloudflare.com/), which
+is my registrar and DNS provider; Cloudflare's nameservers simply point
+`joseph-rich.com` at Vercel. Keeping the domain deliberately separate from the
+host buys two things. First, Cloudflare registers domains at wholesale cost with
+no markup and includes WHOIS privacy for free, so the registration is cheap and
+my contact details stay out of the public record. Second, the domain isn't
+captive to any one platform: because DNS lives with the registrar rather than the
+host, I can repoint `joseph-rich.com` at a different provider by editing a single
+record, with no migration and no downtime. The host is replaceable; the address
+is mine.
 
 ## giscus for comments
 
@@ -145,7 +171,7 @@ and drop the repository and category IDs into the Jekyll config.
 
 Every figure starts life in a [Jupyter notebook](https://jupyter.org/). The
 notebook is the interactive workbench — load the data, fit the model, plot it,
-see the result inline, iterate — and it doubles as an honest record of how each
+see the result inline, iterate — and it doubles as the record of how each
 figure was made. Crucially, the notebook *writes the figures into* `figures/`,
 so the article and the analysis can never silently drift apart: regenerate the
 figure and the post updates.
@@ -197,7 +223,7 @@ automatically, and runs three independent checks against each one:
    each cell's output must match what's committed, exactly.
 
 Running both a **lax** and a **strict** notebook check is intentional, and it's
-the diagnostic trick I'd most recommend stealing. The two failures mean very
+the diagnostic trick I'd most recommend borrowing. The two failures mean very
 different things:
 
 - A **lax** failure means the code is *broken* — an exception, a missing import,
@@ -253,16 +279,18 @@ Because this runs at commit time, the website copy is *always* in sync with the
 authoritative `main.md` — I never edit the published page by hand, and I can
 never forget to. Authoring and publishing collapse into a single `git commit`.
 
-# Details that keep the repository honest
+# Details that keep the repository rigorous
 
 A few smaller choices do disproportionate work.
 
-**Citations have to resolve.** Before I reference a paper, I check its DOI
-against [doi2bib](https://doi2bib.org/) (`https://doi2bib.org/bib/<DOI>`); if the
-DOI doesn't return a valid bib entry, the citation doesn't go in. It's a cheap,
-mechanical guard against the broken or imaginary references that creep into
-informal writing — and the final notebook cell of a data-driven post re-checks
-that every DOI still resolves.
+**Citations have to resolve.** I manage references in
+[Zotero](https://www.zotero.org/), which keeps a single library of everything
+I've cited across posts and papers and exports clean BibTeX on demand. Before I
+reference a paper, I check its DOI against [doi2bib](https://doi2bib.org/)
+(`https://doi2bib.org/bib/<DOI>`); if the DOI doesn't return a valid bib entry,
+the citation doesn't go in. It's a cheap, mechanical guard against the broken or
+imaginary references that creep into informal writing — and the final notebook
+cell of a data-driven post re-checks that every DOI still resolves.
 
 **Data and figures are git-ignored.** The repository tracks *code and prose*, not
 the artifacts they produce. Generated figures and downloaded datasets are

@@ -52,6 +52,23 @@
   }
 }
 
+/* The "You May Also Enjoy" related-posts block is a sibling of the article (not
+   nested in it), so it keeps the theme's `pre(2.5 of 12)` left offset + float
+   and ends up pushed right of the now-centered article — divider line included.
+   Center it on the same measure. Only rendered on posts, so it's article-scoped. */
+.page--article ~ .page__related {
+  @include breakpoint($large) {
+    float: none;
+    clear: both;
+    width: auto;
+    max-width: 54rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
 .page__title {
   margin-top: 0;
   line-height: 1;
