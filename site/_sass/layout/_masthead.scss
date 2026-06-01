@@ -85,6 +85,7 @@
 /* Masthead search box + live results dropdown. */
 .site-search {
   position: relative;
+  top: 2px;   /* nudge down so the box sits inline with the theme-toggle icon */
   display: flex;
   align-items: center;
 
