@@ -9,10 +9,8 @@ redirect_from:
 
 
 
-Hi, I'm Joseph Rich. I'm getting my MD from USC and my PhD from Caltech in multimodal medical AI and bioinformatics methods development. I plan to pursue a specialty in radiology and a career at the intersection of medicine and machine learning research. I write this blog to share insights from my research, explore new ideas, and engage with the broader community interested in this space.
+Hi, I'm Joe Rich. I'm getting my MD from USC and my PhD from Caltech in multimodal medical AI and bioinformatics methods development. I plan to pursue a specialty in radiology and a career at the intersection of medicine and machine learning research. I write this blog to share insights from my research, explore new ideas, and engage with the broader community interested in this space.
 
-You can find me on
-[GitHub](https://github.com/josephrich98) and
-[LinkedIn](https://www.linkedin.com/in/joseph-rich-5bb533123/).
+When I'm not busy in the hospital or the lab, I enjoy hiking, cooking, playing tennis, and (slowly) learning the piano. I'm always open to connecting with others who share my interests in medicine, AI, and data science, so feel free to reach out!
 
 Head over to the [Blog](/blog/) to read the latest posts, and check out my publications at [Publications](/publications/).

@@ -28,18 +28,36 @@ jobs:
         for env in posts/*/environment.yml; do
           conda env update --file "$env" --name test-env
         done
-        conda install -y --name test-env -c conda-forge pytest nbdime nbformat nbval pandoc
+        conda install -y --name test-env -c conda-forge pytest nbdime nbformat nbval pandoc nbconvert ipykernel
 
     - name: Install LaTeX toolchain (Eisvogel dependencies)
       run: |
         sudo apt-get update
         sudo apt-get install -y --no-install-recommends \
           texlive-xetex texlive-latex-base texlive-latex-extra \
-          texlive-fonts-recommended texlive-fonts-extra latexmk
+          texlive-fonts-recommended texlive-fonts-extra latexmk lmodern
 
     - name: Download Eisvogel template
       run: |
         scripts/download_eisvogel.sh
+
+    - name: Generate post figures (notebooks write into figures/)
+      run: |
+        # The PDF build (test_post_pdf_builds) renders main.md, which references
+        # figures/*.png. Those PNGs are notebook-generated artifacts and are
+        # gitignored, so they are absent in a fresh checkout. Execute each
+        # notebook in-place in its own directory so its savefig() calls populate
+        # posts/<name>/figures/ before pytest runs. Output is sent to --stdout
+        # and discarded: we want only the savefig side effect, and we must NOT
+        # overwrite the committed notebook, or test_notebook_runs_strict would
+        # compare CI-regenerated outputs against themselves instead of the
+        # committed outputs.
+        source $CONDA/etc/profile.d/conda.sh
+        conda activate test-env
+        for nb in posts/*/notebook.ipynb; do
+          dir=$(dirname "$nb")
+          (cd "$dir" && jupyter nbconvert --to notebook --execute --stdout notebook.ipynb > /dev/null)
+        done
 
     - name: Run tests (post notebooks + PDF build)
       run: |
