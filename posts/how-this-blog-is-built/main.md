@@ -96,8 +96,8 @@ of Markdown into a fast, dependency-free set of HTML pages, and — the reason I
 chose it over a hand-rolled framework — it has a deep ecosystem of ready-made
 themes. I use [**academicpages**](https://github.com/academicpages/academicpages.github.io),
 a fork of [Minimal Mistakes](https://github.com/mmistakes/minimal-mistakes) built
-for academics, trimmed down to four things I actually need: an **About** page, a
-**Blog** with tag filtering, a **Publications** list, and a **CV**. Because the
+for academics, trimmed down to the three things I actually need: an **About**
+page, a **Blog** with tag filtering, and a **Publications** list. Because the
 publications list can be generated from a BibTeX export of my Google Scholar
 profile, the academic furniture of the site maintains itself.
 

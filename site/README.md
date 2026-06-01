@@ -3,7 +3,7 @@
 The public blog at [joseph-rich.com](https://joseph-rich.com). It's a Jekyll site
 built on the [academicpages](https://github.com/academicpages/academicpages.github.io)
 theme (a Minimal Mistakes fork), trimmed to a blog with **About**, **Blog (with
-tags)**, **Publications**, and **CV**. Comments are powered by
+tags)**, and **Publications**. Comments are powered by
 [giscus](https://giscus.app) (GitHub Discussions). It deploys on **Vercel**.
 
 > The rest of this repo (`../posts/`, `../tests/`, each post's `environment.yml`, …) is the
@@ -60,10 +60,6 @@ Each paper is a file in `_publications/` (`title`, `category`
 
 (There's no reliable *live* Scholar API — Scholar blocks scrapers — so this is a
 periodic manual export rather than an automatic sync.)
-
-### CV
-Replace `files/CV.pdf`; it's linked from the `/cv/` page. Edit the prose in
-`_pages/cv.md`.
 
 ### About / sidebar / nav
 - `_pages/about.md` — the home page bio.
