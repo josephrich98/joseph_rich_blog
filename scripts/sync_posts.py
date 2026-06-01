@@ -135,14 +135,19 @@ def fix_footnote_continuations(body):
 def inline_math_to_kramdown(body):
     """Convert pandoc inline $...$ to kramdown $$...$$, leaving $$ blocks and
     fenced code untouched. kramdown needs $$ delimiters and does not parse
-    Markdown inside them, which protects subscripts like $a_b$ from emphasis."""
+    Markdown inside them, which protects subscripts like $a_b$ from emphasis.
+
+    Inline math may be line-wrapped in the source (a single newline inside the
+    $...$), so the content matches across single newlines but stops at a blank
+    line (paragraph break) and never crosses a $, which keeps $$ display blocks
+    untouched."""
     out = []
     for is_code, seg in split_code_fences(body):
         if is_code:
             out.append(seg)
             continue
         seg = re.sub(
-            r"(?<![\$\\])\$(?!\$)([^\n$]+?)(?<!\\)\$(?!\$)",
+            r"(?<![\$\\])\$(?!\$)((?:[^\n$]|\n(?!\n))+?)(?<!\\)\$(?!\$)",
             r"$$\1$$",
             seg,
         )

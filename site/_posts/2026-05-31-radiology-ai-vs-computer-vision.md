@@ -116,8 +116,8 @@ and patch samplers fail in radiology.](/images/posts/radiology-ai-vs-computer-vi
 The consequences for an ML scientist are direct:
 
 - **Accuracy is meaningless and pixel-wise loss is treacherous.** A segmentation
-  model that predicts "no lesion" everywhere achieves $1 - 1.6\times10^{-6}
-  \approx 99.9998\%$ voxel accuracy. Use overlap and detection metrics built for
+  model that predicts "no lesion" everywhere achieves $$1 - 1.6\times10^{-6}
+  \approx 99.9998\%$$ voxel accuracy. Use overlap and detection metrics built for
   imbalance — Dice / $$F_1$$, where for prediction $$P$$ and ground truth $$G$$,
   $$\mathrm{Dice} = \frac{2|P \cap G|}{|P| + |G|},$$
   free-response ROC (FROC) for detection, and class-balanced or region-based
