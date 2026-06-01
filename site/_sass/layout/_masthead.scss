@@ -99,7 +99,8 @@
   &__input {
     width: 11rem;
     max-width: 38vw;
-    padding: 0.35em 0.5em 0.35em 2em;
+    height: 2rem;   /* match the theme-toggle button height */
+    padding: 0 0.5em 0 2em;
     border: 1px solid var(--global-border-color);
     border-radius: $border-radius;
     background: var(--global-bg-color);
