@@ -6,7 +6,7 @@ theme (a Minimal Mistakes fork), trimmed to a blog with **About**, **Blog (with
 tags)**, **Publications**, and **CV**. Comments are powered by
 [giscus](https://giscus.app) (GitHub Discussions). It deploys on **Vercel**.
 
-> The rest of this repo (`../posts/`, `../tests/`, `../environment.yml`, …) is the
+> The rest of this repo (`../posts/`, `../tests/`, each post's `environment.yml`, …) is the
 > notebook/PDF authoring toolchain and is unrelated to this website.
 
 ## Local development

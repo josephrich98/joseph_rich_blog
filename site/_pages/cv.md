@@ -13,7 +13,14 @@ redirect_from:
 
 Education
 ======
-* Add your degrees here.
+* **M.D./Ph.D. Candidate**, USC–Caltech MD-PhD Program, 2021–2029 (expected)
+  * **Ph.D. in Computational Biology**, California Institute of Technology, 2023–2027 (expected)
+    * Lab of Dr. Lior Pachter — AI and bioinformatics applied to single-cell RNA-sequencing and medical imaging
+  * **M.D.**, Keck School of Medicine of the University of Southern California, 2021–2023 & 2027–2029
+    * USMLE Step 1: Pass (first attempt)
+* **B.S. in Molecular, Cell and Developmental Biology** (Minor in Biomedical Research), University of California, Los Angeles, 2016–2020
+  * GPA: 3.99/4.0 — *Summa Cum Laude*, Highest Departmental Honors (MCDB)
+  * MCAT: 524/528 (100th percentile)
 
 Work experience
 ======

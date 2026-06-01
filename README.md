@@ -15,35 +15,39 @@ This repository contains the code and content that accompanies the blog posts on
   - `figures/` – generated plots (PNG/PDF) referenced by the post.
   - `scripts/` – any scripts used to generate the figures or run the analysis (e.g. Python scripts, shell scripts, etc.).
   - `data/` – datasets used in the post, with a `README.md` describing each source.
+  - `environment.yml` – the Conda environment needed to run that post's notebook and build it locally.
+  - `Dockerfile` – a container definition for running that post's notebook in an isolated environment.
 
 - `templates/` – The bundled [Eisvogel](https://github.com/Wandmalfarbe/pandoc-latex-template) pandoc LaTeX template (`eisvogel.latex`) used to render posts to PDF. Re-download/update it with `scripts/download_eisvogel.sh`.
 
 - `tests/` – Test suite that runs every post notebook and builds every `main.md` to PDF (see [Testing](#-testing)).
 
-- `environment.yml` – The Conda environment needed to run the notebooks and build the posts locally.
-
-- `Dockerfile` – A container definition for running the notebooks in an isolated environment.
+Each post is self-contained: its `environment.yml` and `Dockerfile` live alongside
+the post's notebook so it can be reproduced on its own.
 
 ## 🚀 Running the Notebooks
 
 ### Option 1: Using Conda (recommended for local development)
 
-Create the environment:
+Create the environment from the post you want to run:
 
 ```bash
+cd posts/post1
 conda env create -f environment.yml
 conda activate joseph_rich_blog
 jupyter notebook
 ```
 
-Then open the notebook for a post, e.g. `posts/post1/notebook.ipynb`.
+Then open that post's `notebook.ipynb`.
 
 ### Option 2: Using Google Colab
 You can also run the notebooks directly in Google Colab. Just open the desired `posts/<post>/notebook.ipynb` file in Colab via the Colab link at the top of the notebook.
 
 ### Option 3: Using Docker
-If you prefer to run the notebooks in a containerized environment, you can use Docker:
+If you prefer to run a post's notebook in a containerized environment, you can use Docker.
+Build from inside the post directory (each post ships its own `Dockerfile`):
 ```bash
+cd posts/post1
 docker build -t joseph_rich_blog .
 docker run -p 8888:8888 -v "$(pwd):/home/jovyan/work" joseph_rich_blog
 ```

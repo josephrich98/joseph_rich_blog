@@ -27,7 +27,10 @@ jobs:
         echo $CONDA/bin >> $GITHUB_PATH
     - name: Install Python dependencies
       run: |
-        conda env update --file environment.yml --name base
+        # environment.yml now lives in each post directory; merge them all into base
+        for env in posts/*/environment.yml; do
+          conda env update --file "$env" --name base
+        done
         conda install -c conda-forge pytest nbdime nbformat nbval pandoc
 
     - name: Install LaTeX toolchain (Eisvogel dependencies)

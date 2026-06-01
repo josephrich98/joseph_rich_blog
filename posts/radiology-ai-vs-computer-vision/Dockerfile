@@ -13,7 +13,7 @@ RUN conda env create -f environment.yml && \
 # Activate environment by default in every shell
 RUN echo "conda activate joseph_rich_blog" >> ~/.bashrc
 
-# Copy the rest of the repository (posts/, tests/, etc.)
+# Copy the rest of this post directory (notebook, main.md, figures/, data/, scripts/)
 COPY . .
 
 # Let Jupyter discover conda environments as kernels
