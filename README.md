@@ -11,7 +11,7 @@ This repository contains the code and content that accompanies the blog posts on
 
 - `posts/` – One directory per blog post (e.g. `posts/post1/`). Each post directory contains:
   - `notebook.ipynb` – the Jupyter notebook with the analyses and examples for that post.
-  - `main.md` – the Markdown source for the written article, rendered to PDF with the Eisvogel template.
+  - `main.md` – the Markdown source for the written article. Rendered to PDF with the Eisvogel template **and** auto-published to the website (see [Publishing posts to the website](#-publishing-posts-to-the-website)).
   - `figures/` – generated plots (PNG/PDF) referenced by the post.
   - `scripts/` – any scripts used to generate the figures or run the analysis (e.g. Python scripts, shell scripts, etc.).
   - `data/` – datasets used in the post, with a `README.md` describing each source.
@@ -81,6 +81,36 @@ Eisvogel options (title page, table of contents, colored links, …) are set in
 the YAML front matter at the top of each `main.md`. See the
 [Eisvogel documentation](https://github.com/Wandmalfarbe/pandoc-latex-template#custom-template-variables)
 for the full list of variables.
+
+## 🌐 Publishing posts to the website
+
+Each `posts/<name>/main.md` is automatically converted into a Jekyll blog post at
+`site/_posts/YYYY-MM-DD-<name>.md` so it appears on
+[joseph-rich.com](https://joseph-rich.com). The conversion is done by
+[`scripts/sync_posts.py`](scripts/sync_posts.py), which:
+
+- maps the post's front matter (`title`, `date`, optional `excerpt`/`tags`/`toc`)
+  to Jekyll front matter and drops the pandoc/Eisvogel-only keys,
+- copies `figures/` images into `site/images/posts/<name>/` and rewrites the
+  image paths,
+- rewrites inline `$…$` math into kramdown's `$$…$$` so MathJax renders it.
+
+This runs automatically on every commit via the committed pre-commit hook in
+[`.githooks/`](.githooks/). **One-time setup per clone** (so git uses that hook):
+
+```bash
+git config core.hooksPath .githooks
+```
+
+You can also run it by hand at any time:
+
+```bash
+python3 scripts/sync_posts.py
+```
+
+> Add blog-only metadata (`excerpt:`, `tags:`) to a post's `main.md` front
+> matter — pandoc ignores those keys when building the PDF, and `sync_posts.py`
+> uses them for the website. Directories named `template` are skipped.
 
 ## 🧪 Testing
 

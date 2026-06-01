@@ -1,22 +1,18 @@
 ---
 title: "Radiology AI Is Not Computer Vision: A Field Guide for ML Scientists"
-author: "Joseph Rich"
-date: "2026-05-31"
-# Blog metadata (ignored by pandoc/Eisvogel; consumed by scripts/sync_posts.py)
+date: 2026-05-31
+permalink: /posts/2026/05/radiology-ai-vs-computer-vision/
 excerpt: "A field guide for ML scientists moving into radiology: what is genuinely easier than natural images, where computer-vision intuitions misfire, the data and labels you can actually get, how the FDA regulates these models, and why the model in the paper is rarely the one that ships."
 tags:
   - machine learning
   - radiology
   - computer vision
   - medical imaging
-titlepage: true
 toc: true
-toc-own-page: true
-colorlinks: true
-linkcolor: NavyBlue
-urlcolor: NavyBlue
-listings: true
+comments: true
 ---
+<!-- Generated from posts/radiology-ai-vs-computer-vision/main.md by scripts/sync_posts.py. Do not edit here; edit the source and re-commit. -->
+
 
 # Why a computer-vision expert's intuitions misfire
 
@@ -60,12 +56,12 @@ confidently wrong. Hold that thought; it returns under heterogeneity.
 **One channel, calibrated.** Most modalities are grayscale, and — crucially —
 the gray values often *mean something physical*. CT is quantitative: each voxel
 is a Hounsfield unit, a linear transform of the X-ray attenuation coefficient
-$\mu$ relative to water,
+$$\mu$$ relative to water,
 $$
 \mathrm{HU} = 1000 \times \frac{\mu - \mu_{\text{water}}}{\mu_{\text{water}} - \mu_{\text{air}}},
 $$
-so water is $0$, air is $-1000$, fat is around $-100$, and cortical bone is
-$+1000$ or more. Fat is fat in every CT scanner on Earth. Nothing in RGB is
+so water is $$0$$, air is $$-1000$$, fat is around $$-100$$, and cortical bone is
+$$+1000$$ or more. Fat is fat in every CT scanner on Earth. Nothing in RGB is
 calibrated like this; "how blue is the sky" is not a physical constant. You can
 and should exploit it — windowing, HU-based preprocessing, and physically
 motivated augmentations all follow from it.
@@ -98,41 +94,41 @@ tissue, and the difference between *malignant* and *benign* — between *call th
 patient back* and *see you in two years* — can come down to a few millimeters of
 spiculation or a subtle change in density.
 
-Make it concrete with geometry. A chest CT of roughly $512 \times 512 \times 320$
-voxels at $0.7 \times 0.7 \times 1.0\,\text{mm}$ contains about $8.4 \times 10^7$
-voxels. A clinically important $5\,\text{mm}$ pulmonary nodule is a sphere of
-volume $\tfrac{4}{3}\pi r^3 \approx 65\,\text{mm}^3$, or about $134$ voxels. The
+Make it concrete with geometry. A chest CT of roughly $$512 \times 512 \times 320$$
+voxels at $$0.7 \times 0.7 \times 1.0\,\text{mm}$$ contains about $$8.4 \times 10^7$$
+voxels. A clinically important $$5\,\text{mm}$$ pulmonary nodule is a sphere of
+volume $$\tfrac{4}{3}\pi r^3 \approx 65\,\text{mm}^3$$, or about $$134$$ voxels. The
 lesion is therefore
 $$
 \frac{134}{8.4\times 10^7} \approx 1.6 \times 10^{-6}
 $$
 of the volume — roughly **one in six hundred thousand voxels**. Shrink it to a
-$3\,\text{mm}$ nodule and you are at one in *three million*. Figure 1 puts
+$$3\,\text{mm}$$ nodule and you are at one in *three million*. Figure 1 puts
 several findings on the same axis as natural-image objects; note the five-to-six
 order-of-magnitude gap.
 
 ![**Figure 1.** The fraction of an image that actually belongs to the finding,
-on a log scale. Natural-image objects (blue) occupy $10^{-3}$ to $10^{0}$ of the
-frame. Clinically critical lesions (red/navy) sit at $10^{-7}$ to $10^{-5}$.
+on a log scale. Natural-image objects (blue) occupy $$10^{-3}$$ to $$10^{0}$$ of the
+frame. Clinically critical lesions (red/navy) sit at $$10^{-7}$$ to $$10^{-5}$$.
 This five-to-six order-of-magnitude difference is why naive pixel-wise losses
-and patch samplers fail in radiology.](figures/needle_in_haystack.png)
+and patch samplers fail in radiology.](/images/posts/radiology-ai-vs-computer-vision/needle_in_haystack.png)
 
 The consequences for an ML scientist are direct:
 
 - **Accuracy is meaningless and pixel-wise loss is treacherous.** A segmentation
   model that predicts "no lesion" everywhere achieves $1 - 1.6\times10^{-6}
   \approx 99.9998\%$ voxel accuracy. Use overlap and detection metrics built for
-  imbalance — Dice / $F_1$, where for prediction $P$ and ground truth $G$,
+  imbalance — Dice / $$F_1$$, where for prediction $$P$$ and ground truth $$G$$,
   $$\mathrm{Dice} = \frac{2|P \cap G|}{|P| + |G|},$$
   free-response ROC (FROC) for detection, and class-balanced or region-based
   losses (Dice loss, Tversky, focal). The focal loss down-weights the easy
   negatives that otherwise dominate the gradient:
-  $\mathrm{FL}(p_t) = -(1-p_t)^{\gamma}\log p_t$.
+  $$\mathrm{FL}(p_t) = -(1-p_t)^{\gamma}\log p_t$$.
 - **Most of the volume is uninteresting, and uninteresting in a structured
   way.** Hard-negative mining, lesion-aware patch sampling, and two-stage
   candidate-then-classify pipelines exist because uniformly sampling voxels
   wastes almost all of your compute on obvious lung parenchyma.
-- **Resolution is not negotiable.** Downsampling a natural image to $224^2$
+- **Resolution is not negotiable.** Downsampling a natural image to $$224^2$$
   loses a cat's whiskers; downsampling a CT slice can erase the lesion entirely.
   The signal you are hunting may be at the Nyquist limit of the acquisition.
 
@@ -162,10 +158,10 @@ text-mining model's error rate.
 **Inter-reader variability is a hard ceiling.** Radiologists disagree. The
 LIDC-IDRI lung-nodule database was annotated by four thoracic radiologists
 precisely because no single read is ground truth; of 2,669 lesions marked as
-nodules $\geq 3\,\text{mm}$ by at least one reader, only about 35% were marked
+nodules $$\geq 3\,\text{mm}$$ by at least one reader, only about 35% were marked
 by all four. If your "ground truth" is one radiologist, your evaluation noise
 floor may be larger than the improvement you are claiming. Model the labels as
-noisy: capture annotator agreement (e.g. Cohen's / Fleiss' $\kappa$), train
+noisy: capture annotator agreement (e.g. Cohen's / Fleiss' $$\kappa$$), train
 against multi-reader consensus where you can, and report performance relative to
 the inter-reader band, not to an imagined perfect oracle.
 
@@ -179,7 +175,7 @@ clinical judgments in disguise.
 
 # The data scarcity problem
 
-Natural-image research rides on ImageNet ($1.4$M images), and webscale sets in
+Natural-image research rides on ImageNet ($$1.4$$M images), and webscale sets in
 the billions. Radiology has nothing remotely comparable that is *public*, and
 the reasons are structural: images are protected health information, they must
 be de-identified (including burned-in pixel annotations and faces
@@ -208,7 +204,7 @@ Two things to internalize. First, the largest *labeled* sets are 2D chest
 radiographs, because they are the cheapest to acquire and the easiest to label
 from reports; 3D, multi-sequence, and rarer-modality data are one to three
 orders of magnitude smaller. Second — and this is the setup for the rest of the
-post — **a big total $N$ is not the same as a big $N$ where it counts.** EMBED
+post — **a big total $$N$$ is not the same as a big $$N$$ where it counts.** EMBED
 has 3.4M images, but if you want to evaluate performance for, say,
 architectural distortion in dense breasts of women under 40 scanned on one
 vendor's tomosynthesis unit, you are suddenly working with a few dozen cases.
@@ -222,17 +218,17 @@ that differs across hospitals.** A natural image has confounders too (lighting,
 camera), but nothing like this stack.
 
 Formally, the trouble is distribution shift. Your model learns
-$P_{\text{train}}(Y \mid X)$ over inputs drawn from $P_{\text{train}}(X)$, and is
+$$P_{\text{train}}(Y \mid X)$$ over inputs drawn from $$P_{\text{train}}(X)$$, and is
 deployed where both can differ:
 $$
 P_{\text{train}}(X, Y) \;\neq\; P_{\text{test}}(X, Y).
 $$
-Decompose it. **Covariate shift** is $P(X)$ changing while $P(Y\mid X)$ holds —
+Decompose it. **Covariate shift** is $$P(X)$$ changing while $$P(Y\mid X)$$ holds —
 a different scanner renders the *same* pathology with different texture.
-**Label shift** is $P(Y)$ changing — disease prevalence differs across a
+**Label shift** is $$P(Y)$$ changing — disease prevalence differs across a
 referral center and a screening clinic, which (via Bayes) moves every predicted
 probability and every PPV even if the imaging is identical. **Concept shift** is
-the genuinely dangerous one, $P(Y\mid X)$ itself changing — the imaging
+the genuinely dangerous one, $$P(Y\mid X)$$ itself changing — the imaging
 appearance of a disease differs by population, or the label definition differs
 by institution. Here is the catalogue of what actually shifts:
 
@@ -289,54 +285,54 @@ you add slices your sample, and because disease is rare, it is the **positive
 cases** that vanish first.
 
 Walk it down for a chest-radiograph model, anchored to MIMIC-CXR's 377,110
-images (Figure 2). Keep frontal views only ($\times 0.65$). Keep the positives
-for your target finding — pneumothorax, prevalence $\approx 3\%$ ($\times 0.03$);
+images (Figure 2). Keep frontal views only ($$\times 0.65$$). Keep the positives
+for your target finding — pneumothorax, prevalence $$\approx 3\%$$ ($$\times 0.03$$);
 already you are at ~7,000 positive cases, not 377,110. Now ask the
 generalization questions clinicians will ask: how does it do in **women**
-($\times 0.47$), specifically those **aged 18–40** ($\times 0.16$), specifically
-scanned on **vendor B** ($\times 0.30$), specifically with the
-**moderate-to-large, actionable** subtype ($\times 0.40$)? You land on about
+($$\times 0.47$$), specifically those **aged 18–40** ($$\times 0.16$$), specifically
+scanned on **vendor B** ($$\times 0.30$$), specifically with the
+**moderate-to-large, actionable** subtype ($$\times 0.40$$)? You land on about
 **66 positive cases**. From 377,110 to 66 — and 66 is the number that actually
 governs what you can conclude about that subgroup.
 
 ![**Figure 2.** The stratification waterfall. Each clinically reasonable filter
 multiplies the count down. The binding constraint is the number of *positive*
 (diseased) cases, which collapses fastest because disease is
-rare.](figures/stratification_waterfall.png)
+rare.](/images/posts/radiology-ai-vs-computer-vision/stratification_waterfall.png)
 
 Why 66 is a problem is pure sampling theory. Estimate a subgroup sensitivity
-(true positive rate) $\hat{p}$ from $n$ positive cases; its standard error is
-$\sqrt{p(1-p)/n}$, so the 95% confidence half-width is about
+(true positive rate) $$\hat{p}$$ from $$n$$ positive cases; its standard error is
+$$\sqrt{p(1-p)/n}$$, so the 95% confidence half-width is about
 $$
 1.96\sqrt{\frac{p(1-p)}{n}}.
 $$
-At a true sensitivity of $0.85$ and $n = 66$, that half-width is $\pm 0.086$:
-your estimate is "somewhere between $0.76$ and $0.94$." You cannot distinguish a
-clinically excellent $0.90$ from a borderline $0.78$. (For small $n$ use the
+At a true sensitivity of $$0.85$$ and $$n = 66$$, that half-width is $$\pm 0.086$$:
+your estimate is "somewhere between $$0.76$$ and $$0.94$$." You cannot distinguish a
+clinically excellent $$0.90$$ from a borderline $$0.78$$. (For small $$n$$ use the
 Wilson interval rather than this normal approximation — the qualitative story is
 the same, and at these counts it matters.) Figure 3a shows the half-width
-shrinking only as $1/\sqrt{n}$; the subgroup strata are marked.
+shrinking only as $$1/\sqrt{n}$$; the subgroup strata are marked.
 
 Worse, suppose you want to *detect* a real subgroup gap — say sensitivity drops
-from $0.85$ overall to $0.75$ in young women on vendor B. The number of positives
-per group needed for a two-sided test at $\alpha = 0.05$ with power $1-\beta$ is
+from $$0.85$$ overall to $$0.75$$ in young women on vendor B. The number of positives
+per group needed for a two-sided test at $$\alpha = 0.05$$ with power $$1-\beta$$ is
 $$
 n = \frac{\left(z_{1-\alpha/2}\sqrt{2\bar{p}(1-\bar{p})} +
 z_{1-\beta}\sqrt{p_1(1-p_1)+p_2(1-p_2)}\right)^2}{(p_1 - p_2)^2},
 $$
-which for $p_1=0.85,\, p_2=0.75$ works out to about **250 positive cases per
+which for $$p_1=0.85,\, p_2=0.75$$ works out to about **250 positive cases per
 group** for 80% power. Your subgroup has 66, which buys roughly **30% power**
 (Figure 3b): a two-in-three chance of *missing* a real, clinically meaningful
 degradation. And if you honestly test across, say, ten subgroups, a Bonferroni
-correction to $\alpha = 0.005$ pushes the requirement to ~425 per group — while
+correction to $$\alpha = 0.005$$ pushes the requirement to ~425 per group — while
 simultaneously, *not* correcting means some of your "significant" subgroup
 findings are noise. You are squeezed from both sides.
 
 ![**Figure 3.** What those counts buy. **(a)** The 95% CI half-width on a
-subgroup sensitivity estimate shrinks only as $1/\sqrt{n}$; at $n=66$ positives
-you have $\pm 0.09$ precision. **(b)** Power to detect a $0.85 \to 0.75$
+subgroup sensitivity estimate shrinks only as $$1/\sqrt{n}$$; at $$n=66$$ positives
+you have $$\pm 0.09$$ precision. **(b)** Power to detect a $$0.85 \to 0.75$$
 sensitivity drop: you need ~250 positives per group for 80% power, but the
-deepest subgroup has 66, giving ~30% power.](figures/power_and_precision.png)
+deepest subgroup has 66, giving ~30% power.](/images/posts/radiology-ai-vs-computer-vision/power_and_precision.png)
 
 The lesson is not "give up." It is to **plan evaluation as a power calculation
 from day one**: decide which subgroups are non-negotiable, estimate the positive
@@ -407,7 +403,7 @@ Concretely, what bites teams crossing this gap:
   cases that dominate a real PACS queue. In deployment those *are* the workload:
   the lateral mistakenly sent as frontal, the patient with prior surgery, the
   motion-degraded study. Your model needs a calibrated "I don't know."
-- **Prospective $\neq$ retrospective.** Retrospective AUC routinely overstates
+- **Prospective $$\neq$$ retrospective.** Retrospective AUC routinely overstates
   prospective performance; the few prospective and randomized radiology-AI
   studies have repeatedly come in below their retrospective hype.
 - **Automation bias and workflow effects.** A deployed model changes radiologist
@@ -425,7 +421,7 @@ If you remember five things moving from natural images to radiology:
 1. **Exploit the priors, distrust them.** Canonical pose, calibrated intensities,
    and a known organ of interest are real gifts — but each is a covariate that
    shifts, and the finding may be in the organ you weren't told to look at.
-2. **Your signal is a needle.** Lesions are $10^{-7}$–$10^{-5}$ of the image.
+2. **Your signal is a needle.** Lesions are $$10^{-7}$$–$$10^{-5}$$ of the image.
    Abandon accuracy and pixel-wise loss; use detection/overlap metrics,
    imbalance-aware losses, and lesion-aware sampling, and don't downsample away
    the disease.
