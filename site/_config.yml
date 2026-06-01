@@ -55,8 +55,8 @@ comments:
   provider               : "custom"
 giscus:
   repo_id                : "R_kgDOOv6a9Q"  # repo node id (from giscus.app)
-  category               : "Comments"      # the Discussions category name
-  category_id            :                 # e.g. "DIC_kwD..." (from giscus.app)
+  category               : "Announcements" # the Discussions category name
+  category_id            : "DIC_kwDOOv6a9c4C-Olm"  # from giscus.app
   discussion_term        : "pathname"      # mapping: pathname | url | title | og:title
   reactions_enabled      : "1"
   theme                  : "preferred_color_scheme"
