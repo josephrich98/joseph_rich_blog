@@ -1,7 +1,7 @@
 ---
 title: "Radiology AI Is Not Computer Vision: A Field Guide for ML Scientists"
-date: 2026-05-31
-permalink: /posts/2026/05/radiology-ai-vs-computer-vision/
+date: 2026-06-02
+permalink: /posts/2026/06/radiology-ai-vs-computer-vision/
 excerpt: "A field guide for ML scientists moving into radiology: what is genuinely easier than natural images, where computer-vision intuitions misfire, the data and labels you can actually get, how the FDA regulates these models, and why the model in the paper is rarely the one that ships."
 tags:
   - machine learning

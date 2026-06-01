@@ -1,7 +1,7 @@
 ---
 title: "Radiology AI Is Not Computer Vision: A Field Guide for ML Scientists"
 author: "Joseph Rich"
-date: "2026-05-31"
+date: "2026-06-02"
 # Blog metadata (ignored by pandoc/Eisvogel; consumed by scripts/sync_posts.py)
 excerpt: "A field guide for ML scientists moving into radiology: what is genuinely easier than natural images, where computer-vision intuitions misfire, the data and labels you can actually get, how the FDA regulates these models, and why the model in the paper is rarely the one that ships."
 tags:

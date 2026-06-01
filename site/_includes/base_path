@@ -1,5 +1,9 @@
-{% if site.url %}
-  {% assign base_path = site.url | append: site.baseurl %}
-{% else %}
-  {% assign base_path = site.github.url %}
-{% endif %}
+{% comment %}
+  base_path is intentionally relative (just site.baseurl, empty for this site) so that
+  internal navigation/permalink/asset links stay on whatever host the visitor arrived on
+  (joseph-rich.com OR joseph-rich-blog.vercel.app). Absolute, canonical-domain URLs are
+  still emitted where external consumers require them — the canonical tag, RSS feed, and
+  og:image/twitter:image (seo.html) and the social-share buttons (social-share.html) — via
+  site.url directly, not base_path. See _config.yml `url`.
+{% endcomment %}
+{% assign base_path = site.baseurl %}

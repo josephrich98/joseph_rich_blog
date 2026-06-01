@@ -8,7 +8,7 @@ This repository contains the code and content that accompanies the blog posts on
 ## 📂 Repository Structure
 
 - `site/` – The **website** behind [joseph-rich.com](https://joseph-rich.com): a
-  Jekyll site (academicpages theme) with the blog, tags, publications, and CV,
+  Jekyll site (academicpages theme) with the blog, publications,
   giscus comments, and Vercel deployment. See [`site/README.md`](site/README.md)
   for local dev and the one-time giscus/Vercel setup.
 
