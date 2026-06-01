@@ -140,3 +140,4 @@ just that it runs without errors), add the post's directory name to
 `STRICT_POSTS` in `tests/test_notebooks.py`.
 
 These tests also run automatically on every push and pull request via GitHub Actions (see `.github/workflows/Notebooks.yml`).
+
