@@ -52,7 +52,7 @@
     {% endif %}
     
     {% if post.citation %}
-      <p>Recommended citation: {{ post.citation }}{% if post.slidesurl or post.bibtexurl %}<br />{% if post.slidesurl %}<a href="{{ post.slidesurl }}">Download Slides</a>{% endif %}{% if post.slidesurl and post.bibtexurl %} | {% endif %}{% if post.bibtexurl %}<a href="{{ post.bibtexurl }}">Download Bibtex</a>{% endif %}{% endif %}</p>
+      <p>{{ post.citation }}{% if post.slidesurl or post.bibtexurl %}<br />{% if post.slidesurl %}<a href="{{ post.slidesurl }}">Download Slides</a>{% endif %}{% if post.slidesurl and post.bibtexurl %} | {% endif %}{% if post.bibtexurl %}<a href="{{ post.bibtexurl }}">Download Bibtex</a>{% endif %}{% endif %}</p>
     {% elsif post.slidesurl or post.bibtexurl %}
       <p>{% if post.slidesurl %}<a href="{{ post.slidesurl }}">Download Slides</a>{% endif %}{% if post.slidesurl and post.bibtexurl %} | {% endif %}{% if post.bibtexurl %}<a href="{{ post.bibtexurl }}">Download Bibtex</a>{% endif %}</p>
     {% endif %}

@@ -52,7 +52,7 @@ layout: default
         {{ content }}
 
         {% if page.citation %}
-          <p style="font-size: smaller">Recommended citation: {{ page.citation }}{% if page.slidesurl or page.bibtexurl %}<br />{% if page.slidesurl %}<a href="{{ page.slidesurl }}">Download Slides</a>{% endif %}{% if page.slidesurl and page.bibtexurl %} | {% endif %}{% if page.bibtexurl %}<a href="{{ page.bibtexurl }}">Download Bibtex</a>{% endif %}{% endif %}</p>
+          <p style="font-size: smaller">{{ page.citation }}{% if page.slidesurl or page.bibtexurl %}<br />{% if page.slidesurl %}<a href="{{ page.slidesurl }}">Download Slides</a>{% endif %}{% if page.slidesurl and page.bibtexurl %} | {% endif %}{% if page.bibtexurl %}<a href="{{ page.bibtexurl }}">Download Bibtex</a>{% endif %}{% endif %}</p>
         {% elsif page.slidesurl or page.bibtexurl %}
           <p style="font-size: smaller">{% if page.slidesurl %}<a href="{{ page.slidesurl }}">Download Slides</a>{% endif %}{% if page.slidesurl and page.bibtexurl %} | {% endif %}{% if page.bibtexurl %}<a href="{{ page.bibtexurl }}">Download Bibtex</a>{% endif %}</p>
         {% endif %}

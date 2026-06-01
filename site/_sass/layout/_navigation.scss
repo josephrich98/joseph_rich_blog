@@ -177,6 +177,14 @@
   min-width: 250px;
   background: var(--global-bg-color);
 
+  /* On narrow (portrait) screens the 250px floor pushes the search bar + theme
+     toggle off the right edge and also fools the priority-plus calc (which uses
+     $nav.width()) into never collapsing links into the hamburger. Let the nav
+     shrink so the aside stays visible and overflow links fold into the menu. */
+  @include breakpoint(max-width $small) {
+    min-width: 0;
+  }
+
   a {
     display: block;
     margin: 0 1rem;
