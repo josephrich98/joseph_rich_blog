@@ -10,16 +10,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        python-version: ["3.9", "3.10", "3.11"]
-
     steps:
     - uses: actions/checkout@v4
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
 
     - name: Add conda to system path
       run: |
@@ -27,11 +19,16 @@ jobs:
         echo $CONDA/bin >> $GITHUB_PATH
     - name: Install Python dependencies
       run: |
-        # environment.yml now lives in each post directory; merge them all into base
+        # Use a dedicated env, never `base`: the post environment.yml files pin
+        # conda packages (python, pandoc, ...), which forces a re-solve of base
+        # and fails with "RemoveError: 'tqdm' is a dependency of conda and cannot
+        # be removed" because conda protects its own operating dependencies.
+        # environment.yml now lives in each post directory; merge them all in.
+        conda create -y --name test-env
         for env in posts/*/environment.yml; do
-          conda env update --file "$env" --name base
+          conda env update --file "$env" --name test-env
         done
-        conda install -c conda-forge pytest nbdime nbformat nbval pandoc
+        conda install -y --name test-env -c conda-forge pytest nbdime nbformat nbval pandoc
 
     - name: Install LaTeX toolchain (Eisvogel dependencies)
       run: |
@@ -46,4 +43,6 @@ jobs:
 
     - name: Run tests (post notebooks + PDF build)
       run: |
+        source $CONDA/etc/profile.d/conda.sh
+        conda activate test-env
         pytest -v tests/
