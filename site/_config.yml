@@ -15,7 +15,7 @@ repository               : "josephrich98/joseph_rich_blog"   # used by giscus co
 
 # Site Author — controls the left sidebar profile. Blank fields hide their icon/link.
 author:
-  avatar           : "profile.png"   # in /images/ — replace with your own headshot
+  avatar           : "headshot.png"   # in /images/
   name             : "Joseph Rich"
   pronouns         :
   bio              : "MD/PhD student at USC/Caltech researching multimodal medical AI and bioinformatics methods development."
@@ -54,7 +54,7 @@ read_more                : "disabled"
 comments:
   provider               : "custom"
 giscus:
-  repo_id                :                 # e.g. "R_kgD..."  (from giscus.app)
+  repo_id                : "R_kgDOOv6a9Q"  # repo node id (from giscus.app)
   category               : "Comments"      # the Discussions category name
   category_id            :                 # e.g. "DIC_kwD..." (from giscus.app)
   discussion_term        : "pathname"      # mapping: pathname | url | title | og:title

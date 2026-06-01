@@ -485,3 +485,7 @@ that every citation below resolves.
 13. AlBadawy EA, Saha A, Mazurowski MA. Deep learning for segmentation of brain
     tumors: impact of cross-institutional training and testing. *Med Phys*.
     2018;45(3):1150–1158. doi:10.1002/mp.12752
+
+---
+
+*Reproduce all analyses in this post [here](https://github.com/josephrich98/joseph_rich_blog/tree/main/posts/radiology-ai-vs-computer-vision).*

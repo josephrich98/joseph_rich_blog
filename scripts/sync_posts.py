@@ -38,6 +38,8 @@ OUT_DIR = os.path.join(ROOT, "site", "_posts")
 IMG_ROOT = os.path.join(ROOT, "site", "images", "posts")
 
 SKIP_DIRS = {"template"}
+# Base URL of the GitHub repo, used for the "reproduce" footer link on each post.
+REPO_URL = "https://github.com/josephrich98/joseph_rich_blog"
 # pandoc/Eisvogel-only front matter keys that must not leak into the blog post
 PANDOC_ONLY = {
     "author", "titlepage", "toc-own-page", "colorlinks", "linkcolor",
@@ -176,6 +178,13 @@ def sync_post(name):
 
     body = fix_footnote_continuations(body)
     body = inline_math_to_kramdown(body)
+
+    # Boilerplate footer linking to the post's source folder (notebook, data,
+    # scripts) so readers can reproduce the analyses.
+    body = body.rstrip("\n") + (
+        f"\n\n---\n\n*Reproduce all analyses in this post "
+        f"[here]({REPO_URL}/tree/main/posts/{name}).*\n"
+    )
 
     # Build Jekyll front matter
     out_fm = ['---']
