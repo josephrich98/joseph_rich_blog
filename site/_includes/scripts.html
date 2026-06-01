@@ -9,3 +9,6 @@
   providers still load their script here as the theme intends.
 {% endcomment %}
 {% unless site.comments.provider == "custom" %}{% include comments-providers/scripts.html %}{% endunless %}
+
+{% comment %} MathJax + Mermaid loaders live in footer/custom.html (stock theme placement). {% endcomment %}
+{% include footer/custom.html %}
