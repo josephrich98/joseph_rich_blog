@@ -171,6 +171,10 @@ output
 output/
 outputs
 outputs/
+# Don't ignore the Susy vendor stylesheets, whose source dir is literally named "output/"
+!site/_sass/vendor/susy/susy/output/
+!site/_sass/vendor/susy/susy/output/**
 tmp.*
 **/.lake
 posts/**/data
+.vercel
