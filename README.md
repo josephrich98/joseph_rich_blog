@@ -16,7 +16,7 @@ This repository contains the code and content that accompanies the blog posts on
   - `scripts/` – any scripts used to generate the figures or run the analysis (e.g. Python scripts, shell scripts, etc.).
   - `data/` – datasets used in the post, with a `README.md` describing each source.
   - `environment.yml` – the Conda environment needed to run that post's notebook and build it locally.
-  - `Dockerfile` – a container definition for running that post's notebook in an isolated environment.
+  - `Dockerfile` – a container definition for running that post's notebook in an isolated environment. It is tailored to the post: the conda environment it creates and the Jupyter kernel it registers are named after the post (matching the `name:` in that post's `environment.yml`), so each post builds and runs independently.
 
 - `templates/` – The bundled [Eisvogel](https://github.com/Wandmalfarbe/pandoc-latex-template) pandoc LaTeX template (`eisvogel.latex`) used to render posts to PDF. Re-download/update it with `scripts/download_eisvogel.sh`.
 
@@ -34,7 +34,7 @@ Create the environment from the post you want to run:
 ```bash
 cd posts/radiology-ai-vs-computer-vision
 conda env create -f environment.yml
-conda activate joseph_rich_blog
+conda activate radiology-ai-vs-computer-vision  # as specified in environment.yml
 jupyter notebook
 ```
 
@@ -45,13 +45,19 @@ You can also run the notebooks directly in Google Colab. Just open the desired `
 
 ### Option 3: Using Docker
 If you prefer to run a post's notebook in a containerized environment, you can use Docker.
-Build from inside the post directory (each post ships its own `Dockerfile`):
+Each post ships its own `Dockerfile`, tailored to that post (it creates and registers a
+conda env/kernel named after the post). Build from inside the post directory:
 ```bash
 cd posts/radiology-ai-vs-computer-vision
-docker build -t joseph_rich_blog .
-docker run -p 8888:8888 -v "$(pwd):/home/jovyan/work" joseph_rich_blog
+docker build -t radiology-ai-vs-computer-vision .
+docker run -p 8888:8888 -v "$(pwd):/home/jovyan/work" radiology-ai-vs-computer-vision
 ```
-Then open your browser to `http://localhost:8888` to access the Jupyter interface.
+Then open your browser to `http://localhost:8888` to access the Jupyter interface, and
+select the **Python (radiology-ai-vs-computer-vision)** kernel (named after the post).
+
+> When adding a new post, copy an existing post's `Dockerfile` and replace the post
+> name (in the `conda activate`, `ipykernel install`, and kernel display name) with the
+> new post's name from its `environment.yml`.
 
 ## 📝 Writing & Building Posts
 
@@ -118,10 +124,11 @@ python3 scripts/sync_posts.py
 
 ## 🧪 Testing
 
-The test suite under `tests/` automatically discovers every post in `posts/` and checks that:
+The test suite under `tests/` automatically discovers every post in `posts/` and runs three independent checks, each parametrized over all posts:
 
-- each `notebook.ipynb` executes top-to-bottom without errors (via [`nbval`](https://github.com/computationalmodelling/nbval)), and
-- each `main.md` renders to a PDF via pandoc + the Eisvogel template.
+- `test_post_pdf_builds` – each `main.md` renders to a PDF via pandoc + the Eisvogel template.
+- `test_notebook_runs_lax` – each `notebook.ipynb` executes top-to-bottom without errors, ignoring stored outputs (via [`nbval`](https://github.com/computationalmodelling/nbval) `--nbval-lax`).
+- `test_notebook_runs_strict` – each `notebook.ipynb` reproduces its stored outputs exactly (via `nbval --nbval`).
 
 Install the test dependencies, then run:
 
@@ -132,16 +139,28 @@ conda install -c conda-forge pytest nbval nbformat nbdime pandoc
 # also needed for the PDF tests, e.g.:
 #   sudo apt-get install texlive-xetex texlive-latex-extra texlive-fonts-recommended
 
-pytest -v tests/
+pytest
 ```
+
+The test path and default flags live in `pytest.ini`, so a bare `pytest`
+discovers and runs the suite under `tests/`.
 
 Notebook tests are skipped automatically if `nbval` is not installed, and the
 PDF tests are skipped if `pandoc`, a LaTeX engine, or `templates/eisvogel.latex`
 is missing.
 
-To check that a notebook's stored outputs exactly match a fresh run (instead of
-just that it runs without errors), add the post's directory name to
-`STRICT_POSTS` in `tests/test_notebooks.py`.
+Each check has its own opt-out list at the top of `tests/test_notebooks.py`, so a
+post can be excluded from one check without affecting the others. Add the post's
+directory name to:
+
+- `POSTS_TO_EXCLUDE_MARKDOWN` – skip the PDF build for that post,
+- `POSTS_TO_EXCLUDE_NOTEBOOK_LAX` – skip the lax notebook run for that post,
+- `POSTS_TO_EXCLUDE_NOTEBOOK_STRICT` – skip the strict (stored-output) notebook run for that post.
+
+Because the strict check runs on every notebook by default, cells whose output is not reproducible (timestamps, random values, plots, ...) need a marker on their first line or they will fail strict:
+
+- `# NBVAL_IGNORE_OUTPUT` – don't compare this cell's output, and
+- `# NBVAL_CHECK_OUTPUT` – do compare this cell's output even in the lax run.
 
 These tests also run automatically on every push and pull request via GitHub Actions (see `.github/workflows/Notebooks.yml`).
 

@@ -1,4 +1,4 @@
-name: joseph_rich_blog
+name: radiology-ai-vs-computer-vision
 channels:
   - conda-forge
   - defaults

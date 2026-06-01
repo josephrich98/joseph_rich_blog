@@ -11,7 +11,7 @@ RUN conda env create -f environment.yml && \
     conda clean -a
 
 # Activate environment by default in every shell
-RUN echo "conda activate joseph_rich_blog" >> ~/.bashrc
+RUN echo "conda activate radiology-ai-vs-computer-vision" >> ~/.bashrc
 
 # Copy the rest of this post directory (notebook, main.md, figures/, data/, scripts/)
 COPY . .
@@ -21,8 +21,8 @@ RUN conda install -n base -y nb_conda_kernels && \
     echo "c.NotebookApp.kernel_spec_manager_class = 'nb_conda_kernels.CondaKernelSpecManager'" >> /etc/jupyter/jupyter_notebook_config.py
 
 # Install the IPython kernel so the env appears in Jupyter
-RUN conda install -n joseph_rich_blog -y ipykernel && \
-    conda run -n joseph_rich_blog python -m ipykernel install --user --name=joseph_rich_blog --display-name "Python (joseph_rich_blog)"
+RUN conda install -n radiology-ai-vs-computer-vision -y ipykernel && \
+    conda run -n radiology-ai-vs-computer-vision python -m ipykernel install --user --name=radiology-ai-vs-computer-vision --display-name "Python (radiology-ai-vs-computer-vision)"
 
 # Jupyter listens on 8888 (the base image's default CMD starts the server)
 EXPOSE 8888

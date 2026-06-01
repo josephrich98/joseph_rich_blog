@@ -1,18 +1,24 @@
 """Tests for the blog post repository.
 
-Two things are checked for every post under ``posts/<name>/``:
+Three independent checks run for every post under ``posts/<name>/``. Each is its
+own test, parametrized over all discovered posts, and each has its own opt-out
+list so a single post can be excluded from one check without affecting the
+others:
 
-1. ``test_notebook_runs`` / ``test_notebook_identical`` – the ``notebook.ipynb``
-   executes without raising (lax), and optionally that its stored outputs still
-   match a fresh run (strict). Both use the ``nbval`` pytest plugin.
-2. ``test_post_pdf_builds`` – the ``main.md`` Markdown source renders to a PDF
+1. ``test_post_pdf_builds`` – the ``main.md`` Markdown source renders to a PDF
    with ``pandoc`` using the bundled Eisvogel template
-   (``templates/eisvogel.latex``).
+   (``templates/eisvogel.latex``). Exclude via ``POSTS_TO_EXCLUDE_MARKDOWN``.
+2. ``test_notebook_runs_lax`` – the ``notebook.ipynb`` executes top-to-bottom
+   without raising, ignoring stored outputs (``nbval --nbval-lax``). Exclude via
+   ``POSTS_TO_EXCLUDE_NOTEBOOK_LAX``.
+3. ``test_notebook_runs_strict`` – the ``notebook.ipynb`` reproduces its stored
+   outputs exactly (``nbval --nbval``). Exclude via
+   ``POSTS_TO_EXCLUDE_NOTEBOOK_STRICT``.
 
 Posts are discovered automatically, so adding a new ``posts/<name>/`` directory
 needs no changes here.
 
-Notes for authoring notebooks:
+Notes for authoring notebooks (these affect the strict check):
   - Add ``# NBVAL_IGNORE_OUTPUT`` at the top of a cell whose output is not
     expected to be reproducible (timestamps, random values, plots, ...).
   - Add ``# NBVAL_CHECK_OUTPUT`` at the top of a cell whose output *should* be
@@ -31,10 +37,11 @@ import pytest
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 POSTS_DIR = os.path.join(REPO_ROOT, "posts")
 
-# Posts whose stored notebook outputs should match a fresh run exactly
-# (checked with ``--nbval`` instead of ``--nbval-lax``). Use the post directory
-# name, e.g. "post1".
-STRICT_POSTS = set()  #* add post names here for exact-output checking
+# Per-check opt-out lists. Add a post's directory name (e.g. "post1") to skip it
+# for that one check only; the other checks still run for that post.
+POSTS_TO_EXCLUDE_MARKDOWN = set()        #* posts to skip in test_post_pdf_builds
+POSTS_TO_EXCLUDE_NOTEBOOK_LAX = set()    #* posts to skip in test_notebook_runs_lax
+POSTS_TO_EXCLUDE_NOTEBOOK_STRICT = set() #* posts to skip in test_notebook_runs_strict
 
 NBVAL_AVAILABLE = importlib.util.find_spec("nbval") is not None
 PANDOC_BIN = shutil.which("pandoc")
@@ -96,40 +103,6 @@ def run_nbval(notebook_path, strict):
     return result.returncode
 
 
-@pytest.mark.skipif(not NBVAL_AVAILABLE, reason="nbval plugin not installed")
-@pytest.mark.parametrize(
-    "post_name,notebook_path",
-    NOTEBOOKS,
-    ids=[name for name, _ in NOTEBOOKS],
-)
-def test_notebook_runs(tmp_path, post_name, notebook_path):
-    """Each post notebook executes top-to-bottom without raising."""
-    if post_name in STRICT_POSTS:
-        pytest.skip(f"{post_name} is checked by test_notebook_identical instead")
-
-    temp_notebook_path = os.path.join(tmp_path, "notebook.ipynb")
-    shutil.copy(notebook_path, temp_notebook_path)
-    clear_notebook_output(temp_notebook_path)  # lax mode only needs it to run
-
-    rc = run_nbval(temp_notebook_path, strict=False)
-    assert rc == 0, f"Notebook for {post_name} failed to execute"
-
-
-@pytest.mark.skipif(not NBVAL_AVAILABLE, reason="nbval plugin not installed")
-@pytest.mark.parametrize(
-    "post_name,notebook_path",
-    [(n, p) for n, p in NOTEBOOKS if n in STRICT_POSTS],
-    ids=[n for n, _ in NOTEBOOKS if n in STRICT_POSTS] or ["<none>"],
-)
-def test_notebook_identical(tmp_path, post_name, notebook_path):
-    """Strict posts produce outputs identical to those stored in the notebook."""
-    temp_notebook_path = os.path.join(tmp_path, "notebook.ipynb")
-    shutil.copy(notebook_path, temp_notebook_path)
-
-    rc = run_nbval(temp_notebook_path, strict=True)
-    assert rc == 0, f"Notebook for {post_name} did not reproduce its stored outputs"
-
-
 @pytest.mark.skipif(not PANDOC_BIN, reason="pandoc not installed")
 @pytest.mark.skipif(not LATEX_BIN, reason="no LaTeX engine on PATH")
 @pytest.mark.skipif(
@@ -143,6 +116,9 @@ def test_notebook_identical(tmp_path, post_name, notebook_path):
 )
 def test_post_pdf_builds(tmp_path, post_name, md_path):
     """Each post's main.md renders to a PDF via pandoc + the Eisvogel template."""
+    if post_name in POSTS_TO_EXCLUDE_MARKDOWN:
+        pytest.skip(f"{post_name} is in POSTS_TO_EXCLUDE_MARKDOWN")
+
     output_pdf = os.path.join(tmp_path, f"{post_name}.pdf")
     cmd = [
         PANDOC_BIN,
@@ -163,3 +139,40 @@ def test_post_pdf_builds(tmp_path, post_name, md_path):
         f"pandoc build failed for {post_name}:\n{result.stderr[-3000:]}"
     )
     assert os.path.isfile(output_pdf), f"No PDF produced for {post_name}"
+
+
+@pytest.mark.skipif(not NBVAL_AVAILABLE, reason="nbval plugin not installed")
+@pytest.mark.parametrize(
+    "post_name,notebook_path",
+    NOTEBOOKS,
+    ids=[name for name, _ in NOTEBOOKS],
+)
+def test_notebook_runs_lax(tmp_path, post_name, notebook_path):
+    """Each post notebook executes top-to-bottom without raising (lax)."""
+    if post_name in POSTS_TO_EXCLUDE_NOTEBOOK_LAX:
+        pytest.skip(f"{post_name} is in POSTS_TO_EXCLUDE_NOTEBOOK_LAX")
+
+    temp_notebook_path = os.path.join(tmp_path, "notebook.ipynb")
+    shutil.copy(notebook_path, temp_notebook_path)
+    clear_notebook_output(temp_notebook_path)  # lax mode only needs it to run
+
+    rc = run_nbval(temp_notebook_path, strict=False)
+    assert rc == 0, f"Notebook for {post_name} failed to execute"
+
+
+@pytest.mark.skipif(not NBVAL_AVAILABLE, reason="nbval plugin not installed")
+@pytest.mark.parametrize(
+    "post_name,notebook_path",
+    NOTEBOOKS,
+    ids=[name for name, _ in NOTEBOOKS],
+)
+def test_notebook_runs_strict(tmp_path, post_name, notebook_path):
+    """Each post notebook reproduces its stored outputs exactly (strict)."""
+    if post_name in POSTS_TO_EXCLUDE_NOTEBOOK_STRICT:
+        pytest.skip(f"{post_name} is in POSTS_TO_EXCLUDE_NOTEBOOK_STRICT")
+
+    temp_notebook_path = os.path.join(tmp_path, "notebook.ipynb")
+    shutil.copy(notebook_path, temp_notebook_path)  # keep stored outputs to compare
+
+    rc = run_nbval(temp_notebook_path, strict=True)
+    assert rc == 0, f"Notebook for {post_name} did not reproduce its stored outputs"
