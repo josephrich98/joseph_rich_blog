@@ -34,6 +34,24 @@
   }
 }
 
+/* Blog posts hide the author sidebar, so the theme's `suffix(2 of 12)` right
+   gutter just leaves empty space on the right and a lopsided margin. For
+   articles, drop the grid offsets and center the column with a comfortable
+   reading measure instead — symmetric margins, roomy enough for figures and
+   display math. Scoped to the posts collection (see single.html). */
+.page--article {
+  @include breakpoint($large) {
+    float: none;
+    clear: both;
+    width: auto;
+    max-width: 54rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
 .page__title {
   margin-top: 0;
   line-height: 1;
