@@ -179,3 +179,5 @@ tmp.*
 **/.lake
 posts/**/data
 .vercel
+CLAUDE.md
+.claude
