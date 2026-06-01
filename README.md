@@ -13,6 +13,8 @@ This repository contains the code and content that accompanies the blog posts on
   - `notebook.ipynb` – the Jupyter notebook with the analyses and examples for that post.
   - `main.md` – the Markdown source for the written article, rendered to PDF with the Eisvogel template.
   - `figures/` – generated plots (PNG/PDF) referenced by the post.
+  - `scripts/` – any scripts used to generate the figures or run the analysis (e.g. Python scripts, shell scripts, etc.).
+  - `data/` – datasets used in the post, with a `README.md` describing each source.
 
 - `templates/` – The bundled [Eisvogel](https://github.com/Wandmalfarbe/pandoc-latex-template) pandoc LaTeX template (`eisvogel.latex`) used to render posts to PDF. Re-download/update it with `scripts/download_eisvogel.sh`.
 
