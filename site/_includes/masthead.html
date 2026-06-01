@@ -18,12 +18,21 @@
               <a href="{{ domain }}{{ link.url }}">{{ link.title }}</a>
             </li>
           {% endfor %}
-          <li id="theme-toggle" class="masthead__menu-item persist tail">
-            <a role="button" aria-labelledby="theme-icon"><i id="theme-icon" class="fa-solid fa-sun" aria-hidden="true" title="toggle theme"></i></a>
-          </li>
         </ul>
         <ul class="hidden-links hidden"></ul>
       </nav>
+    </div>
+
+    <div class="masthead__aside">
+      <div class="site-search">
+        <i class="fa-solid fa-magnifying-glass site-search__icon" aria-hidden="true"></i>
+        <input id="site-search-input" class="site-search__input" type="search"
+               placeholder="Search posts&hellip;" aria-label="Search posts" autocomplete="off">
+        <ul id="site-search-results" class="site-search__results" role="listbox" aria-label="Search results"></ul>
+      </div>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle light/dark theme">
+        <i id="theme-icon" class="fa-solid fa-sun" aria-hidden="true" title="toggle theme"></i>
+      </button>
     </div>
   </div>
 </div>

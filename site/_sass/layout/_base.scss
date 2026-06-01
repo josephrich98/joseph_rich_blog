@@ -5,6 +5,12 @@ html {
   /* sticky footer fix */
   position: relative;
   min-height: 100%;
+
+  /* Paint the root canvas (overscroll area, area below short pages, scrollbars)
+     with the active theme's background so light mode is light even on a
+     dark-OS browser. Without this only <body> is painted, leaving the canvas
+     to follow the OS color-scheme. */
+  background-color: var(--global-bg-color);
 }
 
 body {

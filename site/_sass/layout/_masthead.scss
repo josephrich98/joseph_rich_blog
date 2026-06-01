@@ -30,6 +30,11 @@
     padding: 0.5em 1em;
     font-family: $sans-serif-narrow;
 
+    /* Nav on the left (flexes/collapses), search + theme toggle pinned right. */
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+
     @include breakpoint($x-large) {
       max-width: $x-large;
     }
@@ -41,6 +46,135 @@
     a {
       text-decoration: none;
     }
+  }
+}
+
+.masthead__menu {
+  flex: 1 1 auto;
+  min-width: 0;   /* allow the greedy nav to shrink so the aside stays visible */
+}
+
+.masthead__aside {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
+}
+
+/* Theme toggle (sun / moon), now pinned to the top right of the masthead. */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 0;
+  background: var(--global-bg-color);
+  color: var(--global-masthead-link-color);
+  font-size: 1.1em;
+  line-height: 1;
+  cursor: pointer;
+  transition: $global-transition;
+
+  &:hover {
+    color: var(--global-masthead-link-color-hover);
+  }
+}
+
+/* Masthead search box + live results dropdown. */
+.site-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  &__icon {
+    position: absolute;
+    left: 0.55em;
+    font-size: 0.8em;
+    color: var(--global-text-color-light);
+    pointer-events: none;
+  }
+
+  &__input {
+    width: 11rem;
+    max-width: 38vw;
+    padding: 0.35em 0.5em 0.35em 2em;
+    border: 1px solid var(--global-border-color);
+    border-radius: $border-radius;
+    background: var(--global-bg-color);
+    color: var(--global-text-color);
+    font-family: $sans-serif-narrow;
+    font-size: 0.8em;
+    line-height: 1.4;
+
+    &:focus {
+      outline: none;
+      border-color: var(--global-link-color);
+    }
+
+    @include breakpoint(max-width 600px) {
+      width: 8rem;
+    }
+  }
+
+  &__results {
+    position: absolute;
+    top: calc(100% + 0.4em);
+    right: 0;
+    z-index: 30;
+    display: none;
+    width: 22rem;
+    max-width: 86vw;
+    max-height: 70vh;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    list-style: none;
+    background: var(--global-bg-color);
+    border: 1px solid var(--global-border-color);
+    border-radius: $border-radius;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+
+    &.is-open {
+      display: block;
+    }
+  }
+
+  &__result {
+    margin: 0;
+    border-bottom: 1px solid var(--global-border-color);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    a {
+      display: flex;
+      flex-direction: column;
+      padding: 0.5em 0.75em;
+      color: var(--global-text-color);
+
+      &:hover {
+        background: var(--global-footer-bg-color);
+      }
+    }
+
+    &--empty {
+      padding: 0.6em 0.75em;
+      color: var(--global-text-color-light);
+      font-size: 0.8em;
+    }
+  }
+
+  &__result-title {
+    font-size: 0.85em;
+    font-weight: 600;
+  }
+
+  &__result-date {
+    font-size: 0.7em;
+    color: var(--global-text-color-light);
   }
 }
 
