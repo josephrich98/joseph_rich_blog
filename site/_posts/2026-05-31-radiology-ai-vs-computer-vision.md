@@ -57,9 +57,11 @@ far better here than they would on web images.
 the gray values often *mean something physical*. CT is quantitative: each voxel
 is a Hounsfield unit, a linear transform of the X-ray attenuation coefficient
 $$\mu$$ relative to water,
+
 $$
 \mathrm{HU} = 1000 \times \frac{\mu - \mu_{\text{water}}}{\mu_{\text{water}} - \mu_{\text{air}}},
 $$
+
 so water is $$0$$, air is $$-1000$$, fat is around $$-100$$, and cortical bone is
 $$+1000$$ or more. Fat is fat in every CT scanner on Earth. Nothing in RGB is
 calibrated like this; "how blue is the sky" is not a physical constant. You can
@@ -99,9 +101,11 @@ voxels at $$0.7 \times 0.7 \times 1.0\,\text{mm}$$ contains about $$8.4 \times 1
 voxels. A clinically important $$5\,\text{mm}$$ pulmonary nodule is a sphere of
 volume $$\tfrac{4}{3}\pi r^3 \approx 65\,\text{mm}^3$$, or about $$134$$ voxels. The
 lesion is therefore
+
 $$
 \frac{134}{8.4\times 10^7} \approx 1.6 \times 10^{-6}
 $$
+
 of the volume — roughly **one in six hundred thousand voxels**. Shrink it to a
 $$3\,\text{mm}$$ nodule and you are at one in *three million*. Figure 1 puts
 several findings on the same axis as natural-image objects; note the five-to-six
@@ -220,9 +224,11 @@ camera), but nothing like this stack.
 Formally, the trouble is distribution shift. Your model learns
 $$P_{\text{train}}(Y \mid X)$$ over inputs drawn from $$P_{\text{train}}(X)$$, and is
 deployed where both can differ:
+
 $$
 P_{\text{train}}(X, Y) \;\neq\; P_{\text{test}}(X, Y).
 $$
+
 Decompose it. **Covariate shift** is $$P(X)$$ changing while $$P(Y\mid X)$$ holds —
 a different scanner renders the *same* pathology with different texture.
 **Label shift** is $$P(Y)$$ changing — disease prevalence differs across a
@@ -303,9 +309,11 @@ rare.](/images/posts/radiology-ai-vs-computer-vision/stratification_waterfall.pn
 Why 66 is a problem is pure sampling theory. Estimate a subgroup sensitivity
 (true positive rate) $$\hat{p}$$ from $$n$$ positive cases; its standard error is
 $$\sqrt{p(1-p)/n}$$, so the 95% confidence half-width is about
+
 $$
 1.96\sqrt{\frac{p(1-p)}{n}}.
 $$
+
 At a true sensitivity of $$0.85$$ and $$n = 66$$, that half-width is $$\pm 0.086$$:
 your estimate is "somewhere between $$0.76$$ and $$0.94$$." You cannot distinguish a
 clinically excellent $$0.90$$ from a borderline $$0.78$$. (For small $$n$$ use the
@@ -316,10 +324,12 @@ shrinking only as $$1/\sqrt{n}$$; the subgroup strata are marked.
 Worse, suppose you want to *detect* a real subgroup gap — say sensitivity drops
 from $$0.85$$ overall to $$0.75$$ in young women on vendor B. The number of positives
 per group needed for a two-sided test at $$\alpha = 0.05$$ with power $$1-\beta$$ is
+
 $$
 n = \frac{\left(z_{1-\alpha/2}\sqrt{2\bar{p}(1-\bar{p})} +
 z_{1-\beta}\sqrt{p_1(1-p_1)+p_2(1-p_2)}\right)^2}{(p_1 - p_2)^2},
 $$
+
 which for $$p_1=0.85,\, p_2=0.75$$ works out to about **250 positive cases per
 group** for 80% power. Your subgroup has 66, which buys roughly **30% power**
 (Figure 3b): a two-in-three chance of *missing* a real, clinically meaningful

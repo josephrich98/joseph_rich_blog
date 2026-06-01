@@ -9,7 +9,7 @@ This repository contains the code and content that accompanies the blog posts on
   giscus comments, and Vercel deployment. See [`site/README.md`](site/README.md)
   for local dev and the one-time giscus/Vercel setup.
 
-- `posts/` – One directory per blog post (e.g. `posts/post1/`). Each post directory contains:
+- `posts/` – One directory per blog post (e.g. `posts/radiology-ai-vs-computer-vision/`), plus a `posts/template/` scaffold for starting a new one. Each post directory contains:
   - `notebook.ipynb` – the Jupyter notebook with the analyses and examples for that post.
   - `main.md` – the Markdown source for the written article. Rendered to PDF with the Eisvogel template **and** auto-published to the website (see [Publishing posts to the website](#-publishing-posts-to-the-website)).
   - `figures/` – generated plots (PNG/PDF) referenced by the post.
@@ -32,7 +32,7 @@ the post's notebook so it can be reproduced on its own.
 Create the environment from the post you want to run:
 
 ```bash
-cd posts/post1
+cd posts/radiology-ai-vs-computer-vision
 conda env create -f environment.yml
 conda activate joseph_rich_blog
 jupyter notebook
@@ -47,7 +47,7 @@ You can also run the notebooks directly in Google Colab. Just open the desired `
 If you prefer to run a post's notebook in a containerized environment, you can use Docker.
 Build from inside the post directory (each post ships its own `Dockerfile`):
 ```bash
-cd posts/post1
+cd posts/radiology-ai-vs-computer-vision
 docker build -t joseph_rich_blog .
 docker run -p 8888:8888 -v "$(pwd):/home/jovyan/work" joseph_rich_blog
 ```
@@ -70,7 +70,7 @@ scripts/download_eisvogel.sh v3.4.0     # or pin an explicit version
 Build a post's PDF (requires `pandoc` and a LaTeX engine such as `xelatex`/`pdflatex`):
 
 ```bash
-cd posts/post1
+cd posts/radiology-ai-vs-computer-vision
 pandoc main.md -o main.pdf \
   --from markdown \
   --template ../../templates/eisvogel.latex \
@@ -91,9 +91,13 @@ Each `posts/<name>/main.md` is automatically converted into a Jekyll blog post a
 
 - maps the post's front matter (`title`, `date`, optional `excerpt`/`tags`/`toc`)
   to Jekyll front matter and drops the pandoc/Eisvogel-only keys,
-- copies `figures/` images into `site/images/posts/<name>/` and rewrites the
+- copies referenced local images into `site/images/posts/<name>/` and rewrites the
   image paths,
-- rewrites inline `$…$` math into kramdown's `$$…$$` so MathJax renders it.
+- rewrites inline `$…$` math into kramdown's `$$…$$` so MathJax renders it
+  (leaving `$$…$$` display blocks and fenced code untouched),
+- indents multi-line footnote continuations so kramdown doesn't truncate them, and
+- appends a footer linking back to the post's source folder on GitHub so readers
+  can reproduce the analyses.
 
 This runs automatically on every commit via the committed pre-commit hook in
 [`.githooks/`](.githooks/). **One-time setup per clone** (so git uses that hook):

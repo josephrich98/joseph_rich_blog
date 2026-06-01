@@ -155,6 +155,47 @@ def inline_math_to_kramdown(body):
     return "".join(out)
 
 
+def pad_display_math(body):
+    """Surround standalone $$...$$ display-math blocks with blank lines.
+
+    Pandoc renders a $$...$$ block as display math even when it is glued to the
+    surrounding text, but kramdown only treats it as display ($$\\[...\\]$$)
+    rather than inline ($$\\(...\\)$$) when the block stands alone as its own
+    paragraph. So a block written pandoc-style::
+
+        ...both can differ:
+        $$
+        P(X, Y) \\neq Q(X, Y).
+        $$
+        Decompose it...
+
+    must get a blank line before the opening ``$$`` and after the closing
+    ``$$``. Only lines that are exactly ``$$`` are delimiters (inline math is
+    ``$$...$$`` with text on the same line); fenced code is left untouched."""
+    out = []
+    in_code = False
+    in_display = False
+    for line in body.split("\n"):
+        stripped = line.strip()
+        if stripped.startswith("```"):
+            in_code = not in_code
+            out.append(line)
+            continue
+        if not in_code and stripped == "$$":
+            if not in_display:  # opening delimiter
+                if out and out[-1].strip() != "":
+                    out.append("")
+                out.append(line)
+                in_display = True
+            else:  # closing delimiter
+                out.append(line)
+                out.append("")
+                in_display = False
+            continue
+        out.append(line)
+    return "\n".join(out)
+
+
 def sync_post(name):
     src_dir = os.path.join(POSTS_DIR, name)
     main_md = os.path.join(src_dir, "main.md")
@@ -183,6 +224,7 @@ def sync_post(name):
 
     body = fix_footnote_continuations(body)
     body = inline_math_to_kramdown(body)
+    body = pad_display_math(body)
 
     # Boilerplate footer linking to the post's source folder (notebook, data,
     # scripts) so readers can reproduce the analyses.
