@@ -9,7 +9,7 @@ title                    : "Joseph Rich"
 title_separator          : "-"
 name                     : &name "Joseph Rich"
 description              : &description "Blog and writing by Joseph Rich on machine learning, bioinformatics, and radiology."
-url                      : https://joseph-rich.com   # base hostname & protocol
+url                      : https://joseph-rich-blog.vercel.app   # temp Vercel domain; switch to https://joseph-rich.com once that domain is connected
 baseurl                  : ""                          # subpath, e.g. "/blog" (leave blank)
 repository               : "josephrich98/joseph_rich_blog"   # used by giscus comments
 
