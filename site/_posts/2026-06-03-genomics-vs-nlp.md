@@ -17,7 +17,7 @@ comments: true
 
 # Why a language-model expert's intuitions misfire
 
-DNA is the most seductive analogy in all of machine learning. It is a string. It
+DNA is the most beguiling analogy in all of machine learning. It is a string. It
 is written in a tiny alphabet. You read it left to right. It has motifs that look
 like words, genes that look like sentences, and a "grammar" that biologists have
 spent a century annotating. If you have trained transformers on text, the leap to
@@ -45,11 +45,17 @@ one that says something true about biology.
 
 Start with the surface, because the surface is where the false comfort lives.
 
-English has a vocabulary in the tens of thousands; a typical subword tokenizer
-carries ~32,000–100,000 tokens. DNA has **four**: $$\{A, C, G, T\}$$ (RNA swaps
-$$T$$ for $$U$$). A genome is a string over a four-letter alphabet, full stop. That
-sounds like a gift — and for sheer modeling capacity it is — but three wrinkles
-make the alphabet less clean than it looks.
+Line up like with like before drawing the comparison. The right counterpart to
+DNA's **four** letters — $$\{A, C, G, T\}$$, with RNA swapping $$T$$ for $$U$$ — is not
+an NLP tokenizer's 32,000–100,000-token vocabulary but the **26 letters of
+written English**: both are the raw character set from which everything else is
+assembled. On *that* axis DNA's alphabet is merely small, not exotic. The
+comparison only gets interesting one level up, at the *word* — and there the
+genome's closest analogue is the **gene**, of which humans have only ~20,000
+(Section 7), each one hundreds to thousands of letters long rather than five. So a
+four-letter alphabet "sounds like a gift," and for sheer per-symbol modeling
+capacity it is — but the comfort is misplaced, because the difficulty was never in
+the alphabet. Three wrinkles make even the alphabet less clean than it looks.
 
 **It is not really four symbols.** Real sequence files are littered with `N`, the
 "any base" placeholder for positions the sequencer could not call, and with the
@@ -63,9 +69,9 @@ curated annotation; one that treats `a` and `A` as distinct tokens doubles the
 alphabet for the wrong reason. Neither is obviously right, and the choice is yours
 to make consciously.
 
-**The vocabulary is tiny but the sequence is enormous.** This inverts the usual
-NLP scaling axis. There is almost nothing to learn about the *vocabulary*; all the
-difficulty is in the **length**. The haploid human genome is about
+**The hard axis is length, not alphabet.** This inverts the usual NLP scaling
+axis: there is almost nothing to learn about the *alphabet*; all the difficulty is
+in the **length**. The haploid human genome is about
 $$3.2 \times 10^{9}$$ base pairs — a single "document" of 3.2 billion characters,
 two to three orders of magnitude longer than the entire training context of a
 long-context LLM. This is why tokenization is a live research question in genomics
