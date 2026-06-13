@@ -352,3 +352,5 @@ actually matters: the writing.
 ---
 
 *Reproduce all analyses in this post [here](https://github.com/josephrich98/joseph_rich_blog/tree/main/posts/how-this-blog-is-built).*
+
+*All writing is my own. AI was not used to write this post.*

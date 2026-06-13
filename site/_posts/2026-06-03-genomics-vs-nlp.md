@@ -594,3 +594,5 @@ and an automated check that every citation below resolves.
 ---
 
 *Reproduce all analyses in this post [here](https://github.com/josephrich98/joseph_rich_blog/tree/main/posts/genomics-vs-nlp).*
+
+*All writing is my own. AI was not used to write this post.*

@@ -231,6 +231,7 @@ def sync_post(name):
     body = body.rstrip("\n") + (
         f"\n\n---\n\n*Reproduce all analyses in this post "
         f"[here]({REPO_URL}/tree/main/posts/{name}).*\n"
+        f"\n*All writing is my own. AI was not used to write this post.*\n"
     )
 
     # Build Jekyll front matter
