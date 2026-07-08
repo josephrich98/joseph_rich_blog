@@ -2,6 +2,10 @@
 title: "Radiology AI Is Not Computer Vision: A Field Guide for ML Scientists"
 author: "Joseph Rich"
 date: "2026-06-02"
+bibliography: references.bib
+csl: ../../templates/csl/american-medical-association.csl
+link-citations: true
+reference-section-title: References
 # Blog metadata (ignored by pandoc/Eisvogel; consumed by scripts/sync_posts.py)
 excerpt: "A field guide for ML scientists moving into radiology: what is genuinely easier than natural images, where computer-vision intuitions misfire, the data and labels you can actually get, how the FDA regulates these models, and why the model in the paper is rarely the one that ships."
 tags:
@@ -192,17 +196,17 @@ source publications.
 
 | Dataset | Modality | Scale | Notes |
 | --- | --- | --- | --- |
-| **TCIA** (The Cancer Imaging Archive) | CT/MR/PET, many | Umbrella of 100+ collections | The host for most public oncology imaging, incl. LIDC-IDRI, BraTS sources |
-| **MIMIC-CXR** | Chest X-ray | 377,110 images / 227,835 studies / 65,379 patients | Single US center; paired free-text reports |
-| **CheXpert** | Chest X-ray | 224,316 images / 65,240 patients | Stanford; 14 NLP-mined labels with uncertainty |
-| **ChestX-ray14** (NIH) | Chest X-ray | 112,120 images / 30,805 patients | 14 labels mined from reports |
-| **PadChest** | Chest X-ray | 160,868 images / ~67,000 patients | Spanish; 174 findings, multi-view |
-| **LIDC-IDRI** | Chest CT | 1,018 scans | 4-radiologist nodule annotations |
-| **BraTS / TCGA glioma** | Brain MRI (4 sequences) | hundreds of cases | Expert tumor segmentations; the benchmark for glioma |
+| **TCIA** (The Cancer Imaging Archive) [@clark2013] | CT/MR/PET, many | Umbrella of 100+ collections | The host for most public oncology imaging, incl. LIDC-IDRI, BraTS sources |
+| **MIMIC-CXR** [@johnson2019] | Chest X-ray | 377,110 images / 227,835 studies / 65,379 patients | Single US center; paired free-text reports |
+| **CheXpert** [@irvin2019] | Chest X-ray | 224,316 images / 65,240 patients | Stanford; 14 NLP-mined labels with uncertainty |
+| **ChestX-ray14** (NIH) [@wang2017] | Chest X-ray | 112,120 images / 30,805 patients | 14 labels mined from reports |
+| **PadChest** [@bustos2020] | Chest X-ray | 160,868 images / ~67,000 patients | Spanish; 174 findings, multi-view |
+| **LIDC-IDRI** [@armato2011] | Chest CT | 1,018 scans | 4-radiologist nodule annotations |
+| **BraTS / TCGA glioma** [@bakas2017; @menze2015] | Brain MRI (4 sequences) | hundreds of cases | Expert tumor segmentations; the benchmark for glioma |
 | **RSNA ICH** | Head CT | >25,000 exams | Intracranial hemorrhage, 60+ radiologist labelers |
-| **EMBED** | Mammography (2D/DBT) | 3.4M images / ~110,000 patients | Racially balanced; 20% public via AWS |
-| **fastMRI** | Knee/brain MRI | >1,500 knee + ~7,000 brain raw studies | Raw *k*-space — for reconstruction research |
-| **UK Biobank imaging** | Whole-body MRI/DXA | 100,000 participants | Population cohort, healthy-skewed; access-controlled |
+| **EMBED** [@jeong2023] | Mammography (2D/DBT) | 3.4M images / ~110,000 patients | Racially balanced; 20% public via AWS |
+| **fastMRI** [@knoll2020] | Knee/brain MRI | >1,500 knee + ~7,000 brain raw studies | Raw *k*-space — for reconstruction research |
+| **UK Biobank imaging** [@littlejohns2020] | Whole-body MRI/DXA | 100,000 participants | Population cohort, healthy-skewed; access-controlled |
 
 Two things to internalize. First, the largest *labeled* sets are 2D chest
 radiographs, because they are the cheapest to acquire and the easiest to label
@@ -257,12 +261,12 @@ by institution. Here is the catalogue of what actually shifts:
 - **Protocol and positioning.** Portable vs. fixed units, supine vs. upright,
   inspiration depth, pediatric protocols, post-surgical hardware.
 
-The canonical demonstration is Zech et al. (2018): CNNs trained to detect
+The canonical demonstration is Zech et al.[@zech2018]: CNNs trained to detect
 pneumonia on chest radiographs generalized *worse* to outside hospitals than
 internal test performance suggested, and the models had learned to detect the
 *hospital system and even the department* — exploiting that a portable scanner
 marker or a prevalence difference correlated with disease. The same pattern
-shows up in segmentation: AlBadawy et al. (2018) found glioma-segmentation
+shows up in segmentation: AlBadawy et al.[@albadawy2018] found glioma-segmentation
 performance dropped measurably when training and test institutions differed.
 This is shortcut learning, and it is rampant precisely because the spurious
 features (scanner, view, burned-in markers) are *so* predictable.
@@ -442,50 +446,3 @@ If you remember five things moving from natural images to radiology:
 See the accompanying `notebook.ipynb` for the geometry, the stratification
 waterfall, the power calculations behind Figures 1–3, and an automated check
 that every citation below resolves.
-
-# References
-
-1. Clark K, Vendt B, Smith K, et al. The Cancer Imaging Archive (TCIA):
-   maintaining and operating a public information repository. *J Digit Imaging*.
-   2013;26(6):1045–1057. doi:10.1007/s10278-013-9622-7
-2. Johnson AEW, Pollard TJ, Berkowitz SJ, et al. MIMIC-CXR, a de-identified
-   publicly available database of chest radiographs with free-text reports.
-   *Sci Data*. 2019;6:317. doi:10.1038/s41597-019-0322-0
-3. Irvin J, Rajpurkar P, Ko M, et al. CheXpert: a large chest radiograph dataset
-   with uncertainty labels and expert comparison. *Proc AAAI*.
-   2019;33(01):590–597. doi:10.1609/aaai.v33i01.3301590
-4. Wang X, Peng Y, Lu L, et al. ChestX-ray8: hospital-scale chest X-ray database
-   and benchmarks on weakly-supervised classification and localization of common
-   thorax diseases. *CVPR*. 2017:3462–3471. doi:10.1109/CVPR.2017.369
-5. Bustos A, Pertusa A, Salinas J-M, de la Iglesia-Vayá M. PadChest: a large
-   chest x-ray image dataset with multi-label annotated reports. *Med Image
-   Anal*. 2020;66:101797. doi:10.1016/j.media.2020.101797
-6. Armato SG III, McLennan G, Bidaut L, et al. The Lung Image Database
-   Consortium (LIDC) and Image Database Resource Initiative (IDRI): a completed
-   reference database of lung nodules on CT scans. *Med Phys*.
-   2011;38(2):915–931. doi:10.1118/1.3528204
-7. Bakas S, Akbari H, Sotiras A, et al. Advancing The Cancer Genome Atlas glioma
-   MRI collections with expert segmentation labels and radiomic features. *Sci
-   Data*. 2017;4:170117. doi:10.1038/sdata.2017.117
-8. Menze BH, Jakab A, Bauer S, et al. The Multimodal Brain Tumor Image
-   Segmentation Benchmark (BRATS). *IEEE Trans Med Imaging*.
-   2015;34(10):1993–2024. doi:10.1109/TMI.2014.2377694
-9. Knoll F, Zbontar J, Sriram A, et al. fastMRI: a publicly available raw
-   k-space and DICOM dataset of knee images for accelerated MR image
-   reconstruction using machine learning. *Radiol Artif Intell*.
-   2020;2(1):e190007. doi:10.1148/ryai.2020190007
-10. Jeong JJ, Vey BL, Bhimireddy A, et al. The EMory BrEast imaging Dataset
-    (EMBED): a racially diverse, granular dataset of 3.4 million screening and
-    diagnostic mammographic images. *Radiol Artif Intell*. 2023;5(1):e220047.
-    doi:10.1148/ryai.220047
-11. Littlejohns TJ, Holliday J, Gibson LM, et al. The UK Biobank imaging
-    enhancement of 100,000 participants: rationale, data collection, management
-    and future directions. *Nat Commun*. 2020;11:2624.
-    doi:10.1038/s41467-020-15948-9
-12. Zech JR, Badgeley MA, Liu M, et al. Variable generalization performance of a
-    deep learning model to detect pneumonia in chest radiographs: a
-    cross-sectional study. *PLoS Med*. 2018;15(11):e1002683.
-    doi:10.1371/journal.pmed.1002683
-13. AlBadawy EA, Saha A, Mazurowski MA. Deep learning for segmentation of brain
-    tumors: impact of cross-institutional training and testing. *Med Phys*.
-    2018;45(3):1150–1158. doi:10.1002/mp.12752

@@ -2,13 +2,151 @@ name: Test_notebooks_conda
 
 on:
   push:
-    branches: [ "main", "dev" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main", "dev" ]
+    branches: [ "main" ]
+  # Twice-yearly full run to catch dependency rot (environment.yml no longer
+  # solving, requirements.txt no longer resolving, upstream API changes, ...)
+  # even when no post has changed. Also runnable on demand from the Actions tab.
+  # NOTE: GitHub disables scheduled workflows after 60 days with no repo activity
+  # — an active blog stays enabled, but if yours goes quiet, re-enable it (or
+  # push a commit) before the next scheduled run.
+  schedule:
+    - cron: "0 6 1 1,7 *"  # 06:00 UTC, Jan 1 and Jul 1 (every 6 months)
+  workflow_dispatch: {}
+
+# Cancel superseded runs on the same ref (rapid pushes / PR updates).
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  build:
+  # ---------------------------------------------------------------------------
+  # Decide which posts to test and, for each, whether to run its notebook.
+  #
+  # Posts are fully self-contained, so on a feature branch / PR we only touch
+  # posts whose directory changed, and for each we run the (expensive) notebook
+  # test ONLY when a code file changed — anything under posts/<slug>/ except
+  # main.md and figures/. A prose-only edit rebuilds just the PDF (the test
+  # copies the committed site/images/posts/<slug>/ figures in) without executing
+  # the notebook. (figures/ is git-ignored, so it is never itself a diff.)
+  #
+  # A full run (every post, notebook: true) is forced by any of:
+  #   * scheduled / manual dispatch (the yearly dependency-rot check),
+  #   * pushes to main (the published state — always keep it green),
+  #   * changes to shared infra (tests/, templates/, root scripts/,
+  #     pyproject.toml, or this workflow) that could affect every post.
+  #
+  # Output `matrix` is a JSON array of {post, notebook} objects consumed by the
+  # test job's matrix.include.
+  # ---------------------------------------------------------------------------
+  detect:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.select.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # need history to diff the pushed range / PR base
+
+      - id: select
+        name: Select posts and notebook flags
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          REF_NAME: ${{ github.ref_name }}
+          BASE_REF: ${{ github.base_ref }}
+          BEFORE_SHA: ${{ github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+
+          all_posts() {
+            for d in posts/*/; do
+              name=${d#posts/}; name=${name%/}
+              if [ -f "posts/$name/notebook.ipynb" ] || [ -f "posts/$name/main.md" ]; then
+                echo "$name"
+              fi
+            done
+          }
+
+          full=false
+          changed=""
+
+          if [ "$EVENT_NAME" = "schedule" ] || [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            full=true
+          elif [ "$REF_NAME" = "main" ]; then
+            full=true
+          elif [ "$EVENT_NAME" = "pull_request" ]; then
+            git fetch --no-tags --depth=1 origin "$BASE_REF"
+            changed=$(git diff --name-only "origin/$BASE_REF...HEAD" || true)
+          else
+            # push to a non-main branch (e.g. dev).
+            if [ -z "$BEFORE_SHA" ] \
+               || [ "$BEFORE_SHA" = "0000000000000000000000000000000000000000" ] \
+               || ! git cat-file -e "${BEFORE_SHA}^{commit}" 2>/dev/null; then
+              full=true  # new branch or unknown base: can't diff -> test all.
+            else
+              changed=$(git diff --name-only "$BEFORE_SHA" "$HEAD_SHA" || true)
+            fi
+          fi
+
+          # Shared-infra changes force a full run even on a feature branch.
+          if [ "$full" != true ] && [ -n "$changed" ]; then
+            if echo "$changed" | grep -qE '^(tests/|templates/|scripts/|pyproject\.toml|\.github/workflows/)'; then
+              full=true
+            fi
+          fi
+
+          if [ "$full" = true ]; then
+            matrix=$(all_posts | sort -u \
+              | jq -R -s -c 'split("\n") | map(select(length > 0)) | map({post: ., notebook: true})')
+          else
+            posts=$(echo "$changed" | grep -E '^posts/[^/]+/' \
+              | sed -E 's#^posts/([^/]+)/.*#\1#' | sort -u || true)
+            entries=""
+            for name in $posts; do
+              [ -n "$name" ] || continue
+              if [ ! -f "posts/$name/notebook.ipynb" ] && [ ! -f "posts/$name/main.md" ]; then
+                continue  # not a real post
+              fi
+              # Code changed = a changed file under this post other than
+              # main.md and figures/*  -> run the notebook. Otherwise PDF only.
+              if echo "$changed" | grep -E "^posts/$name/" \
+                   | grep -qvE "^posts/$name/(main\.md$|figures/)"; then
+                nb=true
+              else
+                nb=false
+              fi
+              entries="${entries}${name} ${nb}"$'\n'
+            done
+            if [ -z "$entries" ]; then
+              matrix='[]'
+            else
+              matrix=$(printf '%s' "$entries" \
+                | jq -R -s -c 'split("\n") | map(select(length > 0))
+                               | map(split(" ") | {post: .[0], notebook: (.[1] == "true")})')
+            fi
+          fi
+
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+          echo "Selected matrix: $matrix"
+
+  # ---------------------------------------------------------------------------
+  # One isolated build per selected post. `notebook: true` legs build the post's
+  # own conda env (from ONLY that post's environment.yml, never cross-contaminated
+  # by another post) and run notebook + PDF. `notebook: false` legs skip the env
+  # and notebook entirely and just rebuild the PDF from the committed
+  # site/images/posts/<slug>/ figures. fail-fast: false so one broken post
+  # doesn't mask the others.
+  # ---------------------------------------------------------------------------
+  test:
+    needs: detect
+    if: needs.detect.outputs.matrix != '[]'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.detect.outputs.matrix) }}
 
     steps:
     - uses: actions/checkout@v4
@@ -17,18 +155,27 @@ jobs:
       run: |
         # $CONDA is an environment variable pointing to the root of the miniconda directory
         echo $CONDA/bin >> $GITHUB_PATH
-    - name: Install Python dependencies
+
+    - name: Install this post's env (notebook legs)
+      if: ${{ matrix.notebook }}
       run: |
-        # Use a dedicated env, never `base`: the post environment.yml files pin
-        # conda packages (python, pandoc, ...), which forces a re-solve of base
-        # and fails with "RemoveError: 'tqdm' is a dependency of conda and cannot
-        # be removed" because conda protects its own operating dependencies.
-        # environment.yml now lives in each post directory; merge them all in.
+        # Self-contained post: build the env from ONLY this post's environment.yml.
+        # Never `base`: the environment.yml pins conda packages (python, pandoc, ...),
+        # which would force a base re-solve and fail ("'tqdm' is a dependency of
+        # conda and cannot be removed").
         conda create -y --name test-env
-        for env in posts/*/environment.yml; do
-          conda env update --file "$env" --name test-env
-        done
-        conda install -y --name test-env -c conda-forge pytest nbdime nbformat nbval pandoc nbconvert ipykernel
+        conda env update --file "posts/${{ matrix.post }}/environment.yml" --name test-env
+        # pandoc (PDF + citeproc) and ipykernel now come from the post's own
+        # environment.yml / requirements.txt, so only the test-only tooling is
+        # added here.
+        conda install -y --name test-env -c conda-forge pytest nbval nbconvert
+
+    - name: Install minimal PDF env (prose-only legs)
+      if: ${{ !matrix.notebook }}
+      run: |
+        # Prose-only edit: no post dependencies needed, just enough to render
+        # the PDF from the committed site/images figures (copied in by the test).
+        conda create -y --name test-env -c conda-forge python pytest pandoc
 
     - name: Install LaTeX toolchain (Eisvogel dependencies)
       run: |
@@ -41,26 +188,36 @@ jobs:
       run: |
         scripts/download_eisvogel.sh
 
-    - name: Generate post figures (notebooks write into figures/)
+    - name: Run tests for this post
+      env:
+        # Scope collection to this post. On notebook legs the notebook test also
+        # regenerates figures in-place before the PDF build runs.
+        BLOG_TEST_POST: ${{ matrix.post }}
+        RUN_NOTEBOOK: ${{ matrix.notebook }}
       run: |
-        # The PDF build (test_post_pdf_builds) renders main.md, which references
-        # figures/*.png. Those PNGs are notebook-generated artifacts and are
-        # gitignored, so they are absent in a fresh checkout. Execute each
-        # notebook in-place in its own directory so its savefig() calls populate
-        # posts/<name>/figures/ before pytest runs. Output is sent to --stdout
-        # and discarded: we want only the savefig side effect, and we must NOT
-        # overwrite the committed notebook, or test_notebook_runs_strict would
-        # compare CI-regenerated outputs against themselves instead of the
-        # committed outputs.
         source $CONDA/etc/profile.d/conda.sh
         conda activate test-env
-        for nb in posts/*/notebook.ipynb; do
-          dir=$(dirname "$nb")
-          (cd "$dir" && jupyter nbconvert --to notebook --execute --stdout notebook.ipynb > /dev/null)
-        done
+        if [ "$RUN_NOTEBOOK" = "true" ]; then
+          pytest -v tests/  # notebook (strict, lax-on-failure) + PDF build
+        else
+          pytest -v tests/test_notebooks.py::test_post_pdf_builds  # PDF from committed site/images figures
+        fi
 
-    - name: Run tests (post notebooks + PDF build)
+    - name: Verify pip requirements resolve
+      # Runs on notebook legs (a requirements.txt change is a code file, so it
+      # lands here) and on every full/scheduled run — the twice-yearly
+      # dependency-rot check. The conda env above validates environment.yml by
+      # actually running the notebook; this independently validates the pip path.
+      if: ${{ matrix.notebook }}
       run: |
-        source $CONDA/etc/profile.d/conda.sh
-        conda activate test-env
-        pytest -v tests/
+        req="posts/${{ matrix.post }}/requirements.txt"
+        if [ ! -f "$req" ]; then
+          echo "No $req; skipping pip resolution check."
+          exit 0
+        fi
+        # Fresh, conda-independent venv. --dry-run runs pip's full resolver
+        # (confirms the pinned versions exist and are mutually compatible)
+        # without downloading or compiling the heavy wheels.
+        python3 -m venv "$RUNNER_TEMP/pip-resolve"
+        "$RUNNER_TEMP/pip-resolve/bin/python" -m pip install --quiet --upgrade pip
+        "$RUNNER_TEMP/pip-resolve/bin/pip" install --dry-run -r "$req"

@@ -3,8 +3,9 @@ FROM jupyter/minimal-notebook
 # Set working directory
 WORKDIR /home/jovyan/work
 
-# Copy your environment file
-COPY environment.yml .
+# Copy the environment spec (environment.yml pins Python + pip, then installs
+# the pip packages listed in requirements.txt)
+COPY environment.yml requirements.txt .
 
 # Create the environment (name must match conda activate below)
 RUN conda env create -f environment.yml && \

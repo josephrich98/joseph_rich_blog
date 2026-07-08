@@ -129,7 +129,7 @@ polymorphisms that predate the bottleneck, inherited by everyone and merely
 a fresh, independent draw of variation per person; there is one ancestral deck,
 dealt and re-dealt. On top of that shared deck, each newborn carries only
 **dozens** of brand-new mutations — about 70 *de novo* single-nucleotide variants
-per generation, from a per-base mutation rate near $$1.2 \times 10^{-8}$$. So a
+per generation, from a per-base mutation rate near $$1.2 \times 10^{-8}$$<sup><a href="#ref-kong2012" role="doc-biblioref">1</a></sup>. So a
 person is: the ancestral common variants (shuffled) $$+$$ a small private set of
 rare and *de novo* ones.
 
@@ -139,7 +139,7 @@ indels dominate — millions of them. Count it by **bases affected** and the pic
 flips: a typical genome harbors only a couple of thousand **structural variants**
 (deletions, duplications, inversions, insertions of mobile elements), but those
 rearrange roughly **20 Mb** of sequence — far more nucleotide content than all the
-SNVs combined. Structural variants are simultaneously the largest source of
+SNVs combined<sup><a href="#ref-sudmant2015" role="doc-biblioref">2</a></sup>. Structural variants are simultaneously the largest source of
 differing bases and the *least* studied, because they are hard to call from short
 reads and awkward to represent against a single linear reference. Much of the
 "missing" signal in genomics lives in exactly the variation our tooling sees
@@ -369,11 +369,11 @@ studies, the correlation between a gene's mRNA level and its protein level is
 **moderate at best — typically a Spearman $$\rho$$ in the $$0.4$$–$$0.6$$ range**, and
 lower still when you look at changes over time rather than steady-state across
 genes. Schwanhäusser and colleagues found mRNA explained well under half the
-variance in protein abundance; Vogel and Marcotte, Liu, Beyer and Aebersold, and
+variance in protein abundance<sup><a href="#ref-schwanhausser2011" role="doc-biblioref">3</a></sup>; Vogel and Marcotte, Liu, Beyer and Aebersold, and
 Buccitelli and Selbach all converge on the same message — translation rates, protein
 half-lives, and post-translational regulation drive a large share of protein levels
-that mRNA simply does not see. Edfors and colleagues showed the relationship is
-*gene-specific*: each gene has roughly its own mRNA-to-protein conversion factor, so
+that mRNA simply does not see<sup><a href="#ref-vogel2012" role="doc-biblioref">4</a>–<a href="#ref-buccitelli2020" role="doc-biblioref">6</a></sup>. Edfors and colleagues showed the relationship is
+*gene-specific*<sup><a href="#ref-edfors2016" role="doc-biblioref">7</a></sup>: each gene has roughly its own mRNA-to-protein conversion factor, so
 a single global model is wrong per gene. Figure 3a illustrates the consequence —
 even at the optimistic end of that range, knowing a gene's mRNA leaves its protein
 level uncertain across a wide band.
@@ -421,18 +421,18 @@ Table: Major public genomics / transcriptomics resources. Counts are as reported
 the source publications; "variants" and "samples" are not comparable units across
 rows.
 
-| Resource | What it is | Reported scale | Citation (DOI) |
+| Resource | What it is | Reported scale | Ref. |
 | --- | --- | --- | --- |
-| **1000 Genomes** | Reference catalogue of human variation | 2,504 individuals, 26 populations; ~88M variants | 10.1038/nature15393 |
-| **gnomAD** | Aggregated exomes + genomes; constraint metrics | 125,748 exomes + 15,708 genomes (v2) | 10.1038/s41586-020-2308-7 |
-| **UK Biobank** | Population cohort, genotype + deep phenotype | ~500,000 participants | 10.1038/s41586-018-0579-z |
-| **TCGA** | Pan-cancer tumor/normal multi-omics | ~11,000 tumors, 33 cancer types | 10.1038/ng.2764 |
-| **GTEx** | Genetic regulation of expression across tissues | 17,382 RNA-seq samples, 54 tissues, 948 donors | 10.1126/science.aaz1776 |
-| **ENCODE** | Functional/regulatory element annotation | Genome-wide assays across many cell types | 10.1038/nature11247 |
-| **GENCODE** | Reference gene/transcript annotation | ~20,000 coding genes; >200,000 transcripts | 10.1093/nar/gkaa1087 |
-| **Geuvadis** | RNA-seq paired to 1000 Genomes genotypes | 462 individuals, 5 populations | 10.1038/nature12531 |
-| **Tabula Sapiens** | Multi-organ single-cell atlas | ~500,000 cells, ~24 tissues | 10.1126/science.abl4896 |
-| **T2T-CHM13** | First complete (telomere-to-telomere) human genome | 1 gapless assembly | 10.1126/science.abj6987 |
+| **1000 Genomes** | Reference catalogue of human variation | 2,504 individuals, 26 populations; ~88M variants | <sup><a href="#ref-auton2015" role="doc-biblioref">8</a></sup> |
+| **gnomAD** | Aggregated exomes + genomes; constraint metrics | 125,748 exomes + 15,708 genomes (v2) | <sup><a href="#ref-karczewski2020" role="doc-biblioref">9</a></sup> |
+| **UK Biobank** | Population cohort, genotype + deep phenotype | ~500,000 participants | <sup><a href="#ref-bycroft2018" role="doc-biblioref">10</a></sup> |
+| **TCGA** | Pan-cancer tumor/normal multi-omics | ~11,000 tumors, 33 cancer types | <sup><a href="#ref-weinstein2013" role="doc-biblioref">11</a></sup> |
+| **GTEx** | Genetic regulation of expression across tissues | 17,382 RNA-seq samples, 54 tissues, 948 donors | <sup><a href="#ref-gtex2020" role="doc-biblioref">12</a></sup> |
+| **ENCODE** | Functional/regulatory element annotation | Genome-wide assays across many cell types | <sup><a href="#ref-encode2012" role="doc-biblioref">13</a></sup> |
+| **GENCODE** | Reference gene/transcript annotation | ~20,000 coding genes; >200,000 transcripts | <sup><a href="#ref-frankish2021" role="doc-biblioref">14</a></sup> |
+| **Geuvadis** | RNA-seq paired to 1000 Genomes genotypes | 462 individuals, 5 populations | <sup><a href="#ref-lappalainen2013" role="doc-biblioref">15</a></sup> |
+| **Tabula Sapiens** | Multi-organ single-cell atlas | ~500,000 cells, ~24 tissues | <sup><a href="#ref-tabulasapiens2022" role="doc-biblioref">16</a></sup> |
+| **T2T-CHM13** | First complete (telomere-to-telomere) human genome | 1 gapless assembly | <sup><a href="#ref-nurk2022" role="doc-biblioref">17</a></sup> |
 
 Two structural problems run underneath these numbers.
 
@@ -465,22 +465,22 @@ The reason this analogy is everywhere right now is that the transformer toolkit 
 produced genuinely landmark genomics results. It is worth knowing the map, and being
 precise about what each model does and does not address from the list above.
 
-- **AlphaFold2** (Jumper et al., 2021) predicts protein 3D structure from amino-acid
+- **AlphaFold2** (Jumper et al.<sup><a href="#ref-jumper2021" role="doc-biblioref">18</a></sup>) predicts protein 3D structure from amino-acid
   sequence at near-experimental accuracy — arguably the field's defining success. Note
   what it sidesteps: it operates on the *protein*, taking the molecule that acts as a
   given, and says nothing about whether or how much of that protein the cell makes.
-- **Enformer** (Avsec et al., 2021) and **AlphaGenome** (DeepMind, 2025) attack the
+- **Enformer** (Avsec et al.<sup><a href="#ref-avsec2021" role="doc-biblioref">19</a></sup>) and **AlphaGenome** (DeepMind, 2025<sup><a href="#ref-avsec2025" role="doc-biblioref">20</a></sup>) attack the
   *cis*-regulatory problem head-on, predicting expression and chromatin readouts from
   sequence across $$\sim 200\,\mathrm{kb}$$ and up to $$\sim 1\,\mathrm{Mb}$$ windows
   respectively. They are the state of the art on long-range *cis* effects — and, per
   Section 5, structurally blind to *trans* regulation that acts through diffusible
   proteins or other chromosomes.
-- **DNABERT** (Ji et al., 2021), the **Nucleotide Transformer** (Dalla-Torre et al.,
-  2024), and **Evo** (Nguyen et al., 2024) are DNA "language models" — masked or
+- **DNABERT** (Ji et al.<sup><a href="#ref-ji2021" role="doc-biblioref">21</a></sup>), the **Nucleotide Transformer** (Dalla-Torre et al.<sup><a href="#ref-dallatorre2024" role="doc-biblioref">22</a></sup>),
+  and **Evo** (Nguyen et al.<sup><a href="#ref-nguyen2024" role="doc-biblioref">23</a></sup>) are DNA "language models" — masked or
   autoregressive pre-training over genomic sequence, transferred to downstream tasks.
   They inherit, and must confront, every tokenization and redundancy issue in
   Sections 2–3.
-- **scGPT** (Cui et al., 2024) and **Geneformer** (Theodoris et al., 2023) bring the
+- **scGPT** (Cui et al.<sup><a href="#ref-cui2024" role="doc-biblioref">24</a></sup>) and **Geneformer** (Theodoris et al.<sup><a href="#ref-theodoris2023" role="doc-biblioref">25</a></sup>) bring the
   foundation-model recipe to single-cell *transcriptomics*, learning representations of
   cell state from large RNA-expression atlases — which means they live entirely on the
   RNA side of the proxy gap in Section 8.
@@ -522,74 +522,83 @@ and an automated check that every citation below resolves.
 
 # References
 
-1. Auton A, Brooks LD, Durbin RM, et al. A global reference for human genetic
-   variation. *Nature*. 2015;526(7571):68–74. doi:10.1038/nature15393
-2. Sudmant PH, Rausch T, Gardner EJ, et al. An integrated map of structural
-   variation in 2,504 human genomes. *Nature*. 2015;526(7571):75–81.
-   doi:10.1038/nature15394
-3. Karczewski KJ, Francioli LC, Tiao G, et al. The mutational constraint spectrum
-   quantified from variation in 141,456 humans. *Nature*. 2020;581(7809):434–443.
-   doi:10.1038/s41586-020-2308-7
-4. Bycroft C, Freeman C, Petkova D, et al. The UK Biobank resource with deep
-   phenotyping and genomic data. *Nature*. 2018;562(7726):203–209.
-   doi:10.1038/s41586-018-0579-z
-5. Weinstein JN, Collisson EA, Mills GB, et al. The Cancer Genome Atlas Pan-Cancer
-   analysis project. *Nat Genet*. 2013;45(10):1113–1120. doi:10.1038/ng.2764
-6. GTEx Consortium. The GTEx Consortium atlas of genetic regulatory effects across
-   human tissues. *Science*. 2020;369(6509):1318–1330. doi:10.1126/science.aaz1776
-7. ENCODE Project Consortium. An integrated encyclopedia of DNA elements in the
-   human genome. *Nature*. 2012;489(7414):57–74. doi:10.1038/nature11247
-8. Frankish A, Diekhans M, Jungreis I, et al. GENCODE 2021. *Nucleic Acids Res*.
-   2021;49(D1):D916–D923. doi:10.1093/nar/gkaa1087
-9. Lappalainen T, Sammeth M, Friedländer MR, et al. Transcriptome and genome
-   sequencing uncovers functional variation in humans. *Nature*.
-   2013;501(7468):506–511. doi:10.1038/nature12531
-10. Tabula Sapiens Consortium. The Tabula Sapiens: a multiple-organ, single-cell
-    transcriptomic atlas of humans. *Science*. 2022;376(6594):eabl4896.
-    doi:10.1126/science.abl4896
-11. Nurk S, Koren S, Rhie A, et al. The complete sequence of a human genome.
-    *Science*. 2022;376(6588):44–53. doi:10.1126/science.abj6987
-12. Kong A, Frigge ML, Masson G, et al. Rate of de novo mutations and the
-    importance of father's age to disease risk. *Nature*. 2012;488(7412):471–475.
-    doi:10.1038/nature11396
-13. Schwanhäusser B, Busse D, Li N, et al. Global quantification of mammalian gene
-    expression control. *Nature*. 2011;473(7347):337–342. doi:10.1038/nature10098
-14. Vogel C, Marcotte EM. Insights into the regulation of protein abundance from
-    proteomic and transcriptomic analyses. *Nat Rev Genet*. 2012;13(4):227–232.
-    doi:10.1038/nrg3185
-15. Liu Y, Beyer A, Aebersold R. On the dependency of cellular protein levels on
-    mRNA abundance. *Cell*. 2016;165(3):535–550. doi:10.1016/j.cell.2016.03.014
-16. Edfors F, Danielsson F, Hallström BM, et al. Gene-specific correlation of RNA
-    and protein levels in human cells and tissues. *Mol Syst Biol*. 2016;12(10):883.
-    doi:10.15252/msb.20167144
-17. Buccitelli C, Selbach M. mRNAs, proteins and the emerging principles of gene
-    expression control. *Nat Rev Genet*. 2020;21(10):630–644.
-    doi:10.1038/s41576-020-0258-4
-18. Jumper J, Evans R, Pritzel A, et al. Highly accurate protein structure
-    prediction with AlphaFold. *Nature*. 2021;596(7873):583–589.
-    doi:10.1038/s41586-021-03819-2
-19. Avsec Ž, Agarwal V, Visentin D, et al. Effective gene expression prediction
-    from sequence by integrating long-range interactions. *Nat Methods*.
-    2021;18(10):1196–1203. doi:10.1038/s41592-021-01252-x
-20. Avsec Ž, Latysheva N, Cheng J, et al. AlphaGenome: advancing regulatory variant
-    effect prediction with a unified DNA sequence model. *bioRxiv*. 2025.
-    doi:10.1101/2025.06.25.661532. See also
-    https://deepmind.google/blog/alphagenome-ai-for-better-understanding-the-genome/
-21. Ji Y, Zhou Z, Liu H, Davuluri RV. DNABERT: pre-trained Bidirectional Encoder
-    Representations from Transformers model for DNA-language in genome.
-    *Bioinformatics*. 2021;37(15):2112–2120. doi:10.1093/bioinformatics/btab083
-22. Dalla-Torre H, Gonzalez L, Mendoza-Revilla J, et al. Nucleotide Transformer:
-    building and evaluating robust foundation models for human genomics. *Nat
-    Methods*. 2024;22(2):287–297. doi:10.1038/s41592-024-02523-z
-23. Nguyen E, Poli M, Durrant MG, et al. Sequence modeling and design from
-    molecular to genome scale with Evo. *Science*. 2024;386(6723):eado9336.
-    doi:10.1126/science.ado9336
-24. Cui H, Wang C, Maan H, et al. scGPT: toward building a foundation model for
-    single-cell multi-omics using generative AI. *Nat Methods*.
-    2024;21(8):1470–1480. doi:10.1038/s41592-024-02201-0
-25. Theodoris CV, Xiao L, Chopra A, et al. Transfer learning enables predictions in
-    network biology. *Nature*. 2023;618(7965):616–624.
-    doi:10.1038/s41586-023-06139-9
+<div id="refs" class="references csl-bib-body" role="list">
+<div id="ref-kong2012" class="csl-entry" role="listitem">
+<div class="csl-left-margin">1. </div><div class="csl-right-inline"><span class="nocase">Kong A, Frigge ML, Masson G, et al.</span> Rate of de novo mutations and the importance of father’s age to disease risk. <em>Nature</em>. 2012;488(7412):471-475. doi:<a href="https://doi.org/10.1038/nature11396">10.1038/nature11396</a></div>
+</div>
+<div id="ref-sudmant2015" class="csl-entry" role="listitem">
+<div class="csl-left-margin">2. </div><div class="csl-right-inline"><span class="nocase">Sudmant PH, Rausch T, Gardner EJ, et al.</span> An integrated map of structural variation in 2,504 human genomes. <em>Nature</em>. 2015;526(7571):75-81. doi:<a href="https://doi.org/10.1038/nature15394">10.1038/nature15394</a></div>
+</div>
+<div id="ref-schwanhausser2011" class="csl-entry" role="listitem">
+<div class="csl-left-margin">3. </div><div class="csl-right-inline"><span class="nocase">Schwanhäusser B, Busse D, Li N, et al.</span> Global quantification of mammalian gene expression control. <em>Nature</em>. 2011;473(7347):337-342. doi:<a href="https://doi.org/10.1038/nature10098">10.1038/nature10098</a></div>
+</div>
+<div id="ref-vogel2012" class="csl-entry" role="listitem">
+<div class="csl-left-margin">4. </div><div class="csl-right-inline">Vogel C, Marcotte EM. Insights into the regulation of protein abundance from proteomic and transcriptomic analyses. <em>Nature Reviews Genetics</em>. 2012;13(4):227-232. doi:<a href="https://doi.org/10.1038/nrg3185">10.1038/nrg3185</a></div>
+</div>
+<div id="ref-liu2016" class="csl-entry" role="listitem">
+<div class="csl-left-margin">5. </div><div class="csl-right-inline">Liu Y, Beyer A, Aebersold R. On the dependency of cellular protein levels on <span class="nocase">mRNA</span> abundance. <em>Cell</em>. 2016;165(3):535-550. doi:<a href="https://doi.org/10.1016/j.cell.2016.03.014">10.1016/j.cell.2016.03.014</a></div>
+</div>
+<div id="ref-buccitelli2020" class="csl-entry" role="listitem">
+<div class="csl-left-margin">6. </div><div class="csl-right-inline">Buccitelli C, Selbach M. <span class="nocase">mRNAs</span>, proteins and the emerging principles of gene expression control. <em>Nature Reviews Genetics</em>. 2020;21(10):630-644. doi:<a href="https://doi.org/10.1038/s41576-020-0258-4">10.1038/s41576-020-0258-4</a></div>
+</div>
+<div id="ref-edfors2016" class="csl-entry" role="listitem">
+<div class="csl-left-margin">7. </div><div class="csl-right-inline"><span class="nocase">Edfors F, Danielsson F, Hallström BM, et al.</span> Gene-specific correlation of <span>RNA</span> and protein levels in human cells and tissues. <em>Molecular Systems Biology</em>. 2016;12(10):883. doi:<a href="https://doi.org/10.15252/msb.20167144">10.15252/msb.20167144</a></div>
+</div>
+<div id="ref-auton2015" class="csl-entry" role="listitem">
+<div class="csl-left-margin">8. </div><div class="csl-right-inline"><span class="nocase">Auton A, Brooks LD, Durbin RM, et al.</span> A global reference for human genetic variation. <em>Nature</em>. 2015;526(7571):68-74. doi:<a href="https://doi.org/10.1038/nature15393">10.1038/nature15393</a></div>
+</div>
+<div id="ref-karczewski2020" class="csl-entry" role="listitem">
+<div class="csl-left-margin">9. </div><div class="csl-right-inline"><span class="nocase">Karczewski KJ, Francioli LC, Tiao G, et al.</span> The mutational constraint spectrum quantified from variation in 141,456 humans. <em>Nature</em>. 2020;581(7809):434-443. doi:<a href="https://doi.org/10.1038/s41586-020-2308-7">10.1038/s41586-020-2308-7</a></div>
+</div>
+<div id="ref-bycroft2018" class="csl-entry" role="listitem">
+<div class="csl-left-margin">10. </div><div class="csl-right-inline"><span class="nocase">Bycroft C, Freeman C, Petkova D, et al.</span> The <span>UK</span> <span>Biobank</span> resource with deep phenotyping and genomic data. <em>Nature</em>. 2018;562(7726):203-209. doi:<a href="https://doi.org/10.1038/s41586-018-0579-z">10.1038/s41586-018-0579-z</a></div>
+</div>
+<div id="ref-weinstein2013" class="csl-entry" role="listitem">
+<div class="csl-left-margin">11. </div><div class="csl-right-inline"><span class="nocase">Weinstein JN, Collisson EA, Mills GB, et al.</span> The <span>Cancer</span> <span>Genome</span> <span>Atlas</span> <span>Pan-Cancer</span> analysis project. <em>Nature Genetics</em>. 2013;45(10):1113-1120. doi:<a href="https://doi.org/10.1038/ng.2764">10.1038/ng.2764</a></div>
+</div>
+<div id="ref-gtex2020" class="csl-entry" role="listitem">
+<div class="csl-left-margin">12. </div><div class="csl-right-inline">GTEx Consortium. The <span>GTEx</span> <span>Consortium</span> atlas of genetic regulatory effects across human tissues. <em>Science</em>. 2020;369(6509):1318-1330. doi:<a href="https://doi.org/10.1126/science.aaz1776">10.1126/science.aaz1776</a></div>
+</div>
+<div id="ref-encode2012" class="csl-entry" role="listitem">
+<div class="csl-left-margin">13. </div><div class="csl-right-inline">ENCODE Project Consortium. An integrated encyclopedia of <span>DNA</span> elements in the human genome. <em>Nature</em>. 2012;489(7414):57-74. doi:<a href="https://doi.org/10.1038/nature11247">10.1038/nature11247</a></div>
+</div>
+<div id="ref-frankish2021" class="csl-entry" role="listitem">
+<div class="csl-left-margin">14. </div><div class="csl-right-inline"><span class="nocase">Frankish A, Diekhans M, Jungreis I, et al.</span> <span>GENCODE</span> 2021. <em>Nucleic Acids Research</em>. 2021;49(D1):D916-D923. doi:<a href="https://doi.org/10.1093/nar/gkaa1087">10.1093/nar/gkaa1087</a></div>
+</div>
+<div id="ref-lappalainen2013" class="csl-entry" role="listitem">
+<div class="csl-left-margin">15. </div><div class="csl-right-inline"><span class="nocase">Lappalainen T, Sammeth M, Friedländer MR, et al.</span> Transcriptome and genome sequencing uncovers functional variation in humans. <em>Nature</em>. 2013;501(7468):506-511. doi:<a href="https://doi.org/10.1038/nature12531">10.1038/nature12531</a></div>
+</div>
+<div id="ref-tabulasapiens2022" class="csl-entry" role="listitem">
+<div class="csl-left-margin">16. </div><div class="csl-right-inline">Tabula Sapiens Consortium. The <span>Tabula</span> <span>Sapiens</span>: A multiple-organ, single-cell transcriptomic atlas of humans. <em>Science</em>. 2022;376(6594):eabl4896. doi:<a href="https://doi.org/10.1126/science.abl4896">10.1126/science.abl4896</a></div>
+</div>
+<div id="ref-nurk2022" class="csl-entry" role="listitem">
+<div class="csl-left-margin">17. </div><div class="csl-right-inline"><span class="nocase">Nurk S, Koren S, Rhie A, et al.</span> The complete sequence of a human genome. <em>Science</em>. 2022;376(6588):44-53. doi:<a href="https://doi.org/10.1126/science.abj6987">10.1126/science.abj6987</a></div>
+</div>
+<div id="ref-jumper2021" class="csl-entry" role="listitem">
+<div class="csl-left-margin">18. </div><div class="csl-right-inline"><span class="nocase">Jumper J, Evans R, Pritzel A, et al.</span> Highly accurate protein structure prediction with <span>AlphaFold</span>. <em>Nature</em>. 2021;596(7873):583-589. doi:<a href="https://doi.org/10.1038/s41586-021-03819-2">10.1038/s41586-021-03819-2</a></div>
+</div>
+<div id="ref-avsec2021" class="csl-entry" role="listitem">
+<div class="csl-left-margin">19. </div><div class="csl-right-inline"><span class="nocase">Avsec Ž, Agarwal V, Visentin D, et al.</span> Effective gene expression prediction from sequence by integrating long-range interactions. <em>Nature Methods</em>. 2021;18(10):1196-1203. doi:<a href="https://doi.org/10.1038/s41592-021-01252-x">10.1038/s41592-021-01252-x</a></div>
+</div>
+<div id="ref-avsec2025" class="csl-entry" role="listitem">
+<div class="csl-left-margin">20. </div><div class="csl-right-inline"><span class="nocase">Avsec Ž, Latysheva N, Cheng J, et al.</span> <span>AlphaGenome</span>: Advancing regulatory variant effect prediction with a unified <span>DNA</span> sequence model. <em>bioRxiv</em>. Published online 2025. doi:<a href="https://doi.org/10.1101/2025.06.25.661532">10.1101/2025.06.25.661532</a></div>
+</div>
+<div id="ref-ji2021" class="csl-entry" role="listitem">
+<div class="csl-left-margin">21. </div><div class="csl-right-inline">Ji Y, Zhou Z, Liu H, Davuluri RV. <span>DNABERT</span>: Pre-trained <span>Bidirectional</span> <span>Encoder</span> <span>Representations</span> from <span>Transformers</span> model for <span class="nocase">DNA-language</span> in genome. <em>Bioinformatics</em>. 2021;37(15):2112-2120. doi:<a href="https://doi.org/10.1093/bioinformatics/btab083">10.1093/bioinformatics/btab083</a></div>
+</div>
+<div id="ref-dallatorre2024" class="csl-entry" role="listitem">
+<div class="csl-left-margin">22. </div><div class="csl-right-inline"><span class="nocase">Dalla-Torre H, Gonzalez L, Mendoza-Revilla J, et al.</span> Nucleotide <span>Transformer</span>: Building and evaluating robust foundation models for human genomics. <em>Nature Methods</em>. 2024;22(2):287-297. doi:<a href="https://doi.org/10.1038/s41592-024-02523-z">10.1038/s41592-024-02523-z</a></div>
+</div>
+<div id="ref-nguyen2024" class="csl-entry" role="listitem">
+<div class="csl-left-margin">23. </div><div class="csl-right-inline"><span class="nocase">Nguyen E, Poli M, Durrant MG, et al.</span> Sequence modeling and design from molecular to genome scale with <span>Evo</span>. <em>Science</em>. 2024;386(6723):eado9336. doi:<a href="https://doi.org/10.1126/science.ado9336">10.1126/science.ado9336</a></div>
+</div>
+<div id="ref-cui2024" class="csl-entry" role="listitem">
+<div class="csl-left-margin">24. </div><div class="csl-right-inline"><span class="nocase">Cui H, Wang C, Maan H, et al.</span> <span class="nocase">scGPT</span>: Toward building a foundation model for single-cell multi-omics using generative <span>AI</span>. <em>Nature Methods</em>. 2024;21(8):1470-1480. doi:<a href="https://doi.org/10.1038/s41592-024-02201-0">10.1038/s41592-024-02201-0</a></div>
+</div>
+<div id="ref-theodoris2023" class="csl-entry" role="listitem">
+<div class="csl-left-margin">25. </div><div class="csl-right-inline"><span class="nocase">Theodoris CV, Xiao L, Chopra A, et al.</span> Transfer learning enables predictions in network biology. <em>Nature</em>. 2023;618(7965):616-624. doi:<a href="https://doi.org/10.1038/s41586-023-06139-9">10.1038/s41586-023-06139-9</a></div>
+</div>
+</div>
 
 ---
 
