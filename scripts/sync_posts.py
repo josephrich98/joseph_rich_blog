@@ -362,9 +362,15 @@ def sync_post(name):
 
     os.makedirs(OUT_DIR, exist_ok=True)
     out_path = os.path.join(OUT_DIR, f"{date}-{name}.md")
+    rel_out = os.path.relpath(out_path, ROOT)
+    prev = None
+    if os.path.isfile(out_path):
+        with open(out_path, encoding="utf-8") as f:
+            prev = f.read()
+    changed = prev != content
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(content)
-    return os.path.relpath(out_path, ROOT), copied
+    return rel_out, copied, changed
 
 
 def rewrite_images(body, src_dir, dest_img, name):
@@ -398,6 +404,7 @@ def main():
         print("no posts/ directory; nothing to sync")
         return 0
     total = 0
+    changed_count = 0
     for name in sorted(os.listdir(POSTS_DIR)):
         if name in SKIP_DIRS or name.startswith("."):
             continue
@@ -405,10 +412,12 @@ def main():
             continue
         result = sync_post(name)
         if result:
-            out_path, copied = result
-            print(f"  synced {name} -> {out_path} ({copied} image(s))")
+            out_path, copied, changed = result
+            status = "changed" if changed else "unchanged"
+            print(f"  synced {name} -> {out_path} ({copied} image(s), {status})")
             total += 1
-    print(f"sync_posts: wrote {total} post(s)")
+            changed_count += changed
+    print(f"sync_posts: regenerated {total} post(s), {changed_count} changed")
     return 0
 
 
