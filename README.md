@@ -18,15 +18,16 @@ This repository contains the code and content that accompanies the blog posts on
   - `figures/` – generated plots (PNG/PDF) referenced by the post.
   - `scripts/` – any scripts used to generate the figures or run the analysis (e.g. Python scripts, shell scripts, etc.).
   - `data/` – datasets used in the post, with a `README.md` describing each source.
-  - `environment.yml` – the Conda environment needed to run that post's notebook and build it locally.
+  - `requirements.txt` – the pinned pip packages needed to run that post's notebook.
+  - `environment.yml` – a thin Conda wrapper that pins Python + pip and then installs everything in that post's `requirements.txt`.
   - `Dockerfile` – a container definition for running that post's notebook in an isolated environment. It is tailored to the post: the conda environment it creates and the Jupyter kernel it registers are named after the post (matching the `name:` in that post's `environment.yml`), so each post builds and runs independently.
 
 - `templates/` – The bundled [Eisvogel](https://github.com/Wandmalfarbe/pandoc-latex-template) pandoc LaTeX template (`eisvogel.latex`) used to render posts to PDF.
 
 - `tests/` – Test suite that runs every post notebook and builds every `main.md` to PDF.
 
-Each post is self-contained: its `environment.yml` and `Dockerfile` live alongside
-the post's notebook so it can be reproduced on its own.
+Each post is self-contained: its `requirements.txt`, `environment.yml`, and
+`Dockerfile` live alongside the post's notebook so it can be reproduced on its own.
 
 ## 🚀 Running the Notebooks
 
@@ -42,6 +43,15 @@ jupyter notebook
 ```
 
 Then open that post's `notebook.ipynb`.
+
+If you'd rather not use Conda, the post's `requirements.txt` holds the same pinned
+pip packages, so you can install into any Python 3.10 virtual environment instead:
+
+```bash
+cd posts/radiology-ai-vs-computer-vision
+pip install -r requirements.txt
+jupyter notebook
+```
 
 ### Option 2: Using Google Colab
 You can also run the notebooks directly in Google Colab. Just open the desired `posts/<post>/notebook.ipynb` file in Colab via the Colab link at the top of the notebook.

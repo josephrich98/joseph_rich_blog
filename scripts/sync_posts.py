@@ -20,7 +20,11 @@ What it does per post:
   * copies figures/ images into site/images/posts/<name>/ and rewrites the
     Markdown image paths to point there,
   * rewrites inline math $...$ into kramdown's $$...$$ delimiters (display
-    $$...$$ blocks and fenced code are left untouched) so MathJax renders it.
+    $$...$$ blocks and fenced code are left untouched) so MathJax renders it,
+  * resolves pandoc [@key] citations against the post's references.bib (if any)
+    by rendering them once with pandoc + citeproc, splicing the numbered inline
+    markers into the body and appending the formatted reference list at the
+    bottom (see resolve_citations).
 
 Directories named "template" are skipped (scaffold, not a real post).
 """
@@ -30,6 +34,7 @@ from __future__ import annotations
 import os
 import re
 import shutil
+import subprocess
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -46,6 +51,9 @@ PANDOC_ONLY = {
     "urlcolor", "listings", "titlepage-color", "titlepage-text-color",
     "titlepage-rule-color", "book", "classoption", "geometry", "fontsize",
     "mainfont", "header-includes",
+    # citation/bibliography keys: consumed by pandoc + citeproc for the PDF and,
+    # via resolve_citations, for the web — never emitted into Jekyll front matter.
+    "bibliography", "csl", "link-citations", "reference-section-title", "nocite",
 }
 
 GENERATED_MARKER = (
@@ -196,6 +204,92 @@ def pad_display_math(body):
     return "\n".join(out)
 
 
+# A pandoc inline-citation span in citeproc HTML output, e.g.
+#   <span class="citation" data-cites="zech2018">...</span>
+# The data-cites attribute holds the space-separated keys (in source order); the
+# inner HTML is the fully-rendered marker (<sup><a href="#ref-...">1</a></sup>).
+CITATION_SPAN_RE = re.compile(
+    r'<span class="citation"[^>]*\bdata-cites="([^"]*)"[^>]*>(.*?)</span>',
+    re.DOTALL,
+)
+# The formatted reference list pandoc appends; it is the last block of the
+# fragment, so a greedy match to the final </div> captures the whole thing.
+REFS_DIV_RE = re.compile(r'<div id="refs".*</div>', re.DOTALL)
+# A bracketed pandoc citation in the source, e.g. [@key] or [@k1; @k2]. Requires
+# an @ so it never matches footnote refs ([^id]) or ordinary links.
+CITATION_BRACKET_RE = re.compile(r"\[[^\]]*@[^\]]*\]")
+# A single citekey following @ (pandoc's permitted citekey characters).
+CITEKEY_RE = re.compile(r"@([A-Za-z0-9_][\w:.#$%&+?<>~/-]*)")
+
+
+def resolve_citations(name, src_dir, body):
+    """Resolve pandoc ``[@key]`` citations for the web build.
+
+    Returns ``(body, bib_html)``: ``body`` with every inline ``[@key]`` marker
+    replaced by its fully-rendered HTML, and ``bib_html`` the ``<div id="refs">``
+    reference list to append at the bottom (``None`` when the post has no
+    ``references.bib``).
+
+    The numbering, grouping and range-collapsing are delegated to pandoc +
+    citeproc so the web markers match the PDF exactly: pandoc renders the post to
+    HTML once, and we harvest each citation's rendered form (keyed by its
+    ``data-cites`` keys) and the formatted bibliography. Both are self-contained
+    HTML (superscript links, ``<em>``, ``<a href>``) that kramdown passes through
+    verbatim, so the inline ``$…$`` math and image rewriting downstream are
+    unaffected. The bibliography/csl paths come from the main.md front matter,
+    resolved relative to the post directory (pandoc runs there).
+    """
+    if not os.path.isfile(os.path.join(src_dir, "references.bib")):
+        return body, None
+
+    pandoc = shutil.which("pandoc")
+    if not pandoc:
+        raise RuntimeError(
+            f"{name}: references.bib is present but pandoc is not on PATH; "
+            f"pandoc resolves the [@key] citations for the web build (it is "
+            f"pinned in the post's environment.yml)."
+        )
+
+    proc = subprocess.run(
+        [pandoc, "main.md", "--citeproc", "--to", "html", "--wrap=none"],
+        cwd=src_dir,
+        capture_output=True,
+        text=True,
+    )
+    if proc.returncode != 0:
+        raise RuntimeError(f"{name}: pandoc citeproc failed:\n{proc.stderr}")
+    # citeproc reports an undefined key only as a warning (exit 0) and renders it
+    # as bold literal text; treat that as fatal so a typo'd [@key] never ships.
+    if "not found" in proc.stderr.lower():
+        raise RuntimeError(
+            f"{name}: unresolved citation — every [@key] must have a matching "
+            f"entry in references.bib:\n{proc.stderr.strip()}"
+        )
+    html = proc.stdout
+
+    rendered = {
+        tuple(cites.split()): inner.strip()
+        for cites, inner in CITATION_SPAN_RE.findall(html)
+    }
+    refs_match = REFS_DIV_RE.search(html)
+    bib_html = refs_match.group(0) if refs_match else None
+
+    def replace_in(segment):
+        def repl(match):
+            keys = tuple(CITEKEY_RE.findall(match.group(0)))
+            # Leave anything we didn't render (e.g. a [@...] inside inline code)
+            # untouched rather than dropping it.
+            return rendered.get(keys, match.group(0))
+        return CITATION_BRACKET_RE.sub(repl, segment)
+
+    # Skip fenced code blocks so a literal [@key] in an example stays literal.
+    body = "".join(
+        seg if is_code else replace_in(seg)
+        for is_code, seg in split_code_fences(body)
+    )
+    return body, bib_html
+
+
 def sync_post(name):
     src_dir = os.path.join(POSTS_DIR, name)
     main_md = os.path.join(src_dir, "main.md")
@@ -218,6 +312,10 @@ def sync_post(name):
         return None
     year, month = m.group(1), m.group(2)
 
+    # Resolve [@key] citations against references.bib (if any) before the other
+    # transforms; bib_html (the formatted reference list) is appended at the end.
+    body, bib_html = resolve_citations(name, src_dir, body)
+
     # Copy figures and rewrite image paths to /images/posts/<name>/...
     dest_img = os.path.join(IMG_ROOT, name)
     body, copied = rewrite_images(body, src_dir, dest_img, name)
@@ -226,9 +324,17 @@ def sync_post(name):
     body = inline_math_to_kramdown(body)
     body = pad_display_math(body)
 
+    body = body.rstrip("\n")
+
+    # Reference list (rendered by pandoc from references.bib) at the bottom of
+    # the article, above the reproduce footer. The <div id="refs"> block is
+    # self-contained HTML, which kramdown passes through untouched.
+    if bib_html:
+        body += "\n\n# References\n\n" + bib_html
+
     # Boilerplate footer linking to the post's source folder (notebook, data,
     # scripts) so readers can reproduce the analyses.
-    body = body.rstrip("\n") + (
+    body += (
         f"\n\n---\n\n*Reproduce all analyses in this post "
         f"[here]({REPO_URL}/tree/main/posts/{name}).*\n"
         f"\n*All writing is my own. AI was not used to write this post.*\n"
@@ -256,9 +362,15 @@ def sync_post(name):
 
     os.makedirs(OUT_DIR, exist_ok=True)
     out_path = os.path.join(OUT_DIR, f"{date}-{name}.md")
+    rel_out = os.path.relpath(out_path, ROOT)
+    prev = None
+    if os.path.isfile(out_path):
+        with open(out_path, encoding="utf-8") as f:
+            prev = f.read()
+    changed = prev != content
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(content)
-    return os.path.relpath(out_path, ROOT), copied
+    return rel_out, copied, changed
 
 
 def rewrite_images(body, src_dir, dest_img, name):
@@ -292,6 +404,7 @@ def main():
         print("no posts/ directory; nothing to sync")
         return 0
     total = 0
+    changed_count = 0
     for name in sorted(os.listdir(POSTS_DIR)):
         if name in SKIP_DIRS or name.startswith("."):
             continue
@@ -299,10 +412,12 @@ def main():
             continue
         result = sync_post(name)
         if result:
-            out_path, copied = result
-            print(f"  synced {name} -> {out_path} ({copied} image(s))")
+            out_path, copied, changed = result
+            status = "changed" if changed else "unchanged"
+            print(f"  synced {name} -> {out_path} ({copied} image(s), {status})")
             total += 1
-    print(f"sync_posts: wrote {total} post(s)")
+            changed_count += changed
+    print(f"sync_posts: regenerated {total} post(s), {changed_count} changed")
     return 0
 
 

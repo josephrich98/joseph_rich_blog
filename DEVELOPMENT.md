@@ -15,6 +15,13 @@ Two things must be renamed to the new post's name:
 - the post name in the `Dockerfile` (in the `conda activate`, `ipykernel install`,
   and kernel display name), matching that `name:`.
 
+List the post's pinned pip dependencies in its `requirements.txt`; the
+`environment.yml` only pins Python + pip and installs the rest via
+`-r requirements.txt`, so it doesn't need to be edited for dependency changes.
+Because pip resolves that relative path from the working directory, run
+`conda env create -f environment.yml` (or `pip install -r requirements.txt`) from
+inside the post directory.
+
 Directories named `template` are skipped by the publish step and the test suite.
 
 ## 📝 Writing & Building Posts
@@ -38,8 +45,17 @@ cd posts/radiology-ai-vs-computer-vision
 pandoc main.md -o main.pdf \
   --from markdown \
   --template ../../templates/eisvogel.latex \
-  --listings
+  --listings \
+  --citeproc
 ```
+
+`--citeproc` resolves the post's `[@key]` citations against its
+`references.bib` and renders the reference list at the end. The `bibliography:`
+(the `.bib`) and `csl:` (`../../templates/csl/american-medical-association.csl`,
+an AMA/Vancouver numeric style) paths live in the `main.md` front matter, so a
+post with no citations just omits `references.bib` and produces no list. Manage
+the `.bib` in a reference manager (Zotero → Better BibTeX export); the citekeys
+in `[@key]` must match its keys.
 
 Eisvogel options (title page, table of contents, colored links, …) are set in
 the YAML front matter at the top of each `main.md`. See the
@@ -59,7 +75,11 @@ Each `posts/<name>/main.md` is automatically converted into a Jekyll blog post a
   image paths,
 - rewrites inline `$…$` math into kramdown's `$$…$$` so MathJax renders it
   (leaving `$$…$$` display blocks and fenced code untouched),
-- indents multi-line footnote continuations so kramdown doesn't truncate them, and
+- indents multi-line footnote continuations so kramdown doesn't truncate them,
+- resolves `[@key]` citations against `references.bib` with pandoc + citeproc —
+  substituting the numbered inline markers and appending the same reference list
+  the PDF shows (as self-contained HTML kramdown passes through), so the web and
+  PDF references stay in sync from the one `.bib` — and
 - appends a footer linking back to the post's source folder on GitHub so readers
   can reproduce the analyses.
 
@@ -79,6 +99,25 @@ python3 scripts/sync_posts.py
 > Add blog-only metadata (`excerpt:`, `tags:`) to a post's `main.md` front
 > matter — pandoc ignores those keys when building the PDF, and `sync_posts.py`
 > uses them for the website. Directories named `template` are skipped.
+
+## 🔖 Validating citations
+
+The same pre-commit hook also validates references. Whenever a commit **creates
+or modifies a `references.bib` file**, [`scripts/check_bib_dois.py`](scripts/check_bib_dois.py)
+runs on just those files and confirms each entry's DOI resolves — the check
+[doi2bib](https://doi2bib.org) performs, via DOI content negotiation against
+`https://doi.org/<DOI>`. A commit is **blocked** if any DOI is unknown. Entries
+without a `doi` field (e.g. `@misc` websites) are reported but not failed.
+
+You can run it by hand on any `.bib` file(s):
+
+```bash
+python3 scripts/check_bib_dois.py posts/<name>/references.bib
+```
+
+> If a DOI can't be verified because you're offline, the check warns but doesn't
+> block. Set `BIB_CHECK_STRICT=1` to fail on unverifiable DOIs, or bypass all
+> hooks for one commit with `git commit --no-verify`.
 
 ## 🧪 Testing
 

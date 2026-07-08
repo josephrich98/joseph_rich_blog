@@ -18,24 +18,23 @@ matplotlib.use("Agg")  # headless: works in CI and in nbconvert
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
 
-# A small, legible palette. Local steps are one hue, automation another, so the
-# reader can see at a glance how little is manual.
-LOCAL = "#1f4e79"      # things I do by hand
-AUTO = "#2e7d32"       # things that happen automatically
-GATE = "#9a6700"       # the branch/merge gate
-INK = "#1b1b1b"
+# Two colors carry the whole legend: blue for the steps I trigger by hand,
+# black for everything that then happens automatically.
+BLUE = "#1565c0"   # manual: writing + the git commands I run
+BLACK = "#1b1b1b"  # automatic: whatever those git commands set off
 
 
-def _box(ax, xy, w, h, text, face, *, fontsize=10.5, text_color="white"):
-    """Draw a rounded box centered at xy with wrapped text."""
+def _box(ax, xy, w, h, text, *, fontsize=11, text_color=BLACK):
+    """Draw a rounded white box (black outline) centered at xy with text."""
     x, y = xy
     patch = FancyBboxPatch(
         (x - w / 2, y - h / 2),
         w,
         h,
         boxstyle="round,pad=0.02,rounding_size=0.08",
-        linewidth=0,
-        facecolor=face,
+        linewidth=1.6,
+        edgecolor=BLACK,
+        facecolor="white",
         zorder=2,
     )
     ax.add_patch(patch)
@@ -48,12 +47,13 @@ def _box(ax, xy, w, h, text, face, *, fontsize=10.5, text_color="white"):
         fontsize=fontsize,
         color=text_color,
         zorder=3,
-        linespacing=1.25,
+        linespacing=1.35,
     )
     return patch
 
 
-def _arrow(ax, p0, p1, color=INK, style="-|>", lw=1.8, ls="-"):
+def _arrow(ax, p0, p1, color=BLACK, style="-|>", lw=1.8, ls="-",
+           connectionstyle="arc3,rad=0"):
     ax.add_patch(
         FancyArrowPatch(
             p0,
@@ -66,93 +66,66 @@ def _arrow(ax, p0, p1, color=INK, style="-|>", lw=1.8, ls="-"):
             shrinkA=2,
             shrinkB=2,
             zorder=1,
+            connectionstyle=connectionstyle,
         )
     )
 
 
 def draw_pipeline(outpath):
-    """Render the commit-to-deploy pipeline schematic to ``outpath``."""
-    fig, ax = plt.subplots(figsize=(10.5, 6.2))
-    ax.set_xlim(0, 10.5)
-    ax.set_ylim(0, 6.2)
+    """Render the commit-to-deploy workflow schematic to ``outpath``."""
+    fig, ax = plt.subplots(figsize=(9.0, 6.6))
+    ax.set_xlim(0, 9.0)
+    ax.set_ylim(0, 6.6)
     ax.axis("off")
 
-    w, h = 2.55, 1.0
+    cx = 3.3     # the three blocks share one vertical spine
+    w = 6.0      # wide enough for the longest label
 
-    # --- Top lane: the manual part (write -> commit -> push) -----------------
-    _box(ax, (1.7, 5.2), w, h, "Write\n$\\tt main.md$\n(Markdown + LaTeX)", LOCAL)
+    # --- Block 1: write it (manual) -----------------------------------------
     _box(
         ax,
-        (5.25, 5.2),
-        w + 0.35,
-        h,
-        "$\\tt git\\ commit$\npre-commit hook runs\n$\\tt sync\\_posts.py$",
-        LOCAL,
-    )
-    _box(ax, (8.8, 5.2), w, h, "$\\tt git\\ push$\n(feature branch)", LOCAL)
-
-    _arrow(ax, (1.7 + w / 2, 5.2), (5.25 - (w + 0.35) / 2, 5.2))
-    _arrow(ax, (5.25 + (w + 0.35) / 2, 5.2), (8.8 - w / 2, 5.2))
-
-    ax.text(
-        5.25,
-        6.0,
-        "everything I do by hand",
-        ha="center",
-        fontsize=11,
-        style="italic",
-        color=LOCAL,
-    )
-
-    # --- Gate: pull request / merge to main ---------------------------------
-    _box(ax, (8.8, 3.5), w, h, "Pull request\nmerge → $\\tt main$", GATE)
-    _arrow(ax, (8.8, 5.2 - h / 2), (8.8, 3.5 + h / 2))
-
-    # --- Bottom lane: automation (CI gates the merge; deploy follows) --------
-    _box(
-        ax,
-        (5.25, 3.5),
-        w + 0.35,
-        h + 0.25,
-        "GitHub Actions CI\n$\\tt pytest$: PDF build +\nnbval lax + strict",
-        AUTO,
-    )
-    _box(
-        ax,
-        (1.7, 3.5),
+        (cx, 5.7),
         w,
-        h,
-        "Vercel\nbuild + deploy\njoseph-rich.com",
-        AUTO,
+        0.9,
+        "Write $\\tt main.md$ (+ $\\tt notebook.ipynb$)",
+        text_color=BLUE,
     )
 
-    # CI runs on the pushed branch and blocks the merge (dashed = "must pass").
-    _arrow(ax, (8.8 - w / 2, 3.5), (5.25 + (w + 0.35) / 2, 3.5), color=GATE, ls="--")
-    # Merge to main triggers the deploy.
-    _arrow(ax, (5.25 - (w + 0.35) / 2, 3.5), (1.7 + w / 2, 3.5), color=AUTO)
+    # git commit --------------------------------------------------------------
+    _arrow(ax, (cx, 5.25), (cx, 4.30))
+    ax.text(cx + 0.25, 4.78, "git commit", ha="left", va="center",
+            fontsize=10.5, color=BLUE, style="italic")
 
-    ax.text(
-        3.4,
-        2.75,
-        "automatic on every push / merge",
-        ha="center",
-        fontsize=11,
-        style="italic",
-        color=AUTO,
+    # --- Block 2: sync the site + check the citations (automatic) -----------
+    _box(
+        ax,
+        (cx, 3.75),
+        w,
+        1.1,
+        "update site with Jekyll + Vercel\n"
+        "validate updated references with doi2bib",
     )
 
-    # --- Caption strip -------------------------------------------------------
-    ax.text(
-        5.25,
-        1.35,
-        "One source of truth ($\\tt posts/<slug>/main.md$) fans out to a PDF, a\n"
-        "tested notebook, and a live web page — without a manual build step.",
-        ha="center",
-        va="center",
-        fontsize=10.5,
-        color=INK,
-        linespacing=1.4,
+    # git push ----------------------------------------------------------------
+    _arrow(ax, (cx, 3.20), (cx, 2.25))
+    ax.text(cx + 0.25, 2.72, "git push", ha="left", va="center",
+            fontsize=10.5, color=BLUE, style="italic")
+
+    # --- Block 3: deploy + test (automatic) ---------------------------------
+    _box(
+        ax,
+        (cx, 1.70),
+        w,
+        1.1,
+        "deploy site\n"
+        "run notebook checks on updated notebooks (strict → lax)",
     )
+
+    # GitHub Actions re-runs the notebook checks on a schedule (self-loop).
+    edge = cx + w / 2
+    _arrow(ax, (edge, 1.95), (edge, 1.45), connectionstyle="arc3,rad=-2.2")
+    ax.text(edge + 0.9, 1.70, "GitHub actions (6mo)", ha="left", va="center",
+            fontsize=10, color=BLACK, style="italic")
 
     fig.tight_layout()
     outpath = Path(outpath)

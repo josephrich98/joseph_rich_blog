@@ -15,3 +15,18 @@ fi
 
 "$PY" "$ROOT/scripts/sync_posts.py"
 git add "$ROOT/site/_posts" "$ROOT/site/images/posts" 2>/dev/null || true
+
+# Validate every reference in any staged references.bib file: each entry's DOI
+# must resolve (the check doi2bib performs). Only the created/modified files are
+# checked. Bypass in an emergency with `git commit --no-verify`.
+mapfile -t BIBS < <(git diff --cached --name-only --diff-filter=ACMR \
+  -- '*/references.bib' 'references.bib')
+if [ "${#BIBS[@]}" -gt 0 ]; then
+  echo "pre-commit: validating references in ${#BIBS[@]} references.bib file(s)..." >&2
+  PATHS=()
+  for b in "${BIBS[@]}"; do PATHS+=("$ROOT/$b"); done
+  if ! "$PY" "$ROOT/scripts/check_bib_dois.py" "${PATHS[@]}"; then
+    echo "pre-commit: reference validation failed; fix the DOIs above or bypass with 'git commit --no-verify'." >&2
+    exit 1
+  fi
+fi

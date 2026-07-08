@@ -40,3 +40,31 @@
     "vendor/font-awesome/solid",
     "vendor/font-awesome/brands"
 ;
+
+/*
+ * Bibliography / reference list. Each post's "# References" list is rendered by
+ * pandoc + citeproc from its references.bib and injected as a <div id="refs">
+ * of .csl-entry blocks (see scripts/sync_posts.py). These rules mirror pandoc's
+ * default CSL CSS so the web list gets the same numbered, hanging-indent layout
+ * the PDF shows; scoped to the .csl-* containers so nothing else is affected.
+ */
+.csl-bib-body {
+    margin-top: 0.5em;
+}
+
+.csl-entry {
+    clear: both;
+    margin-bottom: 0.6em;
+}
+
+.csl-left-margin {
+    float: left;
+    padding-right: 0.5em;
+    text-align: right;
+    width: 2em;
+}
+
+.csl-right-inline {
+    margin: 0 0 0 2.5em;
+    padding: 0 0 0 0.5em;
+}
