@@ -115,7 +115,7 @@ order-of-magnitude gap.
 on a log scale. Natural-image objects (blue) occupy $$10^{-3}$$ to $$10^{0}$$ of the
 frame. Clinically critical lesions (red/navy) sit at $$10^{-7}$$ to $$10^{-5}$$.
 This five-to-six order-of-magnitude difference is why naive pixel-wise losses
-and patch samplers fail in radiology.](/images/posts/radiology-ai-vs-computer-vision/needle_in_haystack.png)
+and patch samplers fail in radiology.](figures/needle_in_haystack.png)
 
 The consequences for an ML scientist are direct:
 
@@ -304,7 +304,7 @@ governs what you can conclude about that subgroup.
 ![**Figure 2.** The stratification waterfall. Each clinically reasonable filter
 multiplies the count down. The binding constraint is the number of *positive*
 (diseased) cases, which collapses fastest because disease is
-rare.](/images/posts/radiology-ai-vs-computer-vision/stratification_waterfall.png)
+rare.](figures/stratification_waterfall.png)
 
 Why 66 is a problem is pure sampling theory. Estimate a subgroup sensitivity
 (true positive rate) $$\hat{p}$$ from $$n$$ positive cases; its standard error is
@@ -342,7 +342,7 @@ findings are noise. You are squeezed from both sides.
 subgroup sensitivity estimate shrinks only as $$1/\sqrt{n}$$; at $$n=66$$ positives
 you have $$\pm 0.09$$ precision. **(b)** Power to detect a $$0.85 \to 0.75$$
 sensitivity drop: you need ~250 positives per group for 80% power, but the
-deepest subgroup has 66, giving ~30% power.](/images/posts/radiology-ai-vs-computer-vision/power_and_precision.png)
+deepest subgroup has 66, giving ~30% power.](figures/power_and_precision.png)
 
 The lesson is not "give up." It is to **plan evaluation as a power calculation
 from day one**: decide which subgroups are non-negotiable, estimate the positive

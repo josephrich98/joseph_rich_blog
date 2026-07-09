@@ -83,3 +83,4 @@ There have been exciting developments in genomics AI, and there is much to be do
 1. The human reference genome disproportionately represents individuals of European ancestry, as these are the most widely available genomic data. Recent efforts have been made to create pan-genomes that better represent global diversity, most notably the Human Pangenome Reference Consortium's draft reference assembled from 47 genetically diverse individuals [@liao2023].
 
 
+

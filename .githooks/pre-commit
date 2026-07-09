@@ -19,7 +19,11 @@ git add "$ROOT/site/_posts" "$ROOT/site/images/posts" 2>/dev/null || true
 # Validate every reference in any staged references.bib file: each entry's DOI
 # must resolve (the check doi2bib performs). Only the created/modified files are
 # checked. Bypass in an emergency with `git commit --no-verify`.
-mapfile -t BIBS < <(git diff --cached --name-only --diff-filter=ACMR \
+# Read matching paths into BIBS. Avoid `mapfile` (Bash 4+); macOS ships Bash 3.2.
+BIBS=()
+while IFS= read -r line; do
+  [ -n "$line" ] && BIBS+=("$line")
+done < <(git diff --cached --name-only --diff-filter=ACMR \
   -- '*/references.bib' 'references.bib')
 if [ "${#BIBS[@]}" -gt 0 ]; then
   echo "pre-commit: validating references in ${#BIBS[@]} references.bib file(s)..." >&2
