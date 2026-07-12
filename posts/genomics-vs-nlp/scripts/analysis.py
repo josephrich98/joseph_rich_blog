@@ -1,10 +1,12 @@
 """
 Analysis for: "Genomics Is Not NLP"
-Generates the figures used in main.md. Every number here is either
-combinatorial (k-mer counting, 4^-k), demographic (published per-genome variant
-counts), or an illustrative simulation (the mRNA-protein scatter). Nothing
-requires downloading a genome; the point is the arithmetic of redundancy,
-similarity-beyond-chance, the RNA-protein gap, and multiple testing.
+Generates the figures used in main.md. Most numbers here are combinatorial
+(k-mer counting, 4^-k) or demographic (published per-genome variant counts).
+The one empirical panel is the mRNA-protein scatter (Fig 3a), which plots real
+measured per-gene copy numbers from Schwanhaeusser et al. 2011 (bundled as a
+CSV in data/, so nothing is downloaded at runtime). The point throughout is the
+arithmetic of redundancy, similarity-beyond-chance, the RNA-protein gap, and
+multiple testing.
 
 Each panel is written to its own file so the post can embed panels
 independently:
@@ -21,13 +23,18 @@ Run:  python analysis.py   (writes PNGs into figures/)
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.stats import spearmanr
+from scipy.stats import spearmanr, pearsonr
 
 FIG = os.path.join(os.path.dirname(__file__), "figures")
 if not os.path.isdir(FIG):
     # when run from inside scripts/, write up one level into the post's figures/
     FIG = os.path.join(os.path.dirname(__file__), "..", "figures")
 os.makedirs(FIG, exist_ok=True)
+
+# Bundled data tables (real measured data used by Fig 3a).
+DATA = os.path.join(os.path.dirname(__file__), "data")
+if not os.path.isdir(DATA):
+    DATA = os.path.join(os.path.dirname(__file__), "..", "data")
 
 plt.rcParams.update({
     "figure.dpi": 150,
@@ -157,29 +164,41 @@ def fig_kmer():
 
 # --------------------------------------------------------------------------
 # Figure 3a: the proxy problem -- mRNA is a noisy proxy for protein
+#
+# Real measured data, not a simulation: per-gene mRNA and protein copy numbers
+# in mouse NIH3T3 fibroblasts from Schwanhaeusser et al. 2011 (Nature 473:337).
+# The tidy table lives in data/ so the figure reproduces with no download.
 # --------------------------------------------------------------------------
 def fig_proxy_scatter():
-    rng = np.random.default_rng(7)
-    n = 2000
-    z = rng.standard_normal(n)            # shared latent (true expression program)
-    log_mrna = z + 0.9 * rng.standard_normal(n)
-    log_prot = z + 1.4 * rng.standard_normal(n)   # protein adds translation/decay noise
-    rho, _ = spearmanr(log_mrna, log_prot)
+    import pandas as pd
+
+    csv = os.path.join(DATA, "schwanhausser_2011_nih3t3.csv")
+    df = pd.read_csv(csv, comment="#")
+    df = df[(df["mrna"] > 0) & (df["protein"] > 0)].dropna(subset=["mrna", "protein"])
+
+    # Spearman is rank-based (scale-free); Pearson is on log10 copies/cell.
+    rho, _ = spearmanr(df["mrna"], df["protein"])
+    r, _ = pearsonr(np.log10(df["mrna"]), np.log10(df["protein"]))
 
     fig, ax = plt.subplots(figsize=(6.0, 4.7))
-    ax.scatter(log_mrna, log_prot, s=6, color=NAVY, alpha=0.35, edgecolors="none")
-    ax.set_xlabel("mRNA abundance (log, arb. units)")
-    ax.set_ylabel("Protein abundance (log, arb. units)")
+    ax.scatter(df["mrna"], df["protein"], s=6, color=NAVY, alpha=0.35, edgecolors="none")
+    ax.set_xscale("log")
+    ax.set_yscale("log")
+    ax.set_xlabel("mRNA abundance (copies per cell)")
+    ax.set_ylabel("Protein abundance (copies per cell)")
     ax.set_title("mRNA is a noisy proxy for protein")
-    ax.text(0.04, 0.93, f"Spearman $\\rho$ = {rho:.2f}\n(illustrative; empirical 0.4–0.6)",
-            transform=ax.transAxes, va="top", fontsize=9.5,
+    ax.text(0.04, 0.96,
+            f"Spearman $\\rho$ = {rho:.2f}   Pearson $r$ = {r:.2f} (log)\n"
+            f"Schwanhäusser et al. 2011 · NIH3T3 · n = {len(df):,}",
+            transform=ax.transAxes, va="top", fontsize=9,
             bbox=dict(boxstyle="round", fc="white", ec="grey", alpha=0.8))
     fig.tight_layout()
     out = os.path.join(FIG, "proxy_scatter.png")
     fig.savefig(out)
     plt.close(fig)
     print("wrote", out)
-    print("  Spearman(mRNA, protein) = %.3f" % rho)
+    print("  n = %d genes; Spearman = %.3f; Pearson(log10) = %.3f (R^2 = %.3f)"
+          % (len(df), rho, r, r ** 2))
 
 
 # --------------------------------------------------------------------------

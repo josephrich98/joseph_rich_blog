@@ -183,6 +183,12 @@ outputs/
 tmp.*
 **/.lake
 posts/**/data
+# Exception: the genomics-vs-nlp Fig 3a plots one small (~90 KB) real-data table
+# (Schwanhäusser 2011 mRNA/protein copy numbers). Keep it tracked so the figure
+# reproduces from a clean clone with no download; the blanket ignore above is for
+# large download caches.
+!posts/genomics-vs-nlp/data/
+!posts/genomics-vs-nlp/data/*.csv
 .vercel
 CLAUDE.md
 .claude
