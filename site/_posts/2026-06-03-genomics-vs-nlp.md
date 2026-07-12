@@ -81,7 +81,7 @@ We've talked a lot about how genetic material can be represented as text for AI 
 ## Conclusion
 There have been exciting developments in genomics AI, and there is much to be done moving forward. ~40% of variants in cancer cases are still classified as variants of unknown significance<sup><a href="#ref-mellgard2024" role="doc-biblioref">31</a></sup>. When analyzing a cancer patient's mutations, it is still often impossible to distinguish the driver mutation from passenger mutations. The role of genomics outside of cancer and well-characterized genes characterized by single mutation/gene events is minimal in clinical practice. A single human scRNA-seq experiment often has thousands of cells, and tens of thousands of genes. In an atlas comprised of dozens or hundreds of datasets, there can be millions of cells, with various sources of batch effects. Continuing to develop models that can make sense of these data will be critical for advancing genomics research.
 
-# References
+## References
 
 <div id="refs" class="references csl-bib-body" role="list">
 <div id="ref-auton2015" class="csl-entry" role="listitem">

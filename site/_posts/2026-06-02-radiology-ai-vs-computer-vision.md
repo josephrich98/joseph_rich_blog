@@ -450,7 +450,7 @@ See the accompanying `notebook.ipynb` for the geometry, the stratification
 waterfall, the power calculations behind Figures 1–3, and an automated check
 that every citation below resolves.
 
-# References
+## References
 
 <div id="refs" class="references csl-bib-body" role="list">
 <div id="ref-clark2013" class="csl-entry" role="listitem">

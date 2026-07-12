@@ -342,7 +342,7 @@ def sync_post(name):
     # the article, above the reproduce footer. The <div id="refs"> block is
     # self-contained HTML, which kramdown passes through untouched.
     if bib_html:
-        body += "\n\n# References\n\n" + bib_html
+        body += "\n\n## References\n\n" + bib_html
 
     # The boilerplate "reproduce" footer is rendered by the single.html layout
     # (after {{ content }}) rather than being baked into the body here. This lets
