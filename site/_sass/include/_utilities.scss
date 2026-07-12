@@ -496,8 +496,11 @@ a.footnote {
   font-size: 0;
 
   &::before {
+    // Match the 75%-of-body size of the adjacent numeric citation superscripts
+    // (0.75 x 1em body = 12px); a fixed rem is required because the anchor is
+    // font-size: 0, so an em unit here would collapse to zero.
     content: counter(footnote-marker, footnote-symbols);
-    font-size: 0.7rem;
+    font-size: 0.75rem;
   }
 }
 
