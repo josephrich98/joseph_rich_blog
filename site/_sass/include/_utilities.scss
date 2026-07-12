@@ -466,9 +466,39 @@ body:hover .visually-hidden button {
    Footnotes
    ========================================================================== */
 
+/* Footnote markers use the traditional typographic sequence (*, †, ‡, §, ‖, ¶,
+   then doubled: **, ††, …) instead of numbers, so a footnote reference is never
+   mistaken for one of the numeric [n] AMA reference citations. The `symbolic`
+   counter system repeats the glyphs once exhausted, so any number of footnotes
+   is handled. */
+@counter-style footnote-symbols {
+  system: symbolic;
+  symbols: "*" "\2020" "\2021" "\A7" "\2016" "\B6";
+  suffix: "";
+}
+
 .footnote {
   color: var(--global-text-color-light);
   text-decoration: none;
+}
+
+/* Inline footnote reference: hide kramdown's numeric label and render the
+   matching symbol via a counter that advances once per reference. */
+.page__content {
+  counter-reset: footnote-marker;
+}
+
+sup[role="doc-noteref"] {
+  counter-increment: footnote-marker;
+
+  a.footnote {
+    font-size: 0;
+
+    &::before {
+      content: counter(footnote-marker, footnote-symbols);
+      font-size: 0.7rem;
+    }
+  }
 }
 
 .footnotes {
@@ -488,6 +518,12 @@ body:hover .visually-hidden button {
 
   ol {
     margin-top: 0;
+    padding-left: 1.5em;
+    list-style-type: footnote-symbols;
+  }
+
+  li::marker {
+    color: var(--global-text-color-light);
   }
 
   ol, li, p {
