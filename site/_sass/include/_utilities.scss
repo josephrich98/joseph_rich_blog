@@ -483,21 +483,21 @@ body:hover .visually-hidden button {
 }
 
 /* Inline footnote reference: hide kramdown's numeric label and render the
-   matching symbol via a counter that advances once per reference. */
+   matching symbol via a counter that advances once per reference. kramdown 2.5
+   emits `role="doc-noteref"` on the <a> itself, whereas 2.3 put it on the
+   wrapping <sup>; target the anchor by its `footnote` class instead — the one
+   attribute stable across kramdown versions — so the rule matches either way. */
 .page__content {
   counter-reset: footnote-marker;
 }
 
-sup[role="doc-noteref"] {
+a.footnote {
   counter-increment: footnote-marker;
+  font-size: 0;
 
-  a.footnote {
-    font-size: 0;
-
-    &::before {
-      content: counter(footnote-marker, footnote-symbols);
-      font-size: 0.7rem;
-    }
+  &::before {
+    content: counter(footnote-marker, footnote-symbols);
+    font-size: 0.7rem;
   }
 }
 
