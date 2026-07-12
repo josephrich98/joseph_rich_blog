@@ -2,6 +2,7 @@
 title: "How This Blog Is Built: A Reproducible Pipeline for Scientific Writing"
 date: 2026-06-01
 permalink: /posts/2026/06/how-this-blog-is-built/
+repro_url: https://github.com/josephrich98/joseph_rich_blog/tree/main/posts/2026-06-01-how-this-blog-is-built
 excerpt: "A description of the tech stack behind joseph-rich.com. Writing blog posts is as simple as writing a markdown file and Jupyter notebook, committing, and pushing to GitHub. Everything else is automated: site generation and deployment, notebook testing, and CI/CD."
 tags:
   - blogging
@@ -11,12 +12,13 @@ tags:
 toc: true
 comments: true
 ---
-<!-- Generated from posts/how-this-blog-is-built/main.md by scripts/sync_posts.py. Do not edit here; edit the source and re-commit. -->
+<!-- Generated from posts/2026-06-01-how-this-blog-is-built/main.md by scripts/sync_posts.py. Do not edit here; edit the source and re-commit. -->
 
 
 I’ve decided to make my first post on my blog a bit of a meta-post. The purpose of this post is to describe how I built my personal website, including the decisions that went into various design components. This post serves as a reference for anyone looking to design a similar website.
 
 ![**Figure 1.**](figures/pipeline.png)
+
 Blog writing workflow. Blue = manual; black = automatic.
 
 
@@ -79,9 +81,3 @@ This setup allows maintaining the blog to be effortless from a technical standpo
 Behind the scenes, the notebook is verified to run, the Markdown is converted to HTML, and the site is deployed. The setup is completely free besides the minimal domain hosting cost (which can also be eliminated by using the free Vercel or GitHub Pages subdomain). There is site protection, analytics, version control, and automated testing and deployment. And everything can be fully controlled from the command line.
 
 You know what they say: "If you want to change the world, start off by streamlining your website."
-
----
-
-*Reproduce all analyses in this post [here](https://github.com/josephrich98/joseph_rich_blog/tree/main/posts/how-this-blog-is-built).*
-
-*All writing is my own. AI was not used to write this post.*

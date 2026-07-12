@@ -41,7 +41,7 @@ scripts/download_eisvogel.sh v3.4.0     # or pin an explicit version
 Build a post's PDF (requires `pandoc` and a LaTeX engine such as `xelatex`/`pdflatex`):
 
 ```bash
-cd posts/radiology-ai-vs-computer-vision
+cd posts/2026-06-02-radiology-ai-vs-computer-vision
 pandoc main.md -o main.pdf \
   --from markdown \
   --template ../../templates/eisvogel.latex \
@@ -65,8 +65,12 @@ for the full list of variables.
 ## 🌐 Publishing posts to the website
 
 Each `posts/<name>/main.md` is automatically converted into a Jekyll blog post at
-`site/_posts/YYYY-MM-DD-<name>.md` so it appears on
-[joseph-rich.com](https://joseph-rich.com). The conversion is done by
+`site/_posts/YYYY-MM-DD-<slug>.md` so it appears on
+[joseph-rich.com](https://joseph-rich.com). Post directories are named
+`YYYY-MM-DD-<name>`, matching the generated filename and the
+`site/images/posts/<name>/` figure folder; the leading date is stripped only to
+form the dateless `<slug>` used in the permalink URL, and the date in the output
+filename comes from the front matter. The conversion is done by
 [`scripts/sync_posts.py`](scripts/sync_posts.py), which:
 
 - maps the post's front matter (`title`, `date`, optional `excerpt`/`tags`/`toc`)

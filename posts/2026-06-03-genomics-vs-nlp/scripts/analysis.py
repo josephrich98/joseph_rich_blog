@@ -2,9 +2,9 @@
 Analysis for: "Genomics Is Not NLP"
 Generates the figures used in main.md. Most numbers here are combinatorial
 (k-mer counting, 4^-k) or demographic (published per-genome variant counts).
-The one empirical panel is the mRNA-protein scatter (Fig 3a), which plots real
-measured per-gene copy numbers from Schwanhaeusser et al. 2011 (bundled as a
-CSV in data/, so nothing is downloaded at runtime). The point throughout is the
+The one empirical panel is the mRNA-protein scatter (Fig 3a), which downloads
+real measured per-gene copy numbers from Schwanhaeusser et al. 2011 (the paper's
+Supplementary Table S1) and caches them in data/. The point throughout is the
 arithmetic of redundancy, similarity-beyond-chance, the RNA-protein gap, and
 multiple testing.
 
@@ -23,7 +23,7 @@ Run:  python analysis.py   (writes PNGs into figures/)
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.stats import spearmanr, pearsonr
+from scipy.stats import pearsonr
 
 FIG = os.path.join(os.path.dirname(__file__), "figures")
 if not os.path.isdir(FIG):
@@ -31,7 +31,7 @@ if not os.path.isdir(FIG):
     FIG = os.path.join(os.path.dirname(__file__), "..", "figures")
 os.makedirs(FIG, exist_ok=True)
 
-# Bundled data tables (real measured data used by Fig 3a).
+# Data cache dir (Fig 3a downloads its real data table here; git-ignored).
 DATA = os.path.join(os.path.dirname(__file__), "data")
 if not os.path.isdir(DATA):
     DATA = os.path.join(os.path.dirname(__file__), "..", "data")
@@ -167,38 +167,69 @@ def fig_kmer():
 #
 # Real measured data, not a simulation: per-gene mRNA and protein copy numbers
 # in mouse NIH3T3 fibroblasts from Schwanhaeusser et al. 2011 (Nature 473:337).
-# The tidy table lives in data/ so the figure reproduces with no download.
+# We download the paper's Supplementary Table S1 (Excel) from the publisher and
+# cache a tidy CSV in data/ (git-ignored), so a fresh clone regenerates it.
 # --------------------------------------------------------------------------
-def fig_proxy_scatter():
+SCHWANHAUSSER_XLS_URL = (
+    "https://static-content.springer.com/esm/art%3A10.1038%2Fnature10098"
+    "/MediaObjects/41586_2011_BFnature10098_MOESM304_ESM.xls"
+)
+
+
+def load_schwanhausser():
+    """Return a DataFrame(gene, mrna, protein) in copies/cell, caching to data/."""
     import pandas as pd
 
+    os.makedirs(DATA, exist_ok=True)
     csv = os.path.join(DATA, "schwanhausser_2011_nih3t3.csv")
-    df = pd.read_csv(csv, comment="#")
-    df = df[(df["mrna"] > 0) & (df["protein"] > 0)].dropna(subset=["mrna", "protein"])
+    if not os.path.exists(csv):
+        import urllib.request
 
-    # Spearman is rank-based (scale-free); Pearson is on log10 copies/cell.
-    rho, _ = spearmanr(df["mrna"], df["protein"])
-    r, _ = pearsonr(np.log10(df["mrna"]), np.log10(df["protein"]))
+        raw_xls = os.path.join(DATA, "nature10098_S1.xls")
+        if not os.path.exists(raw_xls):
+            print("  downloading Schwanhäusser 2011 Supplementary Table S1 ...")
+            req = urllib.request.Request(
+                SCHWANHAUSSER_XLS_URL, headers={"User-Agent": "Mozilla/5.0"}
+            )
+            with urllib.request.urlopen(req, timeout=60) as resp, open(raw_xls, "wb") as fh:
+                fh.write(resp.read())
+        raw = pd.read_excel(raw_xls, sheet_name="Sheet1")  # needs xlrd for .xls
+        col = lambda p: next(c for c in raw.columns if c.startswith(p))
+        df = pd.DataFrame({
+            "gene": raw[col("Gene Names")].astype(str).str.split(";").str[0],
+            "mrna": pd.to_numeric(raw[col("mRNA copy number average")], errors="coerce"),
+            "protein": pd.to_numeric(raw[col("Protein copy number average")], errors="coerce"),
+        })
+        df = df[(df["mrna"] > 0) & (df["protein"] > 0)].dropna()
+        df.to_csv(csv, index=False)
+    return pd.read_csv(csv)
+
+
+def fig_proxy_scatter():
+    df = load_schwanhausser()
+
+    lx, ly = np.log10(df["mrna"]), np.log10(df["protein"])
+    r, _ = pearsonr(lx, ly)                      # Pearson on log10 copies/cell
+    slope, intercept = np.polyfit(lx, ly, 1)     # best-fit line in log-log space
 
     fig, ax = plt.subplots(figsize=(6.0, 4.7))
     ax.scatter(df["mrna"], df["protein"], s=6, color=NAVY, alpha=0.35, edgecolors="none")
+    xs = np.array([lx.min(), lx.max()])
+    ax.plot(10 ** xs, 10 ** (intercept + slope * xs), color=CRIMSON, lw=2,
+            label=f"best fit (Pearson $r$ = {r:.2f})")
     ax.set_xscale("log")
     ax.set_yscale("log")
     ax.set_xlabel("mRNA abundance (copies per cell)")
     ax.set_ylabel("Protein abundance (copies per cell)")
     ax.set_title("mRNA is a noisy proxy for protein")
-    ax.text(0.04, 0.96,
-            f"Spearman $\\rho$ = {rho:.2f}   Pearson $r$ = {r:.2f} (log)\n"
-            f"Schwanhäusser et al. 2011 · NIH3T3 · n = {len(df):,}",
-            transform=ax.transAxes, va="top", fontsize=9,
-            bbox=dict(boxstyle="round", fc="white", ec="grey", alpha=0.8))
+    ax.legend(loc="upper left", fontsize=10, framealpha=0.9)
     fig.tight_layout()
     out = os.path.join(FIG, "proxy_scatter.png")
     fig.savefig(out)
     plt.close(fig)
     print("wrote", out)
-    print("  n = %d genes; Spearman = %.3f; Pearson(log10) = %.3f (R^2 = %.3f)"
-          % (len(df), rho, r, r ** 2))
+    print("  n = %d genes; Pearson(log10) = %.3f; slope = %.3f"
+          % (len(df), r, slope))
 
 
 # --------------------------------------------------------------------------

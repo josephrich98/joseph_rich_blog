@@ -12,7 +12,7 @@ This repository contains the code and content that accompanies the blog posts on
   giscus comments, and Vercel deployment. See [`site/README.md`](site/README.md)
   for local dev and the one-time giscus/Vercel setup.
 
-- `posts/` – One directory per blog post (e.g. `posts/radiology-ai-vs-computer-vision/`), plus a `posts/template/` scaffold for starting a new one. Each post directory contains:
+- `posts/` – One directory per blog post, named `YYYY-MM-DD-<slug>` after the post's date and slug (e.g. `posts/2026-06-02-radiology-ai-vs-computer-vision/`) so it sorts chronologically and mirrors the generated `site/_posts/YYYY-MM-DD-<slug>.md`, plus a `posts/template/` scaffold for starting a new one. Each post directory contains:
   - `notebook.ipynb` – the Jupyter notebook with the analyses and examples for that post.
   - `main.md` – the Markdown source for the written article. Rendered to PDF with the Eisvogel template **and** auto-published to the website.
   - `figures/` – generated plots (PNG/PDF) referenced by the post.
@@ -36,7 +36,7 @@ Each post is self-contained: its `requirements.txt`, `environment.yml`, and
 Create the environment from the post you want to run:
 
 ```bash
-cd posts/radiology-ai-vs-computer-vision
+cd posts/2026-06-02-radiology-ai-vs-computer-vision
 conda env create -f environment.yml
 conda activate radiology-ai-vs-computer-vision  # as specified in environment.yml
 jupyter notebook
@@ -48,7 +48,7 @@ If you'd rather not use Conda, the post's `requirements.txt` holds the same pinn
 pip packages, so you can install into any Python 3.10 virtual environment instead:
 
 ```bash
-cd posts/radiology-ai-vs-computer-vision
+cd posts/2026-06-02-radiology-ai-vs-computer-vision
 pip install -r requirements.txt
 jupyter notebook
 ```
@@ -61,7 +61,7 @@ If you prefer to run a post's notebook in a containerized environment, you can u
 Each post ships its own `Dockerfile`, tailored to that post (it creates and registers a
 conda env/kernel named after the post). Build from inside the post directory:
 ```bash
-cd posts/radiology-ai-vs-computer-vision
+cd posts/2026-06-02-radiology-ai-vs-computer-vision
 docker build -t radiology-ai-vs-computer-vision .
 docker run -p 8888:8888 -v "$(pwd):/home/jovyan/work" radiology-ai-vs-computer-vision
 ```

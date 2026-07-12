@@ -2,6 +2,7 @@
 title: "Radiology AI Is Not Computer Vision: A Field Guide for ML Scientists"
 date: 2026-06-02
 permalink: /posts/2026/06/radiology-ai-vs-computer-vision/
+repro_url: https://github.com/josephrich98/joseph_rich_blog/tree/main/posts/2026-06-02-radiology-ai-vs-computer-vision
 excerpt: "A field guide for ML scientists moving into radiology: what is genuinely easier than natural images, where computer-vision intuitions misfire, the data and labels you can actually get, how the FDA regulates these models, and why the model in the paper is rarely the one that ships."
 tags:
   - machine learning
@@ -11,7 +12,7 @@ tags:
 toc: true
 comments: true
 ---
-<!-- Generated from posts/radiology-ai-vs-computer-vision/main.md by scripts/sync_posts.py. Do not edit here; edit the source and re-commit. -->
+<!-- Generated from posts/2026-06-02-radiology-ai-vs-computer-vision/main.md by scripts/sync_posts.py. Do not edit here; edit the source and re-commit. -->
 
 
 # Why a computer-vision expert's intuitions misfire
@@ -492,9 +493,3 @@ that every citation below resolves.
 <div class="csl-left-margin">13. </div><div class="csl-right-inline">AlBadawy EA, Saha A, Mazurowski MA. Deep learning for segmentation of brain tumors: Impact of cross-institutional training and testing. <em>Medical Physics</em>. 2018;45(3):1150-1158. doi:<a href="https://doi.org/10.1002/mp.12752">10.1002/mp.12752</a></div>
 </div>
 </div>
-
----
-
-*Reproduce all analyses in this post [here](https://github.com/josephrich98/joseph_rich_blog/tree/main/posts/radiology-ai-vs-computer-vision).*
-
-*All writing is my own. AI was not used to write this post.*
