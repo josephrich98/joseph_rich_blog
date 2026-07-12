@@ -21,6 +21,7 @@ listings: true
 I’ve decided to make my first post on my blog a bit of a meta-post. The purpose of this post is to describe how I built my personal website, including the decisions that went into various design components. This post serves as a reference for anyone looking to design a similar website.
 
 ![**Figure 1.**](figures/pipeline.png)
+
 Blog writing workflow. Blue = manual; black = automatic.
 
 

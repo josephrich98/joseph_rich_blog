@@ -19,7 +19,11 @@ git add "$ROOT/site/_posts" "$ROOT/site/images/posts" 2>/dev/null || true
 # Validate every reference in any staged references.bib file: each entry's DOI
 # must resolve (the check doi2bib performs). Only the created/modified files are
 # checked. Bypass in an emergency with `git commit --no-verify`.
-mapfile -t BIBS < <(git diff --cached --name-only --diff-filter=ACMR \
+# Read matching paths into BIBS. Avoid `mapfile` (Bash 4+); macOS ships Bash 3.2.
+BIBS=()
+while IFS= read -r line; do
+  [ -n "$line" ] && BIBS+=("$line")
+done < <(git diff --cached --name-only --diff-filter=ACMR \
   -- '*/references.bib' 'references.bib')
 if [ "${#BIBS[@]}" -gt 0 ]; then
   echo "pre-commit: validating references in ${#BIBS[@]} references.bib file(s)..." >&2
@@ -30,3 +34,28 @@ if [ "${#BIBS[@]}" -gt 0 ]; then
     exit 1
   fi
 fi
+
+# Warn (never block) when a staged notebook.ipynb is newer than every figure it
+# produces, which usually means the analysis changed but figures/ was not
+# re-exported. This is a heuristic (mtime-based), so it only warns — re-run the
+# notebook if the figures are genuinely stale.
+NBS=()
+while IFS= read -r line; do
+  [ -n "$line" ] && NBS+=("$line")
+done < <(git diff --cached --name-only --diff-filter=ACMR \
+  -- '*/notebook.ipynb' 'notebook.ipynb')
+for nb in "${NBS[@]:-}"; do
+  [ -n "$nb" ] || continue
+  nb_path="$ROOT/$nb"
+  fig_dir="$(dirname "$nb_path")/figures"
+  [ -d "$fig_dir" ] || continue
+  # Skip posts with no figure files at all — nothing to be stale against.
+  if [ -z "$(find "$fig_dir" -type f -print -quit 2>/dev/null)" ]; then
+    continue
+  fi
+  # If no figure is newer than the notebook, the notebook post-dates them all.
+  if [ -z "$(find "$fig_dir" -type f -newer "$nb_path" -print -quit 2>/dev/null)" ]; then
+    echo "pre-commit: warning: '$nb' is newer than everything in $(dirname "$nb")/figures/;" >&2
+    echo "            re-run the notebook if its figures are out of date (this is a warning only)." >&2
+  fi
+done

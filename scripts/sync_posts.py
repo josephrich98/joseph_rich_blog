@@ -2,10 +2,13 @@
 """Sync blog posts from posts/<name>/main.md into site/_posts/.
 
 Each post lives in its own directory under posts/ (alongside its notebook,
-figures, and the per-post Dockerfile/environment.yml). The written article is
-posts/<name>/main.md, authored in pandoc/Eisvogel Markdown so it can also be
-rendered to PDF. This script converts each main.md into a Jekyll blog post at
-site/_posts/YYYY-MM-DD-<name>.md so it shows up on the website.
+figures, and the per-post Dockerfile/environment.yml). The directory is named
+either <slug> or <YYYY-MM-DD>-<slug> (the latter mirrors the site/_posts naming
+so both trees sort chronologically); the leading date, if present, is stripped
+to recover the slug. The written article is posts/<name>/main.md, authored in
+pandoc/Eisvogel Markdown so it can also be rendered to PDF. This script converts
+each main.md into a Jekyll blog post at site/_posts/YYYY-MM-DD-<slug>.md (the
+date coming from the front matter) so it shows up on the website.
 
 It is idempotent: re-running regenerates the same output. It is invoked
 automatically by the committed pre-commit hook (.githooks/pre-commit), and can
@@ -312,6 +315,15 @@ def sync_post(name):
         return None
     year, month = m.group(1), m.group(2)
 
+    # The post directory is named "<YYYY-MM-DD>-<slug>" (mirroring the generated
+    # site/_posts/<YYYY-MM-DD>-<slug>.md so both trees sort chronologically); a
+    # bare "<slug>" with no date prefix is still accepted. The full directory
+    # name (`name`) is what the post is known by — it names the output file and
+    # the site/images/posts/<name>/ figure folder. The date is stripped only to
+    # form the `slug` used in the (dateless) permalink URL.
+    dm = re.match(r"^\d{4}-\d{2}-\d{2}-(.+)$", name)
+    slug = dm.group(1) if dm else name
+
     # Resolve [@key] citations against references.bib (if any) before the other
     # transforms; bib_html (the formatted reference list) is appended at the end.
     body, bib_html = resolve_citations(name, src_dir, body)
@@ -330,21 +342,22 @@ def sync_post(name):
     # the article, above the reproduce footer. The <div id="refs"> block is
     # self-contained HTML, which kramdown passes through untouched.
     if bib_html:
-        body += "\n\n# References\n\n" + bib_html
+        body += "\n\n## References\n\n" + bib_html
 
-    # Boilerplate footer linking to the post's source folder (notebook, data,
-    # scripts) so readers can reproduce the analyses.
-    body += (
-        f"\n\n---\n\n*Reproduce all analyses in this post "
-        f"[here]({REPO_URL}/tree/main/posts/{name}).*\n"
-        f"\n*All writing is my own. AI was not used to write this post.*\n"
-    )
+    # The boilerplate "reproduce" footer is rendered by the single.html layout
+    # (after {{ content }}) rather than being baked into the body here. This lets
+    # kramdown's auto-generated footnotes list — which it always emits at the very
+    # end of the content — sit above the footer instead of below it, giving the
+    # order: article -> References -> footnotes -> reproduce footer. The source
+    # folder URL is passed to the layout via the `repro_url` front-matter field.
+    repro_url = f"{REPO_URL}/tree/main/posts/{name}"
 
     # Build Jekyll front matter
     out_fm = ['---']
     out_fm.append(f'title: "{title}"')
     out_fm.append(f"date: {date}")
-    out_fm.append(f"permalink: /posts/{year}/{month}/{name}/")
+    out_fm.append(f"permalink: /posts/{year}/{month}/{slug}/")
+    out_fm.append(f"repro_url: {repro_url}")
     if fm.get("excerpt"):
         out_fm.append(f'excerpt: "{fm["excerpt"]}"')
     tags = fm.get("tags")
@@ -361,7 +374,7 @@ def sync_post(name):
         content += "\n"
 
     os.makedirs(OUT_DIR, exist_ok=True)
-    out_path = os.path.join(OUT_DIR, f"{date}-{name}.md")
+    out_path = os.path.join(OUT_DIR, f"{date}-{slug}.md")
     rel_out = os.path.relpath(out_path, ROOT)
     prev = None
     if os.path.isfile(out_path):

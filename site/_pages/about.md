@@ -1,6 +1,7 @@
 ---
 permalink: /
 title: "About me"
+seo_title: "Joseph Rich"   # link-preview / browser-tab title (visible heading stays "About me")
 author_profile: true
 redirect_from:
   - /about/

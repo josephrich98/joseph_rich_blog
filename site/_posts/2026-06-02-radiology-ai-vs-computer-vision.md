@@ -2,6 +2,7 @@
 title: "Radiology AI Is Not Computer Vision: A Field Guide for ML Scientists"
 date: 2026-06-02
 permalink: /posts/2026/06/radiology-ai-vs-computer-vision/
+repro_url: https://github.com/josephrich98/joseph_rich_blog/tree/main/posts/2026-06-02-radiology-ai-vs-computer-vision
 excerpt: "A field guide for ML scientists moving into radiology: what is genuinely easier than natural images, where computer-vision intuitions misfire, the data and labels you can actually get, how the FDA regulates these models, and why the model in the paper is rarely the one that ships."
 tags:
   - machine learning
@@ -11,7 +12,7 @@ tags:
 toc: true
 comments: true
 ---
-<!-- Generated from posts/radiology-ai-vs-computer-vision/main.md by scripts/sync_posts.py. Do not edit here; edit the source and re-commit. -->
+<!-- Generated from posts/2026-06-02-radiology-ai-vs-computer-vision/main.md by scripts/sync_posts.py. Do not edit here; edit the source and re-commit. -->
 
 
 # Why a computer-vision expert's intuitions misfire
@@ -115,7 +116,7 @@ order-of-magnitude gap.
 on a log scale. Natural-image objects (blue) occupy $$10^{-3}$$ to $$10^{0}$$ of the
 frame. Clinically critical lesions (red/navy) sit at $$10^{-7}$$ to $$10^{-5}$$.
 This five-to-six order-of-magnitude difference is why naive pixel-wise losses
-and patch samplers fail in radiology.](/images/posts/radiology-ai-vs-computer-vision/needle_in_haystack.png)
+and patch samplers fail in radiology.](figures/needle_in_haystack.png)
 
 The consequences for an ML scientist are direct:
 
@@ -304,7 +305,7 @@ governs what you can conclude about that subgroup.
 ![**Figure 2.** The stratification waterfall. Each clinically reasonable filter
 multiplies the count down. The binding constraint is the number of *positive*
 (diseased) cases, which collapses fastest because disease is
-rare.](/images/posts/radiology-ai-vs-computer-vision/stratification_waterfall.png)
+rare.](figures/stratification_waterfall.png)
 
 Why 66 is a problem is pure sampling theory. Estimate a subgroup sensitivity
 (true positive rate) $$\hat{p}$$ from $$n$$ positive cases; its standard error is
@@ -342,7 +343,7 @@ findings are noise. You are squeezed from both sides.
 subgroup sensitivity estimate shrinks only as $$1/\sqrt{n}$$; at $$n=66$$ positives
 you have $$\pm 0.09$$ precision. **(b)** Power to detect a $$0.85 \to 0.75$$
 sensitivity drop: you need ~250 positives per group for 80% power, but the
-deepest subgroup has 66, giving ~30% power.](/images/posts/radiology-ai-vs-computer-vision/power_and_precision.png)
+deepest subgroup has 66, giving ~30% power.](figures/power_and_precision.png)
 
 The lesson is not "give up." It is to **plan evaluation as a power calculation
 from day one**: decide which subgroups are non-negotiable, estimate the positive
@@ -449,7 +450,7 @@ See the accompanying `notebook.ipynb` for the geometry, the stratification
 waterfall, the power calculations behind Figures 1–3, and an automated check
 that every citation below resolves.
 
-# References
+## References
 
 <div id="refs" class="references csl-bib-body" role="list">
 <div id="ref-clark2013" class="csl-entry" role="listitem">
@@ -492,9 +493,3 @@ that every citation below resolves.
 <div class="csl-left-margin">13. </div><div class="csl-right-inline">AlBadawy EA, Saha A, Mazurowski MA. Deep learning for segmentation of brain tumors: Impact of cross-institutional training and testing. <em>Medical Physics</em>. 2018;45(3):1150-1158. doi:<a href="https://doi.org/10.1002/mp.12752">10.1002/mp.12752</a></div>
 </div>
 </div>
-
----
-
-*Reproduce all analyses in this post [here](https://github.com/josephrich98/joseph_rich_blog/tree/main/posts/radiology-ai-vs-computer-vision).*
-
-*All writing is my own. AI was not used to write this post.*

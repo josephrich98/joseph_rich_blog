@@ -51,6 +51,12 @@ layout: default
       <section class="page__content" itemprop="text">
         {{ content }}
 
+        {% if page.repro_url %}
+          <hr class="repro-sep" />
+          <p class="repro-note"><em>Reproduce all analyses in this post <a href="{{ page.repro_url }}">here</a>.</em></p>
+          <p class="repro-note"><em>All writing is my own. AI was not used to write this post.</em></p>
+        {% endif %}
+
         {% if page.citation %}
           <p style="font-size: smaller">{{ page.citation }}{% if page.slidesurl or page.bibtexurl %}<br />{% if page.slidesurl %}<a href="{{ page.slidesurl }}">Download Slides</a>{% endif %}{% if page.slidesurl and page.bibtexurl %} | {% endif %}{% if page.bibtexurl %}<a href="{{ page.bibtexurl }}">Download Bibtex</a>{% endif %}{% endif %}</p>
         {% elsif page.slidesurl or page.bibtexurl %}
