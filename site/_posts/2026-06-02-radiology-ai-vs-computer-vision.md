@@ -3,7 +3,7 @@ title: "Radiology AI Is Not Computer Vision: A Field Guide for ML Scientists"
 date: 2026-06-02
 permalink: /posts/2026/06/radiology-ai-vs-computer-vision/
 repro_url: https://github.com/josephrich98/joseph_rich_blog/tree/main/posts/2026-06-02-radiology-ai-vs-computer-vision
-excerpt: "A field guide for ML scientists moving into radiology: what is genuinely easier than natural images, where computer-vision intuitions misfire, the data and labels you can actually get, how the FDA regulates these models, and why the model in the paper is rarely the one that ships."
+excerpt: "A field guide for ML scientists working in radiology imaging. How is radiology similar to standard computer vision, and how is it different? This post covers a radiology primer, some medical context that makes radiology data different from standard imaging, some widely-used radiology datasets, and some popular radiology AI models."
 tags:
   - machine learning
   - radiology

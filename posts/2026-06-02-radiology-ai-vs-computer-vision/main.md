@@ -7,7 +7,7 @@ csl: ../../templates/csl/american-medical-association.csl
 link-citations: true
 reference-section-title: References
 # Blog metadata (ignored by pandoc/Eisvogel; consumed by scripts/sync_posts.py)
-excerpt: "A field guide for ML scientists moving into radiology: what is genuinely easier than natural images, where computer-vision intuitions misfire, the data and labels you can actually get, how the FDA regulates these models, and why the model in the paper is rarely the one that ships."
+excerpt: "A field guide for ML scientists working in radiology imaging. How is radiology similar to standard computer vision, and how is it different? This post covers a radiology primer, some medical context that makes radiology data different from standard imaging, some widely-used radiology datasets, and some popular radiology AI models."
 tags:
   - machine learning
   - radiology
