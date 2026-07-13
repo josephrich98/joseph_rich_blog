@@ -3,13 +3,14 @@ title: "Genomics Is Not NLP: A Field Guide for ML Scientists"
 date: 2026-06-03
 permalink: /posts/2026/06/genomics-vs-nlp/
 repro_url: https://github.com/josephrich98/joseph_rich_blog/tree/main/posts/2026-06-03-genomics-vs-nlp
-excerpt: "A field guide for ML scientists moving into genomics and transcriptomics: why DNA only looks like text, why the whole species is one near-duplicate corpus, how regulation defeats the context window, the biology you cannot skip, why the molecule you sequence is not the one that acts, and what the famous foundation models do and don't solve."
+excerpt: "A field guide for ML scientists working in genomics. How is genomics similar to NLP, and how is it different? This post covers a molecular biology primer, some biological context that makes genomics data different from text, some widely-used genomics datasets, and some popular genomics AI models."
 tags:
   - machine learning
   - genomics
   - transcriptomics
   - natural language processing
   - computational biology
+  - bioinformatics
 toc: true
 comments: true
 ---
@@ -32,7 +33,7 @@ Any two English sentences or documents will contain vastly different structure. 
 
 [^refgenome]: The human reference genome disproportionately represents individuals of European ancestry, as these are the most widely available genomic data. Recent efforts have been made to create pan-genomes that better represent global diversity, most notably the Human Pangenome Reference Consortium's draft reference assembled from 47 genetically diverse individuals<sup><a href="#ref-liao2023" role="doc-biblioref">2</a></sup>.
 
-![**Figure 1**](figures/corpus_redundancy_a.png)
+![**Figure 1**](/images/posts/2026-06-03-genomics-vs-nlp/corpus_redundancy_a.png)
 
 **Figure 1**: Two members of the human species are near-duplicates. The fraction of positions that differ between two sequences, on a log scale: two humans differ at only ~$$10^{-3}$$ of positions and human versus chimpanzee at ~$$10^{-2}$$, whereas two random DNA strings differ at $$0.75$$ and two unrelated English documents at essentially every position. The within-species genomic "corpus" is roughly a thousandfold more redundant than text.
 
@@ -42,9 +43,9 @@ Genomics data can come from multiple sources. These include whole genome sequenc
 The protocol to sequence genomic data depends on the assay and technology, but they all share the isolation of genetic material, decomposition into small regions generally between 75-150 nucleotides (reads), amplification by polymerase chain reaction (PCR), and sequence readout. The reads (FASTQ file) are usually mapped to the reference genome (FASTA file) to produce a genome alignment (BAM, or Binary Alignment Map, file). For DNA, the variants can be extracted in a VCF (Variant Call Format) file. For RNA data, the count of each gene can be stored in a count matrix, where each row represents a sample (bulk RNA-seq) or cell (single-cell RNA-seq), and each column represents a gene.
 
 ## DNA, RNA, and protein
-I mentioned earlier that proteins are the real molecule of interest in the human body, so why do we measure RNA at all rather than measuring protein directly? One of the main reasons is that protein sequencing technology has simply lagged behind nucleotide sequencing technology in cost. The underlying assumption is that RNA levels correlate strongly with protein levels, so the former can be used as a proxy for the latter. However, this may be a stronger assumption than most would like to believe. Across many careful studies, the correlation between a gene’s mRNA level and its protein level is moderate at best — typically a Spearman ρ in the 0.4-0.6 range, and lower still when you look at changes over time rather than steady-state across genes. Schwanhäusser and colleagues found mRNA explained well under half the variance in protein abundance<sup><a href="#ref-schwanhausser2011" role="doc-biblioref">5</a></sup>; Vogel and Marcotte, Liu, Beyer and Aebersold, and Buccitelli and Selbach all converge on the same message — translation rates, protein half-lives, and post-translational regulation drive a large share of protein levels that mRNA simply does not see<sup><a href="#ref-vogel2012" role="doc-biblioref">6</a>–<a href="#ref-buccitelli2020" role="doc-biblioref">8</a></sup>. Edfors and colleagues showed the relationship is gene-specific<sup><a href="#ref-edfors2016" role="doc-biblioref">9</a></sup>: each gene has roughly its own mRNA-to-protein conversion factor, so a single global model is wrong per gene. Figure 2 shows the consequence in real data — even at the optimistic end of that range, knowing a gene’s mRNA leaves its protein level uncertain across a wide band.
+I mentioned earlier that proteins are the real molecule of interest in the human body, so why do we measure RNA at all rather than measuring protein directly? One of the main reasons is that protein sequencing technology has simply lagged behind nucleotide sequencing technology in cost. The underlying assumption is that RNA levels correlate strongly with protein levels, so the former can be used as a proxy for the latter. However, this may be a stronger assumption than most would like to believe. Across many careful studies, the correlation between a gene’s mRNA level and its protein level is moderate at best — typically a Spearman $$\rho$$ in the 0.4-0.6 range, and lower still when you look at changes over time rather than steady-state across genes. Schwanhäusser and colleagues found mRNA explained well under half the variance in protein abundance<sup><a href="#ref-schwanhausser2011" role="doc-biblioref">5</a></sup>; Vogel and Marcotte, Liu, Beyer and Aebersold, and Buccitelli and Selbach all converge on the same message — translation rates, protein half-lives, and post-translational regulation drive a large share of protein levels that mRNA simply does not see<sup><a href="#ref-vogel2012" role="doc-biblioref">6</a>–<a href="#ref-buccitelli2020" role="doc-biblioref">8</a></sup>. Edfors and colleagues showed the relationship is gene-specific<sup><a href="#ref-edfors2016" role="doc-biblioref">9</a></sup>: each gene has roughly its own mRNA-to-protein conversion factor, so a single global model is wrong per gene. Figure 2 shows the consequence in real data — even at the optimistic end of that range, knowing a gene’s mRNA leaves its protein level uncertain across a wide band.
 
-![**Figure 2**](figures/proxy_scatter.png)
+![**Figure 2**](/images/posts/2026-06-03-genomics-vs-nlp/proxy_scatter.png)
 
 **Figure 2**: mRNA is a noisy proxy for protein. Real per-gene mRNA and protein copy numbers in mouse NIH3T3 fibroblasts (Schwanhäusser et al. 2011; $$n=4{,}309$$ genes; Pearson $$r=0.62$$ on log abundances). The red line is the best fit; even so, protein scatters across two to three orders of magnitude at any given mRNA level, because translation and degradation are not observed in the RNA.
 

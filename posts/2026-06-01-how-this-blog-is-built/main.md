@@ -3,7 +3,7 @@ title: "How This Blog Is Built: A Reproducible Pipeline for Scientific Writing"
 author: "Joseph Rich"
 date: "2026-06-01"
 # Blog metadata (ignored by pandoc/Eisvogel; consumed by scripts/sync_posts.py)
-excerpt: "A description of the tech stack behind joseph-rich.com. Writing blog posts is as simple as writing a markdown file and Jupyter notebook, committing, and pushing to GitHub. Everything else is automated: site generation and deployment, notebook testing, and CI/CD."
+excerpt: "A description of the tech stack behind joseph-rich.com. Writing blog posts is as simple as writing a markdown file and pushing to GitHub. Everything else is automated: site generation and deployment, notebook testing, and CI/CD."
 tags:
   - blogging
   - open-source software
@@ -36,7 +36,7 @@ I use a pre-commit hook to convert blog post markdown files into pages on the si
 For static page generation, I use [Jekyll](https://jekyllrb.com/). Jekyll converts the pages of my website, including blog posts and selected publications, from Markdown to HTML. It also combines each page with reusable templates, stylesheets, and configuration files to generate the complete website. I use the theme [**academicpages**](https://github.com/academicpages/academicpages.github.io), a fork of [Minimal Mistakes](https://github.com/mmistakes/minimal-mistakes), because I like the appearance (nothing deep here). The resulting site consists entirely of static files, making it fast to load and requiring virtually no server-side infrastructure.
 
 ## File system
-All website content lives in the GitHub repository [josephrich98/joseph_rich_blog](￼https://github.com/josephrich98/joseph_rich_blog). Each blog post contains its own directory, named after the post title. 
+All website content lives in the GitHub repository [josephrich98/joseph_rich_blog](https://github.com/josephrich98/joseph_rich_blog). Each blog post contains its own directory, named after the post title. 
 
 ```text
 posts/<slug>/
