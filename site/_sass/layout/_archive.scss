@@ -48,6 +48,11 @@
   }
 }
 
+/* close the gap between a section heading/rule and its first item */
+hr + .list__item .archive__item-title {
+  margin-top: 0;
+}
+
 /* remove border*/
 .page__content {
 

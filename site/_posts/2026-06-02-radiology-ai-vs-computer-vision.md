@@ -15,27 +15,108 @@ comments: true
 <!-- Generated from posts/2026-06-02-radiology-ai-vs-computer-vision/main.md by scripts/sync_posts.py. Do not edit here; edit the source and re-commit. -->
 
 
-# Why a computer-vision expert's intuitions misfire
+## Radiology primer
+Radiology is the medical specialty that uses imaging to diagnose and treat disease. Radiological imaging allows for visualization of entire tissues or organs in the body, which differentiates radiology from cellular-based imaging that is common in genomics and pathology. The most common causes for radiology imaging trauma and injuries (broken bones, internal bleeding), cancer (tumor detection, staging, and monitoring), and chronic diseases (heart disease, liver disease, lung disease). 
 
-If you have trained a model on ImageNet, COCO, or a few hundred million
-Instagram photos, you have excellent instincts for natural-image vision. Most of
-those instincts are wrong — or at least dangerously incomplete — the moment you
-point them at a chest CT or a screening mammogram.
+Images are organized heirarchically. Each 2D image is called a slice, and a series of slices can be stacked to form a 3D volume, or a series. A study is comprised of one or more series, and a patient can have multiple studies. For instance, a patient may have a chest CT study with two series: one without contrast and one with contrast. One patient can have multiple studies over time, such as a chest CT study in 2020 and a follow-up chest CT study in 2022.
 
-This post is a field guide for machine-learning scientists moving into
-radiology. It is not a survey of architectures; the architectures are mostly the
-ones you already know (CNNs, U-Nets, vision transformers, increasingly
-foundation models). What changes is everything *around* the architecture: the
-statistics of the signal, the cost and meaning of a label, the data you can
-actually get, and — the part that quietly sinks most projects —
-**generalization across the bewildering heterogeneity of how medical images are
-produced.** I will end with the two things ML scientists most often discover too
-late: how the FDA actually regulates these models, and why the model in the
-paper is rarely the model that ships.
+The most common modalities are X-ray, CT, MRI, ultrasound, and nuclear medicine (PET/SPECT). X-ray and CT use ionizing radiation to produce images. The more signal a tissue blocks, the whiter it appears on the image. X-rays are commonly used for bone and chest imaging. A CT scan is a series of X-ray images taken from different angles and reconstructed into a 3D volume. There are three possible slice orientations: axial (top-down), coronal (front-back), and sagittal (side). CT is commonly used for chest, abdominal, and brain imaging. MRI uses magnetic fields and radio waves (the same technology as proton nuclear magnetic resonance), also capturing 3D volumes. MRI enables soft tissue visualization in higher detail compared to CT, and has the advantage of not using ionizing radiation. Ultrasound uses high-frequency sound waves, and is commonly used for obstetrics, cardiology, and abdominal imaging. Nuclear medicine uses radioactive tracers to visualize physiological processes, used in diagnostic procedures such as studying brain activity and thyroid function.
 
-A running theme: medical imaging is in some ways *easier* than natural-image
-vision, and leaning on those advantages is the difference between a model that
-demos well and one that survives contact with a second hospital.
+![**Figure 1**](/images/posts/2026-06-02-radiology-ai-vs-computer-vision/imaging_modalities.png)
+
+**Figure 1**: Imaging modalities. Made with ChatGPT.
+
+## Radiology and computer vision similarities and differences
+Let me blow your mind: radiology images are a type of image. They're a grid of pixels, just like any other image, even if it is less visually stimulating to look at a picture of lung opacities than a picture of a dog. This means that all the same computer vision architectures that work on natural images can be applied to radiology images.
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="figures/lung.jpg" height="240"><br>
+      <span style="font-style: normal;">Picture of lung opacities.</span><br>
+      <small style="color: gray;">
+        Source:
+        <a href="https://radiologyassistant.nl/chest/chest-x-ray/lung-disease">
+          Radiology Assistant
+        </a>
+      </small>
+    </td>
+    <td align="center">
+      <img src="figures/dog_in_suit.jpeg" height="240"><br>
+      <span style="font-style: normal;">Picture of a dog in a suit.</span><br>
+      <small style="color: gray;">
+        Source:
+        <a href="https://www.amazon.com/Rubies-unisex-Business-Costume-Multicolor/dp/B01C4K8334">
+          Rubies
+        </a>
+      </small>
+    </td>
+  </tr>
+</table>
+
+However, there are some important differences between radiology and natural images that make radiology a unique domain for machine learning.
+
+### Annotation requires domain expertise
+
+It takes substantial medical training even to recognize the anatomy in a radiology image, let alone to identify pathology. Patients can have substantial variability in their anatomy, which can make it dfficult to discern disease from normal variation. Tumors can come in all shapes and sizes, sometimes making them difficult to identify from surrounding tissue, cysts, or other benign findings. Some diseases have highly characteristic imaging appearances—for example, the boot-shaped heart of tetralogy of Fallot or the coffee bean sign of sigmoid volvulus. However, many diseases exhibit substantial variability across patients. For instance, pneumonia may appear as focal lobar consolidation, patchy multifocal opacities, diffuse interstitial infiltrates, or even be nearly occult on early imaging. This diversity makes medical image interpretation a challenging pattern-recognition task.
+
+### Most pixels are uninformative; a few pixels can make the difference
+In many computer vision tasks, the object of interest occupies a significant portion of the image. Think of a digit in an MNIST image, or a cat in a COCO image. In these cases, the object is large enough that it can be easily detected and classified by a model. In radiology, however, the finding is often a small fraction of the image, and the difference between a benign and malignant finding can be subtle. For example, a small pulmonary nodule may only occupy a few pixels in a CT scan, but its presence or absence can have significant clinical implications.
+
+![**Figure 1**](/images/posts/2026-06-02-radiology-ai-vs-computer-vision/needle_in_haystack.png)
+
+**Figure 1**: The fraction of an image that actually belongs to the finding,
+on a log scale. Natural-image objects (blue) occupy $$10^{-3}$$ to $$10^{0}$$ of the
+frame. Clinically critical lesions (red/navy) sit at $$10^{-7}$$ to $$10^{-5}$$.
+This five-to-six order-of-magnitude difference is why naive pixel-wise losses
+and patch samplers fail in radiology.
+
+As a concrete example, let's consider a chest CT scan. A chest CT of roughly $$512 \times 512 \times 320$$ voxels at $$0.7 \times 0.7 \times 1.0\,\text{mm}$$ contains about $$8.4 \times 10^7$$
+voxels. A clinically important $$5\,\text{mm}$$ pulmonary nodule is a sphere of
+volume $$\tfrac{4}{3}\pi r^3 \approx 65\,\text{mm}^3$$, or about $$134$$ voxels. The
+lesion is therefore
+
+$$
+\frac{134}{8.4\times 10^7} \approx 1.6 \times 10^{-6}
+$$
+
+of the volume — roughly one in six hundred thousand voxels. Figure 1 puts
+several findings on the same axis as natural-image objects; note the five-to-six
+order-of-magnitude gap.
+
+This gap means that pixelwise accuracy is a poor metric for evaluating segmentation model performance. A segmentation model that predicts "no lesion" everywhere achieves $$1 - 1.6\times10^{-6} \approx 99.9998\%$$ voxel accuracy. Use overlap and detection metrics built for imbalance — Dice / $$F_1$$, where for prediction $$P$$ and ground truth $$G$$, $$\mathrm{Dice} = \frac{2|P \cap G|}{|P| + |G|},$$ free-response ROC (FROC) for detection, and class-balanced or region-based losses (Dice loss, Tversky, focal). The focal loss down-weights the easy negatives that otherwise dominate the gradient: $$\mathrm{FL}(p_t) = -(1-p_t)^{\gamma}\log p_t$$.
+
+This gap also means that image preprocessing may be necessary before passing through a model. Masking out uninformative regions of the image, such as the background or areas of normal tissue, can help the model focus on the relevant regions. Additionally, using multi-scale approaches or attention mechanisms can help the model capture small lesions that may be missed at a single scale.
+
+### Data are often scarce and heterogeneous
+Natural-image research has access to a wealth of images. ImageNet has 1.4 million images, InfiMNIST can generate effectively infinite images, and webscale datasets have billions of images. Radiology has a few public datasets with over 10,000 images, generally for chest x-ray and/or healthy patients, but most datasets are much smaller. As soon as one focuses on a particular disease, modality, or patient population, they will be hard-pressed to find more than a few hundred images. A few of the most popular public datasets are summarized in Table 1.
+
+| Dataset | Modality | Scale | Notes |
+| --- | --- | --- | --- |
+| **TCIA** (The Cancer Imaging Archive) <sup><a href="#ref-clark2013" role="doc-biblioref">1</a></sup> | CT/MR/PET, many | Umbrella of 100+ collections | The host for most public oncology imaging, incl. LIDC-IDRI, BraTS sources |
+| **MIMIC-CXR** <sup><a href="#ref-johnson2019" role="doc-biblioref">2</a></sup> | Chest X-ray | 377,110 images / 227,835 studies / 65,379 patients | Single US center; paired free-text reports |
+| **CheXpert** <sup><a href="#ref-irvin2019" role="doc-biblioref">3</a></sup> | Chest X-ray | 224,316 images / 65,240 patients | Stanford; 14 NLP-mined labels with uncertainty |
+| **ChestX-ray14** (NIH) <sup><a href="#ref-wang2017" role="doc-biblioref">4</a></sup> | Chest X-ray | 112,120 images / 30,805 patients | 14 labels mined from reports |
+| **PadChest** <sup><a href="#ref-bustos2020" role="doc-biblioref">5</a></sup> | Chest X-ray | 160,868 images / ~67,000 patients | Spanish; 174 findings, multi-view |
+| **LIDC-IDRI** <sup><a href="#ref-armato2011" role="doc-biblioref">6</a></sup> | Chest CT | 1,018 scans | 4-radiologist nodule annotations |
+| **BraTS / TCGA glioma** <sup><a href="#ref-bakas2017" role="doc-biblioref">7</a>,<a href="#ref-menze2015" role="doc-biblioref">8</a></sup> | Brain MRI (4 sequences) | hundreds of cases | Expert tumor segmentations; the benchmark for glioma |
+| **RSNA ICH** | Head CT | >25,000 exams | Intracranial hemorrhage, 60+ radiologist labelers |
+| **EMBED** <sup><a href="#ref-jeong2023" role="doc-biblioref">9</a></sup> | Mammography (2D/DBT) | 3.4M images / ~110,000 patients | Racially balanced; 20% public via AWS |
+| **fastMRI** <sup><a href="#ref-knoll2020" role="doc-biblioref">10</a></sup> | Knee/brain MRI | >1,500 knee + ~7,000 brain raw studies | Raw *k*-space — for reconstruction research |
+| **UK Biobank imaging** <sup><a href="#ref-littlejohns2020" role="doc-biblioref">11</a></sup> | Whole-body MRI/DXA | 100,000 participants | Population cohort, healthy-skewed; access-controlled |
+| **RadImageNet** <sup><a href="#ref-meiRadImageNetOpenRadiologic2022" role="doc-biblioref">12</a></sup> | CT, MRI, US | 1.35M images / 131,872 patients | Multi-center |
+
+Datasets tend to be smaller due to patient privacy, difficulty in recruiting patients with uncommon conditions, and need for expert annotation. These same considerations also mean that some datasets are only available upon request or application. If you like filling out IRB applications, you've chosen the right field.
+
+It is up to the machine learning practicioner to decide 
+
+### It's not all bad
+I don't want to be a Debbie Downer. There are some aspects of radiology that make it easier than natural images! 
+
+For instance, radiology images are often acquired in a standardized way, with consistent positioning and orientation. 
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 
 # What is genuinely easier than natural images
 
@@ -116,7 +197,7 @@ order-of-magnitude gap.
 on a log scale. Natural-image objects (blue) occupy $$10^{-3}$$ to $$10^{0}$$ of the
 frame. Clinically critical lesions (red/navy) sit at $$10^{-7}$$ to $$10^{-5}$$.
 This five-to-six order-of-magnitude difference is why naive pixel-wise losses
-and patch samplers fail in radiology.](figures/needle_in_haystack.png)
+and patch samplers fail in radiology.](/images/posts/2026-06-02-radiology-ai-vs-computer-vision/needle_in_haystack.png)
 
 The consequences for an ML scientist are direct:
 
@@ -260,12 +341,12 @@ by institution. Here is the catalogue of what actually shifts:
 - **Protocol and positioning.** Portable vs. fixed units, supine vs. upright,
   inspiration depth, pediatric protocols, post-surgical hardware.
 
-The canonical demonstration is Zech et al.<sup><a href="#ref-zech2018" role="doc-biblioref">12</a></sup>: CNNs trained to detect
+The canonical demonstration is Zech et al.<sup><a href="#ref-zech2018" role="doc-biblioref">13</a></sup>: CNNs trained to detect
 pneumonia on chest radiographs generalized *worse* to outside hospitals than
 internal test performance suggested, and the models had learned to detect the
 *hospital system and even the department* — exploiting that a portable scanner
 marker or a prevalence difference correlated with disease. The same pattern
-shows up in segmentation: AlBadawy et al.<sup><a href="#ref-albadawy2018" role="doc-biblioref">13</a></sup> found glioma-segmentation
+shows up in segmentation: AlBadawy et al.<sup><a href="#ref-albadawy2018" role="doc-biblioref">14</a></sup> found glioma-segmentation
 performance dropped measurably when training and test institutions differed.
 This is shortcut learning, and it is rampant precisely because the spurious
 features (scanner, view, burned-in markers) are *so* predictable.
@@ -305,7 +386,7 @@ governs what you can conclude about that subgroup.
 ![**Figure 2.** The stratification waterfall. Each clinically reasonable filter
 multiplies the count down. The binding constraint is the number of *positive*
 (diseased) cases, which collapses fastest because disease is
-rare.](figures/stratification_waterfall.png)
+rare.](/images/posts/2026-06-02-radiology-ai-vs-computer-vision/stratification_waterfall.png)
 
 Why 66 is a problem is pure sampling theory. Estimate a subgroup sensitivity
 (true positive rate) $$\hat{p}$$ from $$n$$ positive cases; its standard error is
@@ -343,7 +424,7 @@ findings are noise. You are squeezed from both sides.
 subgroup sensitivity estimate shrinks only as $$1/\sqrt{n}$$; at $$n=66$$ positives
 you have $$\pm 0.09$$ precision. **(b)** Power to detect a $$0.85 \to 0.75$$
 sensitivity drop: you need ~250 positives per group for 80% power, but the
-deepest subgroup has 66, giving ~30% power.](figures/power_and_precision.png)
+deepest subgroup has 66, giving ~30% power.](/images/posts/2026-06-02-radiology-ai-vs-computer-vision/power_and_precision.png)
 
 The lesson is not "give up." It is to **plan evaluation as a power calculation
 from day one**: decide which subgroups are non-negotiable, estimate the positive
@@ -486,10 +567,13 @@ that every citation below resolves.
 <div id="ref-littlejohns2020" class="csl-entry" role="listitem">
 <div class="csl-left-margin">11. </div><div class="csl-right-inline"><span class="nocase">Littlejohns TJ, Holliday J, Gibson LM, et al.</span> The <span>UK</span> <span>Biobank</span> imaging enhancement of 100,000 participants: Rationale, data collection, management and future directions. <em>Nature Communications</em>. 2020;11:2624. doi:<a href="https://doi.org/10.1038/s41467-020-15948-9">10.1038/s41467-020-15948-9</a></div>
 </div>
+<div id="ref-meiRadImageNetOpenRadiologic2022" class="csl-entry" role="listitem">
+<div class="csl-left-margin">12. </div><div class="csl-right-inline">Mei X, Liu Z, Robson PM, et al. <span>RadImageNet</span>: <span>An Open Radiologic Deep Learning Research Dataset</span> for <span>Effective Transfer Learning</span>. <em>Radiology Artificial Intelligence</em>. 2022;4(5):e210315. doi:<a href="https://doi.org/10.1148/ryai.210315">10.1148/ryai.210315</a></div>
+</div>
 <div id="ref-zech2018" class="csl-entry" role="listitem">
-<div class="csl-left-margin">12. </div><div class="csl-right-inline"><span class="nocase">Zech JR, Badgeley MA, Liu M, et al.</span> Variable generalization performance of a deep learning model to detect pneumonia in chest radiographs: A cross-sectional study. <em>PLoS Medicine</em>. 2018;15(11):e1002683. doi:<a href="https://doi.org/10.1371/journal.pmed.1002683">10.1371/journal.pmed.1002683</a></div>
+<div class="csl-left-margin">13. </div><div class="csl-right-inline"><span class="nocase">Zech JR, Badgeley MA, Liu M, et al.</span> Variable generalization performance of a deep learning model to detect pneumonia in chest radiographs: A cross-sectional study. <em>PLoS Medicine</em>. 2018;15(11):e1002683. doi:<a href="https://doi.org/10.1371/journal.pmed.1002683">10.1371/journal.pmed.1002683</a></div>
 </div>
 <div id="ref-albadawy2018" class="csl-entry" role="listitem">
-<div class="csl-left-margin">13. </div><div class="csl-right-inline">AlBadawy EA, Saha A, Mazurowski MA. Deep learning for segmentation of brain tumors: Impact of cross-institutional training and testing. <em>Medical Physics</em>. 2018;45(3):1150-1158. doi:<a href="https://doi.org/10.1002/mp.12752">10.1002/mp.12752</a></div>
+<div class="csl-left-margin">14. </div><div class="csl-right-inline">AlBadawy EA, Saha A, Mazurowski MA. Deep learning for segmentation of brain tumors: Impact of cross-institutional training and testing. <em>Medical Physics</em>. 2018;45(3):1150-1158. doi:<a href="https://doi.org/10.1002/mp.12752">10.1002/mp.12752</a></div>
 </div>
 </div>
