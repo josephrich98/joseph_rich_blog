@@ -91,20 +91,20 @@ This gap also means that image preprocessing may be necessary before passing thr
 ### Data are often scarce and heterogeneous
 Natural-image research has access to a wealth of images. ImageNet has 1.4 million images, InfiMNIST can generate effectively infinite images, and webscale datasets have billions of images. Radiology has a few public datasets with over 10,000 images, generally for chest x-ray and/or healthy patients, but most datasets are much smaller. As soon as one focuses on a particular disease, modality, or patient population, they will be hard-pressed to find more than a few hundred images. A few of the most popular public datasets are summarized in Table 1.
 
-| Dataset | Modality | Scale | Notes |
-| --- | --- | --- | --- |
-| **TCIA** (The Cancer Imaging Archive) <sup><a href="#ref-clark2013" role="doc-biblioref">1</a></sup> | CT/MR/PET, many | Umbrella of 100+ collections | The host for most public oncology imaging, incl. LIDC-IDRI, BraTS sources |
-| **MIMIC-CXR** <sup><a href="#ref-johnson2019" role="doc-biblioref">2</a></sup> | Chest X-ray | 377,110 images / 227,835 studies / 65,379 patients | Single US center; paired free-text reports |
-| **CheXpert** <sup><a href="#ref-irvin2019" role="doc-biblioref">3</a></sup> | Chest X-ray | 224,316 images / 65,240 patients | Stanford; 14 NLP-mined labels with uncertainty |
-| **ChestX-ray14** (NIH) <sup><a href="#ref-wang2017" role="doc-biblioref">4</a></sup> | Chest X-ray | 112,120 images / 30,805 patients | 14 labels mined from reports |
-| **PadChest** <sup><a href="#ref-bustos2020" role="doc-biblioref">5</a></sup> | Chest X-ray | 160,868 images / ~67,000 patients | Spanish; 174 findings, multi-view |
-| **LIDC-IDRI** <sup><a href="#ref-armato2011" role="doc-biblioref">6</a></sup> | Chest CT | 1,018 scans | 4-radiologist nodule annotations |
-| **BraTS / TCGA glioma** <sup><a href="#ref-bakas2017" role="doc-biblioref">7</a>,<a href="#ref-menze2015" role="doc-biblioref">8</a></sup> | Brain MRI (4 sequences) | hundreds of cases | Expert tumor segmentations; the benchmark for glioma |
-| **RSNA ICH** | Head CT | >25,000 exams | Intracranial hemorrhage, 60+ radiologist labelers |
-| **EMBED** <sup><a href="#ref-jeong2023" role="doc-biblioref">9</a></sup> | Mammography (2D/DBT) | 3.4M images / ~110,000 patients | Racially balanced; 20% public via AWS |
-| **fastMRI** <sup><a href="#ref-knoll2020" role="doc-biblioref">10</a></sup> | Knee/brain MRI | >1,500 knee + ~7,000 brain raw studies | Raw *k*-space — for reconstruction research |
-| **UK Biobank imaging** <sup><a href="#ref-littlejohns2020" role="doc-biblioref">11</a></sup> | Whole-body MRI/DXA | 100,000 participants | Population cohort, healthy-skewed; access-controlled |
-| **RadImageNet** <sup><a href="#ref-meiRadImageNetOpenRadiologic2022" role="doc-biblioref">12</a></sup> | CT, MRI, US | 1.35M images / 131,872 patients | Multi-center |
+| Dataset | Modality | Scale | Notes | Ref. |
+| --- | --- | --- | --- | --- |
+| **TCIA** (The Cancer Imaging Archive) | CT/MR/PET, many | Umbrella of 100+ collections | The host for most public oncology imaging, incl. LIDC-IDRI, BraTS sources |<sup><a href="#ref-clark2013" role="doc-biblioref">1</a></sup> |
+| **MIMIC-CXR** | Chest X-ray | 377,110 images / 227,835 studies / 65,379 patients | Single US center; paired free-text reports |<sup><a href="#ref-johnson2019" role="doc-biblioref">2</a></sup> |
+| **CheXpert** | Chest X-ray | 224,316 images / 65,240 patients | Stanford; 14 NLP-mined labels with uncertainty |<sup><a href="#ref-irvin2019" role="doc-biblioref">3</a></sup> |
+| **ChestX-ray14** (NIH) | Chest X-ray | 112,120 images / 30,805 patients | 14 labels mined from reports |<sup><a href="#ref-wang2017" role="doc-biblioref">4</a></sup> |
+| **PadChest** | Chest X-ray | 160,868 images / ~67,000 patients | Spanish; 174 findings, multi-view |<sup><a href="#ref-bustos2020" role="doc-biblioref">5</a></sup> |
+| **LIDC-IDRI** | Chest CT | 1,018 scans | 4-radiologist nodule annotations |<sup><a href="#ref-armato2011" role="doc-biblioref">6</a></sup> |
+| **BraTS / TCGA glioma** | Brain MRI (4 sequences) | hundreds of cases | Expert tumor segmentations; the benchmark for glioma |<sup><a href="#ref-bakas2017" role="doc-biblioref">7</a>,<a href="#ref-menze2015" role="doc-biblioref">8</a></sup> |
+| **RSNA ICH** | Head CT | >25,000 exams | Intracranial hemorrhage, 60+ radiologist labelers | |
+| **EMBED** | Mammography (2D/DBT) | 3.4M images / ~110,000 patients | Racially balanced; 20% public via AWS |<sup><a href="#ref-jeong2023" role="doc-biblioref">9</a></sup> |
+| **fastMRI** | Knee/brain MRI | >1,500 knee + ~7,000 brain raw studies | Raw *k*-space — for reconstruction research |<sup><a href="#ref-knoll2020" role="doc-biblioref">10</a></sup> |
+| **UK Biobank imaging** | Whole-body MRI/DXA | 100,000 participants | Population cohort, healthy-skewed; access-controlled |<sup><a href="#ref-littlejohns2020" role="doc-biblioref">11</a></sup> |
+| **RadImageNet** | CT, MRI, US | 1.35M images / 131,872 patients | Multi-center |<sup><a href="#ref-meiRadImageNetOpenRadiologic2022" role="doc-biblioref">12</a></sup> |
 
 Datasets tend to be smaller due to patient privacy, difficulty in recruiting patients with uncommon conditions, and need for expert annotation. These same considerations also mean that some datasets are only available upon request or application. If you like filling out IRB applications, you've chosen the right field.
 
@@ -113,23 +113,12 @@ It is up to the machine learning practicioner to decide
 ### It's not all bad
 I don't want to be a Debbie Downer. There are some aspects of radiology that make it easier than natural images! 
 
-For instance, radiology images are often acquired in a standardized way, with consistent positioning and orientation. 
+For instance, radiology images are often acquired in a standardized way, with consistent positioning and orientation. If you're looking at a PA chest radiograph, you can expect the patient to be standing upright, facing the detector, with their arms positioned to rotate the scapulae off the lung fields. The heart is on the left[^situs], and the aortic knob is where it should be. This strong spatial prior can be exploited by models, and registration, atlas-based priors, and even fixed positional encodings work far better here than they would on web images.
+
+[^situs]: Except in *situs inversus* (~1 in 10,000), which is exactly the kind of rare but catastrophic edge case a model trained on the canonical prior will get confidently wrong.
 
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-
-# What is genuinely easier than natural images
-
-Start with the good news, because it is real and underexploited.
-
-**Canonical pose and framing.** A street scene can contain a cat at any scale,
-any orientation, anywhere in the frame, against any background. A PA chest
-radiograph is, by protocol, a patient standing upright, facing the detector,
-arms positioned to rotate the scapulae off the lung fields. The heart is on the
-left.[^situs] The aortic knob is where the aortic knob goes. This is a strong
-spatial prior that natural-image models simply do not get for free — and it is
-why registration, atlas-based priors, and even fixed positional encodings work
-far better here than they would on web images.
 
 [^situs]: Except in *situs inversus* (~1 in 10,000), which is exactly the kind of
     rare but catastrophic edge case a model trained on the canonical prior will get
@@ -272,19 +261,19 @@ Table: Major public medical-imaging datasets. "Images" counts vary by modality
 (a CT/MRI "study" is a 3D volume of many slices). Sizes are as reported by the
 source publications.
 
-| Dataset | Modality | Scale | Notes |
-| --- | --- | --- | --- |
-| **TCIA** (The Cancer Imaging Archive) <sup><a href="#ref-clark2013" role="doc-biblioref">1</a></sup> | CT/MR/PET, many | Umbrella of 100+ collections | The host for most public oncology imaging, incl. LIDC-IDRI, BraTS sources |
-| **MIMIC-CXR** <sup><a href="#ref-johnson2019" role="doc-biblioref">2</a></sup> | Chest X-ray | 377,110 images / 227,835 studies / 65,379 patients | Single US center; paired free-text reports |
-| **CheXpert** <sup><a href="#ref-irvin2019" role="doc-biblioref">3</a></sup> | Chest X-ray | 224,316 images / 65,240 patients | Stanford; 14 NLP-mined labels with uncertainty |
-| **ChestX-ray14** (NIH) <sup><a href="#ref-wang2017" role="doc-biblioref">4</a></sup> | Chest X-ray | 112,120 images / 30,805 patients | 14 labels mined from reports |
-| **PadChest** <sup><a href="#ref-bustos2020" role="doc-biblioref">5</a></sup> | Chest X-ray | 160,868 images / ~67,000 patients | Spanish; 174 findings, multi-view |
-| **LIDC-IDRI** <sup><a href="#ref-armato2011" role="doc-biblioref">6</a></sup> | Chest CT | 1,018 scans | 4-radiologist nodule annotations |
-| **BraTS / TCGA glioma** <sup><a href="#ref-bakas2017" role="doc-biblioref">7</a>,<a href="#ref-menze2015" role="doc-biblioref">8</a></sup> | Brain MRI (4 sequences) | hundreds of cases | Expert tumor segmentations; the benchmark for glioma |
-| **RSNA ICH** | Head CT | >25,000 exams | Intracranial hemorrhage, 60+ radiologist labelers |
-| **EMBED** <sup><a href="#ref-jeong2023" role="doc-biblioref">9</a></sup> | Mammography (2D/DBT) | 3.4M images / ~110,000 patients | Racially balanced; 20% public via AWS |
-| **fastMRI** <sup><a href="#ref-knoll2020" role="doc-biblioref">10</a></sup> | Knee/brain MRI | >1,500 knee + ~7,000 brain raw studies | Raw *k*-space — for reconstruction research |
-| **UK Biobank imaging** <sup><a href="#ref-littlejohns2020" role="doc-biblioref">11</a></sup> | Whole-body MRI/DXA | 100,000 participants | Population cohort, healthy-skewed; access-controlled |
+| Dataset | Modality | Scale | Notes | Ref. |
+| --- | --- | --- | --- | --- |
+| **TCIA** (The Cancer Imaging Archive) | CT/MR/PET, many | Umbrella of 100+ collections | The host for most public oncology imaging, incl. LIDC-IDRI, BraTS sources |<sup><a href="#ref-clark2013" role="doc-biblioref">1</a></sup> |
+| **MIMIC-CXR** | Chest X-ray | 377,110 images / 227,835 studies / 65,379 patients | Single US center; paired free-text reports |<sup><a href="#ref-johnson2019" role="doc-biblioref">2</a></sup> |
+| **CheXpert** | Chest X-ray | 224,316 images / 65,240 patients | Stanford; 14 NLP-mined labels with uncertainty |<sup><a href="#ref-irvin2019" role="doc-biblioref">3</a></sup> |
+| **ChestX-ray14** (NIH) | Chest X-ray | 112,120 images / 30,805 patients | 14 labels mined from reports |<sup><a href="#ref-wang2017" role="doc-biblioref">4</a></sup> |
+| **PadChest** | Chest X-ray | 160,868 images / ~67,000 patients | Spanish; 174 findings, multi-view |<sup><a href="#ref-bustos2020" role="doc-biblioref">5</a></sup> |
+| **LIDC-IDRI** | Chest CT | 1,018 scans | 4-radiologist nodule annotations |<sup><a href="#ref-armato2011" role="doc-biblioref">6</a></sup> |
+| **BraTS / TCGA glioma** | Brain MRI (4 sequences) | hundreds of cases | Expert tumor segmentations; the benchmark for glioma |<sup><a href="#ref-bakas2017" role="doc-biblioref">7</a>,<a href="#ref-menze2015" role="doc-biblioref">8</a></sup> |
+| **RSNA ICH** | Head CT | >25,000 exams | Intracranial hemorrhage, 60+ radiologist labelers | |
+| **EMBED** | Mammography (2D/DBT) | 3.4M images / ~110,000 patients | Racially balanced; 20% public via AWS |<sup><a href="#ref-jeong2023" role="doc-biblioref">9</a></sup> |
+| **fastMRI** | Knee/brain MRI | >1,500 knee + ~7,000 brain raw studies | Raw *k*-space — for reconstruction research |<sup><a href="#ref-knoll2020" role="doc-biblioref">10</a></sup> |
+| **UK Biobank imaging** | Whole-body MRI/DXA | 100,000 participants | Population cohort, healthy-skewed; access-controlled |<sup><a href="#ref-littlejohns2020" role="doc-biblioref">11</a></sup> |
 
 Two things to internalize. First, the largest *labeled* sets are 2D chest
 radiographs, because they are the cheapest to acquire and the easiest to label

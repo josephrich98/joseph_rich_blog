@@ -49,6 +49,10 @@
 }
 
 /* close the gap between a section heading/rule and its first item */
+h2 + hr {
+  margin-bottom: 0;
+}
+
 hr + .list__item .archive__item-title {
   margin-top: 0;
 }
