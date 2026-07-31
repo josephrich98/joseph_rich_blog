@@ -161,6 +161,10 @@ posts/template
 # site/images/posts/<slug>/ (sync_posts.py copies the article-referenced figures
 # there for the deployed site, which Vercel cannot regenerate). CI copies those
 # back into figures/ for a prose-only PDF build so the notebook need not re-run.
+#
+# Hand-authored images (diagrams, photos, anything the notebook does NOT
+# generate) do not belong here — nothing would recreate them on a fresh
+# checkout. They go in the tracked posts/*/assets/ instead.
 posts/*/figures
 posts/*/out
 posts/*/out/

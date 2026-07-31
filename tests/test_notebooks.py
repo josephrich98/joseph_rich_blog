@@ -201,6 +201,12 @@ def test_committed_figures_current(tmp_path, post_name, notebook_path):
     tolerance (``FIGURE_DRIFT_TOL``) so minor cross-machine rendering differences
     don't false-positive.
 
+    Hand-authored images (diagrams, photos) live in the tracked
+    ``posts/<slug>/assets/`` directory rather than the git-ignored ``figures/``,
+    and are compared from there: the notebook never produces them, so without
+    this they would look like committed figures the notebook had stopped
+    emitting.
+
     Only meaningful on notebook legs; in CI the prose-only leg runs just the PDF
     build, so this is not collected there. Extra generated figures with no
     committed copy (an unreferenced plot) are ignored — we only guard published
@@ -220,24 +226,32 @@ def test_committed_figures_current(tmp_path, post_name, notebook_path):
     if not committed:
         pytest.skip(f"no committed site figures for {post_name}")
 
-    fig_dir = os.path.join(os.path.dirname(notebook_path), "figures")
+    post_dir = os.path.dirname(notebook_path)
+    fig_dir = os.path.join(post_dir, "figures")
+    assets_dir = os.path.join(post_dir, "assets")
     generated = set(os.listdir(fig_dir)) if os.path.isdir(fig_dir) else set()
     if not generated:
         pytest.skip(
             f"figures/ empty for {post_name} — test_notebook_runs did not "
             f"regenerate figures in this run, so there is nothing to compare"
         )
+    # Hand-authored images are tracked in assets/ and are a legitimate source
+    # for a committed site figure, so count them as available too.
+    assets = set(os.listdir(assets_dir)) if os.path.isdir(assets_dir) else set()
+    available = generated | assets
 
     missing, drifted = [], []
     for name in committed:
-        if name not in generated:
+        if name not in available:
             missing.append(name)
             continue
+        # figures/ (notebook output) wins over assets/ when a name is in both.
+        src = fig_dir if name in generated else assets_dir
         # Copy both into tmp so compare_images' diff artifacts don't touch the repo.
         expected = os.path.join(tmp_path, f"committed_{name}")
         actual = os.path.join(tmp_path, f"generated_{name}")
         shutil.copy2(os.path.join(site_dir, name), expected)
-        shutil.copy2(os.path.join(fig_dir, name), actual)
+        shutil.copy2(os.path.join(src, name), actual)
         try:
             result = compare_images(
                 expected, actual, tol=FIGURE_DRIFT_TOL, in_decorator=True

@@ -215,9 +215,17 @@ jobs:
           echo "No $req; skipping pip resolution check."
           exit 0
         fi
-        # Fresh, conda-independent venv. --dry-run runs pip's full resolver
-        # (confirms the pinned versions exist and are mutually compatible)
-        # without downloading or compiling the heavy wheels.
-        python3 -m venv "$RUNNER_TEMP/pip-resolve"
+        # Resolve against the SAME Python the post pins in its environment.yml,
+        # not the runner's system `python3`. A bare `python3` here is whatever
+        # the hosted image ships (currently 3.14); the pinned wheels have no
+        # cp314 build, so pip silently falls back to sdists and tries to compile
+        # scipy/numpy from source against a BLAS the runner doesn't have —
+        # failing on a dependency set that is perfectly valid for this post.
+        source $CONDA/etc/profile.d/conda.sh
+        conda activate test-env
+        # Fresh venv (no --system-site-packages), so the conda env supplies only
+        # the interpreter version — the resolve itself still exercises the pure
+        # pip path from an empty environment.
+        python -m venv "$RUNNER_TEMP/pip-resolve"
         "$RUNNER_TEMP/pip-resolve/bin/python" -m pip install --quiet --upgrade pip
         "$RUNNER_TEMP/pip-resolve/bin/pip" install --dry-run -r "$req"

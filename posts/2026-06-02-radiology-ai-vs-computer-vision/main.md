@@ -29,7 +29,7 @@ Images are organized hierarchically. Each 2D image is called a slice, and a seri
 
 The most common modalities are X-ray, CT, MRI, ultrasound, and nuclear medicine (PET/SPECT). X-ray and CT use ionizing radiation to produce images. The more signal a tissue blocks, the whiter it appears on the image. X-rays are commonly used for bone and chest imaging. A CT scan is a series of X-ray images taken from different angles and reconstructed into a 3D volume. A 3D pixel is called a voxel. There are three possible slice orientations: axial (top-down), coronal (front-back), and sagittal (side). CT is commonly used for chest, abdominal, and brain imaging. MRI uses magnetic fields and radio waves (the same technology as proton nuclear magnetic resonance), also capturing 3D volumes. MRI enables soft tissue visualization in higher detail compared to CT, and has the advantage of not using ionizing radiation. Ultrasound uses high-frequency sound waves, and is commonly used for obstetrics, cardiology, and abdominal imaging. Nuclear medicine uses radioactive tracers to visualize physiological processes, used in diagnostic procedures such as studying brain activity and thyroid function.
 
-![**Figure 1**](figures/imaging_modalities.png)
+![**Figure 1**](assets/imaging_modalities.png)
 
 **Figure 1**: Imaging modalities. Made with ChatGPT.
 
@@ -38,14 +38,14 @@ Let me blow your mind: radiology images are a type of image. They're a grid of p
 
 <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; align-items: flex-start; margin: 1.5rem 0;">
   <figure style="display: block; margin: 0; text-align: center;">
-    <img src="figures/lung.jpg" alt="Chest radiograph showing lung opacities" style="height: 240px; width: auto; border-radius: 4px;">
+    <img src="assets/lung.jpg" alt="Chest radiograph showing lung opacities" style="height: 240px; width: auto; border-radius: 4px;">
     <figcaption style="font-size: 0.9em; margin-top: 0.5rem; text-align: center;">
       A picture of lung opacities.<br>
       Source: <a href="https://radiologyassistant.nl/chest/chest-x-ray/lung-disease">Radiology Assistant</a>.
     </figcaption>
   </figure>
   <figure style="display: block; margin: 0; text-align: center;">
-    <img src="figures/dog_in_suit.jpeg" alt="A dog wearing a business suit" style="height: 240px; width: auto; border-radius: 4px;">
+    <img src="assets/dog_in_suit.jpeg" alt="A dog wearing a business suit" style="height: 240px; width: auto; border-radius: 4px;">
     <figcaption style="font-size: 0.9em; margin-top: 0.5rem; text-align: center;">
       A picture of a dog in a suit.<br>
       Source: <a href="https://www.amazon.com/Rubies-unisex-Business-Costume-Multicolor/dp/B01C4K8334">Rubies</a>.
