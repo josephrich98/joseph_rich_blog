@@ -409,6 +409,30 @@ def rewrite_images(body, src_dir, dest_img, name):
 
     # ![alt](path) — alt may span lines, so use DOTALL on the alt group
     body = re.sub(r"!\[(.*?)\]\(([^)]+)\)", repl, body, flags=re.DOTALL)
+
+    def repl_html(match):
+        nonlocal copied, made_dir
+        pre, path, post = match.group(1), match.group(2).strip(), match.group(3)
+        if "://" in path or path.startswith("/"):
+            return match.group(0)  # external or already-absolute
+        src_file = os.path.join(src_dir, path)
+        if not os.path.isfile(src_file):
+            return match.group(0)
+        if not made_dir:
+            os.makedirs(dest_img, exist_ok=True)
+            made_dir = True
+        fname = os.path.basename(path)
+        shutil.copy2(src_file, os.path.join(dest_img, fname))
+        copied += 1
+        return f'{pre}/images/posts/{name}/{fname}{post}'
+
+    # <img ... src="path" ...> — rewrite raw HTML image paths too
+    body = re.sub(
+        r'(<img\b[^>]*?\bsrc=["\'])([^"\']+)(["\'][^>]*>)',
+        repl_html,
+        body,
+        flags=re.IGNORECASE,
+    )
     return body, copied
 
 

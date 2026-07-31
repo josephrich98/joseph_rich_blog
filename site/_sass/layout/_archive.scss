@@ -48,6 +48,11 @@
   }
 }
 
+/* remove the top gap above the first section heading */
+.archive > h2:first-child {
+  margin-top: 0;
+}
+
 /* close the gap between a section heading/rule and its first item */
 h2 + hr {
   margin-bottom: 0.5em;
