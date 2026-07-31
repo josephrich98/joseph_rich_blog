@@ -1,0 +1,52 @@
+---
+layout: archive
+title: "Videos"
+permalink: /videos/
+author_profile: true
+---
+
+{% include base_path %}
+
+{% assign channel_url = "https://www.youtube.com/channel/UCd1KM77xk63TM8ud6HOIuRA" %}
+
+<p>Software tutorials and math explainers. These are a select few — see my
+<a href="{{ channel_url }}">YouTube channel</a> for the rest.</p>
+
+{% if site.data.videos and site.data.videos != empty %}
+  {% for item in site.data.videos %}
+    <div class="video__item">
+      <h2 class="video__title"><a href="{{ item.url }}">{{ item.title }}</a></h2>
+
+      {% if item.category or item.date or item.views %}
+        <p class="video__meta">
+          {% if item.category %}<span class="video__badge">{{ item.category }}</span>{% endif %}
+          {% if item.date %}<span class="video__date">{{ item.date | date: "%B %-d, %Y" }}</span>{% endif %}
+          {% if item.date and item.views %}<span class="video__sep">&middot;</span>{% endif %}
+          {% if item.views %}<span class="video__views">{{ item.views }} views</span>{% endif %}
+        </p>
+      {% endif %}
+
+      {% comment %}
+        Thumbnail: prefer the git-tracked local image; otherwise fall back to
+        YouTube's hosted thumbnail derived from the video id. The overlaid play
+        glyph signals it links out to the video rather than a bigger image.
+      {% endcomment %}
+      {% if item.image or item.id %}
+        <p class="video__figure">
+          <a href="{{ item.url }}" title="Watch on YouTube">
+            {% if item.image %}
+              <img src="{{ item.image | prepend: base_path }}" alt="{{ item.title }}">
+            {% else %}
+              <img src="https://img.youtube.com/vi/{{ item.id }}/hqdefault.jpg" alt="{{ item.title }}">
+            {% endif %}
+            <span class="video__play" aria-hidden="true">&#9654;</span>
+          </a>
+        </p>
+      {% endif %}
+
+      {% if item.description %}<p>{{ item.description }}</p>{% endif %}
+    </div>
+  {% endfor %}
+{% else %}
+  <p class="video__empty">Videos coming soon.</p>
+{% endif %}

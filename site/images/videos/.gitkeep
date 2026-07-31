@@ -1,0 +1,2 @@
+# Local YouTube thumbnails for entries in _data/videos.yml.
+# Grab from https://img.youtube.com/vi/<id>/maxresdefault.jpg and downscale.

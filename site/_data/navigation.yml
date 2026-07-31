@@ -10,5 +10,8 @@ main:
   - title: "Software"
     url: /software/
 
+  - title: "Videos"
+    url: /videos/
+
   - title: "Contact"
     url: /contact/

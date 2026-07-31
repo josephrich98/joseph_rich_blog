@@ -1,0 +1,30 @@
+# Videos listed on /videos/ (rendered by _pages/videos.html).
+# Software tutorials and math explainers, mostly hosted on YouTube.
+#
+# Fields (per entry):
+#   title        display name / video title
+#   url          where the thumbnail and heading link (the YouTube watch URL)
+#   id           YouTube video ID (the v=XXXXXXXXXXX part of the URL). Used to
+#                fall back to YouTube's hosted thumbnail when `image` is unset.
+#   image        local thumbnail downscaled into /images/videos/ (preferred —
+#                git-tracked, so it survives if the video is later unlisted).
+#                Grab it from https://img.youtube.com/vi/<id>/maxresdefault.jpg
+#   category     "Tutorial" or "Math" (optional) — shown as a small badge
+#   date         YYYY-MM-DD the video was uploaded (optional) — shown as the upload date
+#   views        view-count SNAPSHOT as a display string, e.g. "1,240" or "12K"
+#                (optional). A static site can't fetch this live, so it's captured
+#                when the entry is added and refreshed on demand — treat it as
+#                approximate, not real-time.
+#   description  a sentence or two, pulled from the video description
+#
+# Example (leave commented until the first video is live):
+# - title: "How varseek screens variants in RNA-seq"
+#   url: "https://www.youtube.com/watch?v=XXXXXXXXXXX"
+#   id: "XXXXXXXXXXX"
+#   image: "/images/videos/varseek-tutorial.jpg"
+#   category: "Tutorial"
+#   date: 2026-08-01
+#   views: "1,240"
+#   description: "Walkthrough of the vk ref / vk count pipeline, from a variant database to a samples x variants count matrix."
+
+# (No videos yet.)
