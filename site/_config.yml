@@ -35,12 +35,16 @@ author:
 
 # Publication categories shown (and their headings) on the Publications page
 publication_category:
-  manuscripts:
-    title: 'Journal Articles'
-  conferences:
-    title: 'Conference Papers'
+  original_research:
+    title: 'Original Research'
+  reviews:
+    title: 'Reviews'
+  case_reports:
+    title: 'Case Reports'
   preprints:
     title: 'Preprints'
+  research_highlights:
+    title: 'Research Highlights'
 
 # Site Settings
 teaser                   :

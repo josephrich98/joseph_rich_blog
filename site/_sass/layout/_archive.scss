@@ -277,6 +277,32 @@ hr + .list__item .archive__item-title {
   font-family: $sans-serif-narrow;
 }
 
+/* shields.io badges: total PyPI downloads (pepy) and GitHub stars */
+.software__badges {
+  margin: 0 0 0.5em;
+  line-height: 1;
+
+  a {
+    display: inline-block;
+    margin-right: 0.4em;
+    text-decoration: none;
+
+    &:hover img {
+      box-shadow: none;
+      opacity: 0.8;
+    }
+  }
+
+  img {
+    height: 20px;
+    vertical-align: middle;
+  }
+}
+
+.software__manuscript {
+  margin: 0.5em 0 0;
+}
+
 .software__figure {
   margin: 0.75em 0 0;
 

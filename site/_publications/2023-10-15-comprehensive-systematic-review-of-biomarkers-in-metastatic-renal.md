@@ -1,7 +1,7 @@
 ---
 title: "Comprehensive systematic review of biomarkers in metastatic renal cell carcinoma: predictors, prognostics, and therapeutic monitoring"
 collection: publications
-category: manuscripts
+category: reviews
 permalink: /publications/2023-10-15-comprehensive-systematic-review-of-biomarkers-in-metastatic-renal
 date: 2023-10-15
 venue: 'Cancers'

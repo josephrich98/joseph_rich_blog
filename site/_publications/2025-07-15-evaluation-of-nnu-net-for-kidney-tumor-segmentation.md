@@ -1,7 +1,7 @@
 ---
 title: "Evaluation of nnU-Net for kidney tumor segmentation on a large external patient cohort"
 collection: publications
-category: manuscripts
+category: original_research
 permalink: /publications/2025-07-15-evaluation-of-nnu-net-for-kidney-tumor-segmentation
 date: 2025-07-15
 venue: 'European Journal of Radiology Artificial Intelligence'

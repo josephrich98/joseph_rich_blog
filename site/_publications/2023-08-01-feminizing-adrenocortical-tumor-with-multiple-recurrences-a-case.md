@@ -1,7 +1,7 @@
 ---
 title: "Feminizing adrenocortical tumor with multiple recurrences: a case report"
 collection: publications
-category: manuscripts
+category: case_reports
 permalink: /publications/2023-08-01-feminizing-adrenocortical-tumor-with-multiple-recurrences-a-case
 date: 2023-08-01
 venue: 'Case Reports in Oncology'

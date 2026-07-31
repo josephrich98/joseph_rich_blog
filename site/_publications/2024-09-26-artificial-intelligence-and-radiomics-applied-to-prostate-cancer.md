@@ -1,7 +1,7 @@
 ---
 title: "Artificial intelligence and radiomics applied to prostate cancer bone metastasis imaging: a review"
 collection: publications
-category: manuscripts
+category: reviews
 permalink: /publications/2024-09-26-artificial-intelligence-and-radiomics-applied-to-prostate-cancer
 date: 2024-09-26
 venue: 'IRADIOLOGY'

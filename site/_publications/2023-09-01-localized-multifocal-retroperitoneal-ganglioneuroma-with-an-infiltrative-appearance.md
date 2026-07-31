@@ -1,7 +1,7 @@
 ---
 title: "Localized multifocal retroperitoneal ganglioneuroma with an infiltrative appearance on imaging: a case report"
 collection: publications
-category: manuscripts
+category: case_reports
 permalink: /publications/2023-09-01-localized-multifocal-retroperitoneal-ganglioneuroma-with-an-infiltrative-appearance
 date: 2023-09-01
 venue: 'Case Reports in Oncology'

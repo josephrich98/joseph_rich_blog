@@ -1,7 +1,7 @@
 ---
 title: "A widely-used negative control formin mutant retains some actin polymerization activity"
 collection: publications
-category: manuscripts
+category: original_research
 permalink: /publications/2020-06-01-a-widely-used-negative-control-formin-mutant-retains
 date: 2020-06-01
 venue: 'UCLA MCDB Honors Thesis (Highest Honors)'

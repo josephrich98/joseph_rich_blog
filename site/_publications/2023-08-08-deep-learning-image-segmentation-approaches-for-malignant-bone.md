@@ -1,7 +1,7 @@
 ---
 title: "Deep learning image segmentation approaches for malignant bone lesions: a systematic review and meta-analysis"
 collection: publications
-category: manuscripts
+category: reviews
 permalink: /publications/2023-08-08-deep-learning-image-segmentation-approaches-for-malignant-bone
 date: 2023-08-08
 venue: 'Frontiers in Radiology'

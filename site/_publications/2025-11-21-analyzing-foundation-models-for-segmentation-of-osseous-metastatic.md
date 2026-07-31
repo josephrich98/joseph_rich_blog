@@ -1,7 +1,7 @@
 ---
 title: "Analyzing foundation models for segmentation of osseous metastatic lesions in prostate cancer on CT scans"
 collection: publications
-category: manuscripts
+category: original_research
 permalink: /publications/2025-11-21-analyzing-foundation-models-for-segmentation-of-osseous-metastatic
 date: 2025-11-21
 venue: 'European Journal of Radiology Artificial Intelligence'

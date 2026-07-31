@@ -7,12 +7,42 @@ author_profile: true
 
 {% include base_path %}
 
-<p>Open-source packages I have written or co-written. Each links to its GitHub repository.</p>
+<!-- Badge counts are live — the services recompute them when the image loads, so
+     nothing here goes stale. Downloads come from pepy's own badge endpoint rather
+     than shields' pepy wrapper: the latter is frequently throttled upstream and
+     then serves a "rate limited by upstream service" badge. pepy's label accepts
+     text only (no logo parameter), hence the U+2B07 down-arrow glyph; grey is
+     #555, matching the shields stars badge beside it. -->
+{% assign download_badge = "?period=total&amp;units=international_system&amp;left_color=grey&amp;right_color=grey&amp;left_text=%E2%AC%87" %}
+{% assign stars_badge = "?style=flat&amp;labelColor=555&amp;color=555&amp;label=&amp;logo=github&amp;logoColor=white" %}
+
+<p>Open-source packages I have written or co-written.</p>
 
 {% for item in site.data.software %}
   <div class="software__item">
     <h2 class="software__title"><a href="{{ item.url }}">{{ item.title }}</a></h2>
+
+    {% if item.pypi or item.repo %}
+      <p class="software__badges">
+        {% if item.pypi %}
+          <a href="https://pepy.tech/project/{{ item.pypi }}" title="Total PyPI downloads">
+            <img src="https://static.pepy.tech/personalized-badge/{{ item.pypi }}{{ download_badge }}" alt="Total PyPI downloads for {{ item.title }}">
+          </a>
+        {% endif %}
+        {% if item.repo %}
+          <a href="https://github.com/{{ item.repo }}" title="GitHub stars">
+            <img src="https://img.shields.io/github/stars/{{ item.repo }}{{ stars_badge }}" alt="GitHub stars for {{ item.title }}">
+          </a>
+        {% endif %}
+      </p>
+    {% endif %}
+
     {% if item.description %}<p>{{ item.description }}</p>{% endif %}
+
+    {% if item.manuscript %}
+      <p class="software__manuscript">Manuscript ({{ item.manuscript.venue }}): <a href="{{ item.manuscript.url }}">{{ item.manuscript.url | remove_first: "https://" }}</a></p>
+    {% endif %}
+
     {% if item.image %}
       <p class="software__figure">
         <a href="{{ item.url }}"><img src="{{ item.image | prepend: base_path }}" alt="{{ item.title }}"></a>

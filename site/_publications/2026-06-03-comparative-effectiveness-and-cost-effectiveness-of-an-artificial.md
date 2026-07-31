@@ -1,7 +1,7 @@
 ---
 title: "Comparative Effectiveness and Cost-Effectiveness of an Artificial Intelligence Workflow for Small Renal Mass Diagnosis on Computed Tomography"
 collection: publications
-category: manuscripts
+category: original_research
 permalink: /publications/2026-06-03-comparative-effectiveness-and-cost-effectiveness-of-an-artificial
 date: 2026-06-03
 venue: 'Urology Practice'

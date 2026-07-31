@@ -1,7 +1,7 @@
 ---
 title: "An analysis of child abuse detected by skeletal surveys before and during the COVID-19 pandemic"
 collection: publications
-category: manuscripts
+category: original_research
 permalink: /publications/2025-03-03-an-analysis-of-child-abuse-detected-by-skeletal
 date: 2025-03-03
 venue: 'Pediatric Discovery'

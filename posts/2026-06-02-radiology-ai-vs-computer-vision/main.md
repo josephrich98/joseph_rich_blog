@@ -37,18 +37,18 @@ The most common modalities are X-ray, CT, MRI, ultrasound, and nuclear medicine 
 Let me blow your mind: radiology images are a type of image. They're a grid of pixels, just like any other image, even if it is less visually stimulating to look at a picture of lung opacities than a picture of a dog. This means that all the same computer vision architectures that work on natural images can be applied to radiology images.
 
 <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; align-items: flex-start; margin: 1.5rem 0;">
-  <figure style="flex: 1 1 260px; max-width: 360px; margin: 0; text-align: center;">
-    <img src="figures/lung.jpg" alt="Chest radiograph showing lung opacities" style="width: 100%; height: auto; border-radius: 4px;">
-    <figcaption style="font-size: 0.9em; margin-top: 0.5rem;">
-      A picture of lung opacities. Source:
-      <a href="https://radiologyassistant.nl/chest/chest-x-ray/lung-disease">Radiology Assistant</a>.
+  <figure style="margin: 0; text-align: center;">
+    <img src="figures/lung.jpg" alt="Chest radiograph showing lung opacities" style="height: 240px; width: auto; border-radius: 4px;">
+    <figcaption style="font-size: 0.9em; margin-top: 0.5rem; text-align: center;">
+      A picture of lung opacities.<br>
+      Source: <a href="https://radiologyassistant.nl/chest/chest-x-ray/lung-disease">Radiology Assistant</a>.
     </figcaption>
   </figure>
-  <figure style="flex: 1 1 260px; max-width: 360px; margin: 0; text-align: center;">
-    <img src="figures/dog_in_suit.jpeg" alt="A dog wearing a business suit" style="width: 100%; height: auto; border-radius: 4px;">
-    <figcaption style="font-size: 0.9em; margin-top: 0.5rem;">
-      A picture of a dog in a suit. Source:
-      <a href="https://www.amazon.com/Rubies-unisex-Business-Costume-Multicolor/dp/B01C4K8334">Rubies</a>.
+  <figure style="margin: 0; text-align: center;">
+    <img src="figures/dog_in_suit.jpeg" alt="A dog wearing a business suit" style="height: 240px; width: auto; border-radius: 4px;">
+    <figcaption style="font-size: 0.9em; margin-top: 0.5rem; text-align: center;">
+      A picture of a dog in a suit.<br>
+      Source: <a href="https://www.amazon.com/Rubies-unisex-Business-Costume-Multicolor/dp/B01C4K8334">Rubies</a>.
     </figcaption>
   </figure>
 </div>

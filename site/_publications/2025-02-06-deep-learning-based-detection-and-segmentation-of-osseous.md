@@ -1,7 +1,7 @@
 ---
 title: "Deep learning-based detection and segmentation of osseous metastatic prostate cancer lesions on computed tomography"
 collection: publications
-category: manuscripts
+category: original_research
 permalink: /publications/2025-02-06-deep-learning-based-detection-and-segmentation-of-osseous
 date: 2025-02-06
 venue: 'European Journal of Radiology Artificial Intelligence'
