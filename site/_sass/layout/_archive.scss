@@ -50,7 +50,7 @@
 
 /* close the gap between a section heading/rule and its first item */
 h2 + hr {
-  margin-bottom: 0;
+  margin-bottom: 0.5em;
 }
 
 hr + .list__item .archive__item-title {
@@ -250,5 +250,47 @@ hr + .list__item .archive__item-title {
         width: span(7 of 12);
       }
     }
+  }
+}
+
+
+/*
+   Software list (/software/)
+   ========================================================================== */
+
+.software__item {
+  margin-bottom: 2em;
+
+  + .software__item {
+    padding-top: 1.5em;
+    border-top: 1px solid var(--global-border-color);
+  }
+}
+
+.software__title {
+  margin: 0 0 0.25em;
+  font-family: $sans-serif-narrow;
+}
+
+.software__figure {
+  margin: 0.75em 0 0;
+
+  a {
+    display: inline-block;
+    text-decoration: none;
+  }
+
+  /* README figures vary wildly in aspect ratio (square logos to very wide
+     pipeline banners), so cap the height and let the width follow. The white
+     plate keeps transparent logos legible under the dark theme. */
+  img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    max-height: 180px;
+    padding: 0.5em 0.75em;
+    background-color: #fff;
+    border: 1px solid var(--global-border-color);
+    border-radius: $border-radius;
   }
 }

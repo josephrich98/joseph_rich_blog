@@ -23,9 +23,9 @@ listings: true
 ---
 
 ## Radiology primer
-Radiology is the medical specialty that uses imaging to diagnose and treat disease. Radiological imaging allows for visualization of entire tissues or organs in the body, which differentiates radiology from cellular-based imaging that is common in genomics and pathology. The most common causes for radiology imaging trauma and injuries (broken bones, internal bleeding), cancer (tumor detection, staging, and monitoring), and chronic diseases (heart disease, liver disease, lung disease). 
+Radiology is the medical specialty that uses imaging to diagnose and treat disease. Radiological imaging allows for visualization of entire tissues or organs in the body, which differentiates radiology from cellular-based imaging that is common in genomics and pathology. The most common reasons for radiology imaging are trauma and injuries (broken bones, internal bleeding), cancer (tumor detection, staging, and monitoring), and chronic diseases (heart disease, liver disease, lung disease). 
 
-Images are organized heirarchically. Each 2D image is called a slice, and a series of slices can be stacked to form a 3D volume, or a series. A study is comprised of one or more series, and a patient can have multiple studies. For instance, a patient may have a chest CT study with two series: one without contrast and one with contrast. One patient can have multiple studies over time, such as a chest CT study in 2020 and a follow-up chest CT study in 2022.
+Images are organized hierarchically. Each 2D image is called a slice, and a series of slices can be stacked to form a 3D volume, or a series. A study is comprised of one or more series, and a patient can have multiple studies. For instance, a patient may have a chest CT study with two series: one without contrast and one with contrast. One patient can have multiple studies over time, such as a chest CT study in 2020 and a follow-up chest CT study in 2022.
 
 The most common modalities are X-ray, CT, MRI, ultrasound, and nuclear medicine (PET/SPECT). X-ray and CT use ionizing radiation to produce images. The more signal a tissue blocks, the whiter it appears on the image. X-rays are commonly used for bone and chest imaging. A CT scan is a series of X-ray images taken from different angles and reconstructed into a 3D volume. A 3D pixel is called a voxel. There are three possible slice orientations: axial (top-down), coronal (front-back), and sagittal (side). CT is commonly used for chest, abdominal, and brain imaging. MRI uses magnetic fields and radio waves (the same technology as proton nuclear magnetic resonance), also capturing 3D volumes. MRI enables soft tissue visualization in higher detail compared to CT, and has the advantage of not using ionizing radiation. Ultrasound uses high-frequency sound waves, and is commonly used for obstetrics, cardiology, and abdominal imaging. Nuclear medicine uses radioactive tracers to visualize physiological processes, used in diagnostic procedures such as studying brain activity and thyroid function.
 
@@ -36,60 +36,61 @@ The most common modalities are X-ray, CT, MRI, ultrasound, and nuclear medicine 
 ## Radiology and computer vision similarities and differences
 Let me blow your mind: radiology images are a type of image. They're a grid of pixels, just like any other image, even if it is less visually stimulating to look at a picture of lung opacities than a picture of a dog. This means that all the same computer vision architectures that work on natural images can be applied to radiology images.
 
-<table>
-  <tr>
-    <td align="center">
-      <img src="figures/lung.jpg" height="240"><br>
-      <span style="font-style: normal;">Picture of lung opacities.</span><br>
-      <small style="color: gray;">
-        Source:
-        <a href="https://radiologyassistant.nl/chest/chest-x-ray/lung-disease">
-          Radiology Assistant
-        </a>
-      </small>
-    </td>
-    <td align="center">
-      <img src="figures/dog_in_suit.jpeg" height="240"><br>
-      <span style="font-style: normal;">Picture of a dog in a suit.</span><br>
-      <small style="color: gray;">
-        Source:
-        <a href="https://www.amazon.com/Rubies-unisex-Business-Costume-Multicolor/dp/B01C4K8334">
-          Rubies
-        </a>
-      </small>
-    </td>
-  </tr>
-</table>
+![Chest radiograph showing lung opacities](figures/lung.jpg)
+
+A picture of lung opacities. Source: [Radiology
+Assistant](https://radiologyassistant.nl/chest/chest-x-ray/lung-disease).
+
+![A dog wearing a business suit](figures/dog_in_suit.jpeg)
+
+A picture of a dog in a suit. Source:
+[Rubies](https://www.amazon.com/Rubies-unisex-Business-Costume-Multicolor/dp/B01C4K8334).
 
 However, there are some important differences between radiology and natural images that make radiology a unique domain for machine learning.
 
 ### Annotation requires domain expertise
 
-It takes substantial medical training even to recognize the anatomy in a radiology image, let alone to identify pathology. Patients can have substantial variability in their anatomy, which can make it dfficult to discern disease from normal variation. Tumors can come in all shapes and sizes, sometimes making them difficult to identify from surrounding tissue, cysts, or other benign findings. Some diseases have highly characteristic imaging appearances—for example, the boot-shaped heart of tetralogy of Fallot or the coffee bean sign of sigmoid volvulus. However, many diseases exhibit substantial variability across patients. For instance, pneumonia may appear as focal lobar consolidation, patchy multifocal opacities, diffuse interstitial infiltrates, or even be nearly occult on early imaging. This diversity makes medical image interpretation a challenging pattern-recognition task.
+It takes substantial medical training even to recognize the anatomy in a radiology image, let alone to identify pathology. Patients can have substantial variability in their anatomy, which can make it difficult to discern disease from normal variation. Tumors can come in all shapes and sizes, sometimes making them difficult to identify from surrounding tissue, cysts, or other benign findings. Some diseases have highly characteristic imaging appearances—for example, the boot-shaped heart of tetralogy of Fallot or the coffee bean sign of sigmoid volvulus. However, many diseases exhibit substantial variability across patients. For instance, pneumonia may appear as focal lobar consolidation, patchy multifocal opacities, diffuse interstitial infiltrates, or even be nearly occult on early imaging. This diversity makes medical image interpretation a challenging pattern-recognition task.
 
 ### Most pixels are uninformative; a few pixels can make the difference
 In many computer vision tasks, the object of interest occupies a significant portion of the image. Think of a digit in an MNIST image, or a cat in a COCO image. In these cases, the object is large enough that it can be easily detected and classified by a model. In radiology, however, the finding is often a small fraction of the image, and the difference between a benign and malignant finding can be subtle. For example, a small pulmonary nodule may only occupy a few pixels in a CT scan, but its presence or absence can have significant clinical implications.
 
-![**Figure 1**](figures/needle_in_haystack.png)
+![**Figure 2**](figures/needle_in_haystack.png)
 
-**Figure 1**: The fraction of an image that actually belongs to the finding,
+**Figure 2**: The fraction of an image that actually belongs to the finding,
 on a log scale. Natural-image objects (blue) occupy $10^{-3}$ to $10^{0}$ of the
 frame. Clinically critical lesions (red/navy) sit at $10^{-7}$ to $10^{-5}$.
 This five-to-six order-of-magnitude difference is why naive pixel-wise losses
 and patch samplers fail in radiology.
 
-As a concrete example, let's consider a chest CT scan. A chest CT of roughly $512 \times 512 \times 320$ voxels at $0.7 \times 0.7 \times 1.0\,\text{mm}$ contains about $8.4 \times 10^7$
-voxels. A clinically important $5\,\text{mm}$ pulmonary nodule is a sphere of
-volume $\tfrac{4}{3}\pi r^3 \approx 65\,\text{mm}^3$, or about $134$ voxels. The
+As a concrete example, let's consider a chest CT scan. A chest CT of roughly $512 \times 512 \times 320$ voxels at $0.7 \times 0.7 \times 1.0\,\mathrm{mm}$ contains about $8.4 \times 10^7$
+voxels. A clinically important $5\,\mathrm{mm}$ pulmonary nodule is a sphere of
+volume $\tfrac{4}{3}\pi r^3 \approx 65\,\mathrm{mm}^3$, or about $134$ voxels. The
 lesion is therefore
 $$
 \frac{134}{8.4\times 10^7} \approx 1.6 \times 10^{-6}
 $$
-of the volume — roughly one in six hundred thousand voxels. Figure 1 puts
+of the volume — roughly one in six hundred thousand voxels. Figure 2 puts
 several findings on the same axis as natural-image objects; note the five-to-six
 order-of-magnitude gap.
 
-This gap means that pixelwise accuracy is a poor metric for evaluating segmentation model performance. A segmentation model that predicts "no lesion" everywhere achieves $1 - 1.6\times10^{-6} \approx 99.9998\%$ voxel accuracy. Use overlap and detection metrics built for imbalance — Dice / $F_1$, where for prediction $P$ and ground truth $G$, $$\mathrm{Dice} = \frac{2|P \cap G|}{|P| + |G|},$$ free-response ROC (FROC) for detection, and class-balanced or region-based losses (Dice loss, Tversky, focal). The focal loss down-weights the easy negatives that otherwise dominate the gradient: $\mathrm{FL}(p_t) = -(1-p_t)^{\gamma}\log p_t$.
+This gap means that pixelwise accuracy is a poor metric for evaluating
+segmentation model performance. A model that predicts "no lesion" everywhere
+achieves a voxel accuracy of $1 - 1.6\times10^{-6}$, or $99.99984\%$. Use
+overlap and detection metrics built for imbalance instead. Dice (equivalently
+$F_1$), for a prediction $P$ and ground truth $G$, is
+
+$$
+\mathrm{Dice} = \frac{2|P \cap G|}{|P| + |G|},
+$$
+
+and free-response ROC (FROC) is the standard for detection. Pair these with
+class-balanced or region-based losses (Dice loss, Tversky, focal). The focal
+loss down-weights the easy negatives that otherwise dominate the gradient:
+
+$$
+\mathrm{FL}(p_t) = -(1-p_t)^{\gamma}\log p_t.
+$$
 
 This gap also means that image preprocessing may be necessary before passing through a model. Masking out uninformative regions of the image, such as the background or areas of normal tissue, can help the model focus on the relevant regions. Additionally, using multi-scale approaches or attention mechanisms can help the model capture small lesions that may be missed at a single scale.
 
@@ -113,9 +114,9 @@ Natural-image research has access to a wealth of images. ImageNet has 1.4 millio
 
 Datasets tend to be smaller due to patient privacy, difficulty in recruiting patients with uncommon conditions, and need for expert annotation. These same considerations also mean that some datasets are only available upon request or application. If you like filling out IRB applications, you've chosen the right field.
 
-There is often a tradeoff that must be made between data size and homogeneity. For instance, if you're working on kidney cancer, you have access to ~500 cases from the KiTS23 dataset, and ~200 cases from the TCGA-KIRC dataset. Pooling these datasets means mixing institutions, protocols, and scanners, which can introduce heterogeneity that may hurt model performance. One can add in the MRI cases from TCGA-KIRC, but that adds a new modality and a new set of heterogeneity. One can add additional abdominal CT datasets, but that adds even more instutitons and disease types. The right choice depends on the task, the model, and the evaluation strategy.
+There is often a tradeoff that must be made between data size and homogeneity. For instance, if you're working on kidney cancer, you have access to ~500 cases from the KiTS23 dataset, and ~200 cases from the TCGA-KIRC dataset. Pooling these datasets means mixing institutions, protocols, and scanners, which can introduce heterogeneity that may hurt model performance. One can add in the MRI cases from TCGA-KIRC, but that adds a new modality and a new set of heterogeneity. One can add additional abdominal CT datasets, but that adds even more institutions and disease types. The right choice depends on the task, the model, and the evaluation strategy.
 
-Stratifying by covariates can help for studying specific subgroups, but it comes with a tradeoff in statistical power. For example, let's consider a chest x-ray model for pneumothorax (Figure 2). Keep frontal views only ($\times 0.65$). Keep the positives
+Stratifying by covariates can help for studying specific subgroups, but it comes with a tradeoff in statistical power. For example, let's consider a chest x-ray model for pneumothorax (Figure 3). Keep frontal views only ($\times 0.65$). Keep the positives
 for your target finding — pneumothorax, prevalence $\approx 3\%$ ($\times 0.03$);
 already you are at ~7,000 positive cases, not 377,110. Now ask the
 generalization questions clinicians will ask: how does it do in **women**
@@ -125,9 +126,9 @@ scanned on **vendor B** ($\times 0.30$), specifically with the
 **66 positive cases**. From 377,110 to 66 — and 66 is the number that actually
 governs what you can conclude about that subgroup.
 
-![**Figure 2**](figures/stratification_waterfall.png)
+![**Figure 3**](figures/stratification_waterfall.png)
 
-**Figure 2.**: The stratification waterfall. Each clinically reasonable filter
+**Figure 3**: The stratification waterfall. Each clinically reasonable filter
 multiplies the count down. The binding constraint is the number of positive
 (diseased) cases, which collapses fastest because disease is
 rare.
@@ -142,7 +143,7 @@ At a true sensitivity of $0.85$ and $n = 66$, that half-width is $\pm 0.086$:
 your estimate is "somewhere between $0.76$ and $0.94$." You cannot distinguish a
 clinically excellent $0.90$ from a borderline $0.78$. (For small $n$ use the
 Wilson interval rather than this normal approximation — the qualitative story is
-the same, and at these counts it matters.) Figure 3a shows the half-width
+the same, and at these counts it matters.) Figure 4a shows the half-width
 shrinking only as $1/\sqrt{n}$; the subgroup strata are marked.
 
 Worse, suppose you want to *detect* a real subgroup gap — say sensitivity drops
@@ -154,19 +155,19 @@ z_{1-\beta}\sqrt{p_1(1-p_1)+p_2(1-p_2)}\right)^2}{(p_1 - p_2)^2},
 $$
 which for $p_1=0.85,\, p_2=0.75$ works out to about **250 positive cases per
 group** for 80% power. Your subgroup has 66, which buys roughly **30% power**
-(Figure 3b): a two-in-three chance of *missing* a real, clinically meaningful
+(Figure 4b): a two-in-three chance of *missing* a real, clinically meaningful
 degradation. And if you honestly test across, say, ten subgroups, a Bonferroni
 correction to $\alpha = 0.005$ pushes the requirement to ~425 per group — while
 simultaneously, *not* correcting means some of your "significant" subgroup
 findings are noise. You are squeezed from both sides.
 
-![**Figure 3**](figures/power_and_precision.png)
+![**Figure 4**](figures/power_and_precision.png)
 
-**Figure 3.**: What those counts buy. **(a)** The 95% CI half-width on a
+**Figure 4**: What those counts buy. **(a)** The 95% CI half-width on a
 subgroup sensitivity estimate shrinks only as $1/\sqrt{n}$; at $n=66$ positives
 you have $\pm 0.09$ precision. **(b)** Power to detect a $0.85 \to 0.75$
 sensitivity drop: you need ~250 positives per group for 80% power, but the
-deepest subgroup has 66, giving ~30% power.](figures/power_and_precision.png)
+deepest subgroup has 66, giving ~30% power.
 
 The lesson is not "give up." It is to **plan evaluation as a power calculation
 from day one**: decide which subgroups are non-negotiable, estimate the positive
@@ -221,7 +222,7 @@ This means that models can be updated in the field, but only in ways that were p
 
 ## The leap from academia to the clinic
 
-Many papers are released everyday that sound like they've solved a key issue in radiology with AI such as cancer diagnosis, tumor segmentation, or report generation. Some are even published in top-tier journals. But clinical radiology has barely changed. Why? There are a few key features that separate the academic and clinical worlds.
+Many papers are released every day that sound like they've solved a key issue in radiology with AI such as cancer diagnosis, tumor segmentation, or report generation. Some are even published in top-tier journals. But clinical radiology has barely changed. Why? There are a few key features that separate the academic and clinical worlds.
 
 For a paper, the goal is to show that a model can achieve a high AUC or Dice score on a benchmark dataset. For a hospital, the goal is to improve patient outcomes and workflow efficiency. Generalizability is a must. Academic datasets are often curated and cleaned, while hospital data is messy and heterogeneous. The cost of failure is also different: a lower number in a table is not the same as a missed cancer or a false alarm that fatigues the radiologist. The lifecycle of a model is different: academic models are frozen at publication, while clinical models must be monitored for drift and revalidated. And the finished product of an academic paper is a GitHub repository with scripts for running the model and a checkpoint, but this is only the beginning for a hospital. A clinical model must be integrated into the hospital's PACS and reporting systems, comply with HIPAA regulations, and meet latency and audit requirements.
 

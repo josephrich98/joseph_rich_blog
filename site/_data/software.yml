@@ -1,0 +1,37 @@
+# Open-source packages listed on /software/ (rendered by _pages/software.html).
+# Each entry: title, url (GitHub), optional image (a figure from the repo's README,
+# downscaled into /images/software/), and a plain-language description.
+- title: "varseek"
+  url: "https://github.com/pachterlab/varseek"
+  image: "/images/software/varseek.png"
+  description: "Command-line tool and Python package for variant screening of DNA-seq, bulk RNA-seq, and single-cell RNA-seq data. <code>vk ref</code> turns a variant database (COSMIC, ClinVar, dbSNP, or custom) plus its reference genome/transcriptome into a variant-containing reference sequence (VCRS) index; <code>vk count</code> pseudoaligns reads against that index and returns a samples × variants count matrix in AnnData format, ready for clustering, differential expression, or pathway analysis."
+
+- title: "wompwomp"
+  url: "https://github.com/pachterlab/wompwomp"
+  image: "/images/software/wompwomp.png"
+  description: "R package (on CRAN) that untangles k-partite graphs by heuristically optimizing node order, layer order, and node grouping to nearly minimize edge crossings. Its main use is making alluvial plots legible when the raw category ordering leaves the flows in a knot."
+
+- title: "cellsweep"
+  url: "https://github.com/pachterlab/cellsweep"
+  image: "/images/software/cellsweep.png"
+  description: "Python package and CLI that sweeps noisy, ambient counts out of single-cell RNA-seq data. A single call to <code>denoise_count_matrix</code> takes a raw AnnData count matrix with cell-type labels and returns a denoised one, plus utilities for the downstream processing, plotting, and analysis."
+
+- title: "fastQpick"
+  url: "https://github.com/pachterlab/fastQpick"
+  description: "Fast, memory-efficient sampling of FASTQ reads with or without replacement — for generating bootstrap replicates that quantify technical variance at the level of raw reads, and for subsampling large libraries for testing and benchmarking. Streaming I/O and ISA-L-accelerated gzip bootstrap a 500-million-read library in roughly 26 minutes."
+
+- title: "tcia-radiology-processing"
+  url: "https://github.com/pachterlab/tcia-radiology-processing"
+  image: "/images/software/tcia-radiology-processing.png"
+  description: "Protocol and Python package for turning TCGA/TCIA radiology studies into AI-ready arrays: download and filtering, DICOM → NIfTI conversion, reorientation, segmentation, Hounsfield-unit clipping, resampling, mask-and-crop, and intensity normalization, with Jupyter notebooks walking through each step."
+
+- title: "paperpush"
+  url: "https://github.com/pachterlab/paperpush"
+  description: "Automates manuscript submission. Point it at a manuscript directory and a target venue and it generates a submission file, validates it against the venue's pre-submission checks, and fills out the submission portal for you — stopping short of clicking submit. Supports arXiv, bioRxiv, and medRxiv along with a growing list of journals."
+
+# fgvb is not publicly reachable (https://github.com/pachterlab/fgvb returns 404 —
+# private or not yet created), so it is held back rather than shipping a dead link.
+# Uncomment (and add a description/image) once the repository is public.
+# - title: "fgvb"
+#   url: "https://github.com/pachterlab/fgvb"
+#   description: ""

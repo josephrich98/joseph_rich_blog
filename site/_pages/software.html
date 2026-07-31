@@ -1,0 +1,22 @@
+---
+layout: archive
+title: "Software"
+permalink: /software/
+author_profile: true
+---
+
+{% include base_path %}
+
+<p>Open-source packages I have written or co-written. Each links to its GitHub repository.</p>
+
+{% for item in site.data.software %}
+  <div class="software__item">
+    <h2 class="software__title"><a href="{{ item.url }}">{{ item.title }}</a></h2>
+    {% if item.description %}<p>{{ item.description }}</p>{% endif %}
+    {% if item.image %}
+      <p class="software__figure">
+        <a href="{{ item.url }}"><img src="{{ item.image | prepend: base_path }}" alt="{{ item.title }}"></a>
+      </p>
+    {% endif %}
+  </div>
+{% endfor %}
