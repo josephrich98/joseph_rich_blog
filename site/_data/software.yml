@@ -5,6 +5,7 @@
 #   repo        owner/name on GitHub — drives the stars badge (omit for no badge)
 #   pypi        PyPI project name — drives the pepy download-count badge (omit for no badge)
 #   image       a figure from the repo's README, downscaled into /images/software/
+#   image_size  "large" for app screenshots, which need more height than a logo
 #   manuscript  venue + link for the accompanying paper (update the venue on journal acceptance)
 - title: "varseek"
   url: "https://github.com/pachterlab/varseek"
@@ -60,9 +61,12 @@
   pypi: "paperpush"
   description: "Automates manuscript submission. Point it at a manuscript directory and a target venue and it generates a submission file, validates it against the venue's pre-submission checks, and fills out the submission portal for you — stopping short of clicking submit. Supports arXiv, bioRxiv, and medRxiv along with a growing list of journals."
 
+# The repo is josephrich98/conference-agent, but `repo` is deliberately unset so no
+# stars badge is shown — this entry points at the live site rather than GitHub.
 - title: "Conference Agent"
   url: "https://conferenceagent.vercel.app"
-  repo: "josephrich98/conference-agent"
+  image: "/images/software/conference-agent.png"
+  image_size: large
   description: "AI agent that compiles major conferences across medicine, genomics/bioinformatics, and data science into one searchable table, with website links and color-coded submission deadlines and meeting dates, refreshed biweekly. Any row can be exported as a subscribable calendar feed (<code>.ics</code>)."
 
 # fgvb is not publicly reachable (https://github.com/pachterlab/fgvb returns 404 —

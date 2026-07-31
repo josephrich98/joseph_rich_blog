@@ -44,7 +44,7 @@ author_profile: true
     {% endif %}
 
     {% if item.image %}
-      <p class="software__figure">
+      <p class="software__figure{% if item.image_size == 'large' %} software__figure--large{% endif %}">
         <a href="{{ item.url }}"><img src="{{ item.image | prepend: base_path }}" alt="{{ item.title }}"></a>
       </p>
     {% endif %}

@@ -311,9 +311,9 @@ hr + .list__item .archive__item-title {
     text-decoration: none;
   }
 
-  /* README figures vary wildly in aspect ratio (square logos to very wide
-     pipeline banners), so cap the height and let the width follow. The white
-     plate keeps transparent logos legible under the dark theme. */
+  /* Figures vary wildly in aspect ratio (square logos, very wide pipeline
+     banners), so cap the height and let the width follow. The white plate keeps
+     transparent logos legible under the dark theme. */
   img {
     display: block;
     width: auto;
@@ -323,5 +323,14 @@ hr + .list__item .archive__item-title {
     background-color: #fff;
     border: 1px solid var(--global-border-color);
     border-radius: $border-radius;
+  }
+
+  /* app screenshots (image_size: large) need more room than a logo to read as
+     anything at all, and being opaque they want no white plate behind them —
+     the border sits flush on the image instead */
+  &--large img {
+    max-height: 360px;
+    padding: 0;
+    background-color: transparent;
   }
 }
