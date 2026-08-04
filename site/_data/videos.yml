@@ -1,6 +1,10 @@
 # Videos listed on /videos/ (rendered by _pages/videos.html).
 # Software tutorials and math explainers, mostly hosted on YouTube.
 #
+# Entries are listed in descending order of view count. `views` is a display
+# string, so the template can't sort it — re-sort this file by hand when adding
+# an entry or refreshing the counts.
+#
 # Fields (per entry):
 #   title        display name / video title
 #   url          where the thumbnail and heading link (the YouTube watch URL)

@@ -1,4 +1,7 @@
 # Open-source packages listed on /software/ (rendered by _pages/software.html).
+# Entries are listed in descending order of GitHub stars (snapshot: 2026-08-01);
+# re-sort when adding an entry or when the counts have drifted. The stars badge
+# itself is live, so only the ordering here goes stale.
 # Fields:
 #   title       display name
 #   url         where the heading links (the GitHub repo, unless the project has its own site)
@@ -7,16 +10,25 @@
 #   image       a figure from the repo's README, downscaled into /images/software/
 #   image_size  "large" for app screenshots, which need more height than a logo
 #   manuscript  venue + link for the accompanying paper (update the venue on journal acceptance)
-- title: "varseek"
-  url: "https://github.com/pachterlab/varseek"
-  repo: "pachterlab/varseek"
-  pypi: "varseek"
-  image: "/images/software/varseek.png"
-  description: "Command-line tool and Python package for variant screening of DNA-seq, bulk RNA-seq, and single-cell RNA-seq data. <code>vk ref</code> turns a variant database (COSMIC, ClinVar, dbSNP, or custom) plus its reference genome/transcriptome into a variant-containing reference sequence (VCRS) index; <code>vk count</code> pseudoaligns reads against that index and returns a samples × variants count matrix in AnnData format, ready for clustering, differential expression, or pathway analysis."
+
+# 109 stars
+- title: "paperpush"
+  url: "https://github.com/pachterlab/paperpush"
+  repo: "pachterlab/paperpush"
+  pypi: "paperpush"
+  description: "Automates manuscript submission. Point it at a manuscript directory and a target venue and it generates a submission file, validates it against the venue's pre-submission checks, and fills out the submission portal for you — stopping short of clicking submit. Supports arXiv, bioRxiv, and medRxiv along with a growing list of journals."
+
+# 32 stars
+- title: "fastQpick"
+  url: "https://github.com/pachterlab/fastQpick"
+  repo: "pachterlab/fastQpick"
+  pypi: "fastQpick"
+  description: "Fast, memory-efficient sampling of FASTQ reads with or without replacement — for generating bootstrap replicates that quantify technical variance at the level of raw reads, and for subsampling large libraries for testing and benchmarking. Streaming I/O and ISA-L-accelerated gzip bootstrap a 500-million-read library in roughly 26 minutes."
   manuscript:
     venue: "bioRxiv"
-    url: "https://doi.org/10.1101/2025.09.03.674039"
+    url: "https://doi.org/10.64898/2026.06.23.734068"
 
+# 31 stars
 - title: "wompwomp"
   url: "https://github.com/pachterlab/wompwomp"
   repo: "pachterlab/wompwomp"
@@ -26,6 +38,7 @@
     venue: "arXiv"
     url: "https://doi.org/10.48550/arXiv.2509.03761"
 
+# 26 stars
 - title: "cellsweep"
   url: "https://github.com/pachterlab/cellsweep"
   repo: "pachterlab/cellsweep"
@@ -36,15 +49,27 @@
     venue: "bioRxiv"
     url: "https://doi.org/10.64898/2026.03.04.709349"
 
-- title: "fastQpick"
-  url: "https://github.com/pachterlab/fastQpick"
-  repo: "pachterlab/fastQpick"
-  pypi: "fastQpick"
-  description: "Fast, memory-efficient sampling of FASTQ reads with or without replacement — for generating bootstrap replicates that quantify technical variance at the level of raw reads, and for subsampling large libraries for testing and benchmarking. Streaming I/O and ISA-L-accelerated gzip bootstrap a 500-million-read library in roughly 26 minutes."
+# 19 stars
+- title: "varseek"
+  url: "https://github.com/pachterlab/varseek"
+  repo: "pachterlab/varseek"
+  pypi: "varseek"
+  image: "/images/software/varseek.png"
+  description: "Command-line tool and Python package for variant screening of DNA-seq, bulk RNA-seq, and single-cell RNA-seq data. <code>vk ref</code> turns a variant database (COSMIC, ClinVar, dbSNP, or custom) plus its reference genome/transcriptome into a variant-containing reference sequence (VCRS) index; <code>vk count</code> pseudoaligns reads against that index and returns a samples × variants count matrix in AnnData format, ready for clustering, differential expression, or pathway analysis."
   manuscript:
     venue: "bioRxiv"
-    url: "https://doi.org/10.64898/2026.06.23.734068"
+    url: "https://doi.org/10.1101/2025.09.03.674039"
 
+# 7 stars. The repo is josephrich98/conference-agent, but `repo` is deliberately
+# unset so no stars badge is shown — this entry points at the live site rather
+# than GitHub. Its star count still determines its position here.
+- title: "Conference Agent"
+  url: "https://conferenceagent.vercel.app"
+  image: "/images/software/conference-agent.png"
+  image_size: large
+  description: "AI agent that compiles major conferences across medicine, genomics/bioinformatics, and data science into one searchable table, with website links and color-coded submission deadlines and meeting dates, refreshed biweekly. Any row can be exported as a subscribable calendar feed (<code>.ics</code>)."
+
+# 1 star
 - title: "tcia-radiology-processing"
   url: "https://github.com/pachterlab/tcia-radiology-processing"
   repo: "pachterlab/tcia-radiology-processing"
@@ -54,20 +79,6 @@
   manuscript:
     venue: "medRxiv"
     url: "https://doi.org/10.64898/2026.06.15.26354651"
-
-- title: "paperpush"
-  url: "https://github.com/pachterlab/paperpush"
-  repo: "pachterlab/paperpush"
-  pypi: "paperpush"
-  description: "Automates manuscript submission. Point it at a manuscript directory and a target venue and it generates a submission file, validates it against the venue's pre-submission checks, and fills out the submission portal for you — stopping short of clicking submit. Supports arXiv, bioRxiv, and medRxiv along with a growing list of journals."
-
-# The repo is josephrich98/conference-agent, but `repo` is deliberately unset so no
-# stars badge is shown — this entry points at the live site rather than GitHub.
-- title: "Conference Agent"
-  url: "https://conferenceagent.vercel.app"
-  image: "/images/software/conference-agent.png"
-  image_size: large
-  description: "AI agent that compiles major conferences across medicine, genomics/bioinformatics, and data science into one searchable table, with website links and color-coded submission deadlines and meeting dates, refreshed biweekly. Any row can be exported as a subscribable calendar feed (<code>.ics</code>)."
 
 # fgvb is not publicly reachable (https://github.com/pachterlab/fgvb returns 404 —
 # private or not yet created), so it is held back rather than shipping a dead link.
