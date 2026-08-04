@@ -37,12 +37,12 @@ author:
 publication_category:
   original_research:
     title: 'Original Research'
+  preprints:
+    title: 'Preprints'
   reviews:
     title: 'Reviews'
   case_reports:
     title: 'Case Reports'
-  preprints:
-    title: 'Preprints'
   research_highlights:
     title: 'Research Highlights'
 
