@@ -31,4 +31,18 @@
 #   views: "1,240"
 #   description: "Walkthrough of the vk ref / vk count pipeline, from a variant database to a samples x variants count matrix."
 
-# (No videos yet.)
+- title: "PaperPush Tutorial"
+  url: "https://youtu.be/ChCYoud0uBk"
+  id: "ChCYoud0uBk"
+  image: "/images/videos/paperpush-tutorial.jpg"
+  category: "Tutorial"
+  date: 2026-08-07
+  description: "Tutorial for PaperPush, the Python library that automates the process of filling out submission portals for academic journals, preprint servers, and conferences."
+
+- title: "PaperPush Contributor Tutorial"
+  url: "https://youtu.be/hn1RNcvHuYw"
+  id: "hn1RNcvHuYw"
+  image: "/images/videos/paperpush-contributor-tutorial.jpg"
+  category: "Tutorial"
+  date: 2026-08-07
+  description: "Contributor tutorial for PaperPush, walking through how to add support for a new venue to the library."
