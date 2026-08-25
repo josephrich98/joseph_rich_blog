@@ -1,5 +1,5 @@
 # Open-source packages listed on /software/ (rendered by _pages/software.html).
-# Entries are listed in descending order of GitHub stars (snapshot: 2026-08-01);
+# Entries are listed in descending order of GitHub stars (snapshot: 2026-08-13);
 # re-sort when adding an entry or when the counts have drifted. The stars badge
 # itself is live, so only the ordering here goes stale.
 # Fields:
@@ -11,7 +11,7 @@
 #   image_size  "large" for app screenshots, which need more height than a logo
 #   manuscript  venue + link for the accompanying paper (update the venue on journal acceptance)
 
-# 109 stars
+# 129 stars
 - title: "paperpush"
   url: "https://github.com/pachterlab/paperpush"
   repo: "pachterlab/paperpush"
@@ -60,7 +60,7 @@
     venue: "bioRxiv"
     url: "https://doi.org/10.1101/2025.09.03.674039"
 
-# 7 stars. The repo is josephrich98/conference-agent, but `repo` is deliberately
+# 8 stars. The repo is josephrich98/conference-agent, but `repo` is deliberately
 # unset so no stars badge is shown — this entry points at the live site rather
 # than GitHub. Its star count still determines its position here.
 - title: "Conference Agent"
@@ -69,11 +69,12 @@
   image_size: large
   description: "AI agent that compiles major conferences across medicine, genomics/bioinformatics, and data science into one searchable table, with website links and color-coded submission deadlines and meeting dates, refreshed biweekly. Any row can be exported as a subscribable calendar feed (<code>.ics</code>)."
 
-# 1 star
-- title: "tcia-radiology-processing"
-  url: "https://github.com/pachterlab/tcia-radiology-processing"
-  repo: "pachterlab/tcia-radiology-processing"
-  pypi: "tcia-radiology-processing"
+# 0 stars. Replaced tcia-radiology-processing, whose protocol this package
+# implements — the image is that repo's figure, which ctkit ships unchanged.
+- title: "ctkit"
+  url: "https://github.com/pachterlab/ctkit"
+  repo: "pachterlab/ctkit"
+  pypi: "ctkit"
   image: "/images/software/tcia-radiology-processing.png"
   description: "Protocol and Python package for turning TCGA/TCIA radiology studies into AI-ready arrays: download and filtering, DICOM → NIfTI conversion, reorientation, segmentation, Hounsfield-unit clipping, resampling, mask-and-crop, and intensity normalization, with Jupyter notebooks walking through each step."
   manuscript:
