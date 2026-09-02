@@ -10,8 +10,18 @@ main:
   - title: "Software"
     url: /software/
 
+  # Draft section: its page and its _data/models_local.yml content are
+  # gitignored, so this link only renders where that data file exists (i.e.
+  # locally). Drop requires_data when the section goes public.
+  - title: "Models"
+    url: /models/
+    requires_data: models_local
+
   - title: "Videos"
     url: /videos/
+
+  - title: "Funding"
+    url: /funding/
 
   - title: "Contact"
     url: /contact/

@@ -1,0 +1,53 @@
+---
+layout: archive
+title: "Funding"
+permalink: /funding/
+author_profile: true
+---
+
+{% include base_path %}
+
+<p>Grants and fellowships supporting my research, newest first.</p>
+
+{% comment %}
+  Draft entries live in the gitignored _data/funding_local.yml overlay, which is
+  appended here when it exists — so they render locally and are absent from the
+  live build. See DEVELOPMENT.md, "Unpublished sections".
+{% endcomment %}
+{% assign funding_items = site.data.funding %}
+{% if site.data.funding_local %}
+  {% assign funding_items = funding_items | concat: site.data.funding_local %}
+{% endif %}
+
+{% for item in funding_items %}
+  <div class="funding__item">
+    <h2 class="funding__title">{{ item.title }}</h2>
+
+    {% comment %}
+      Meta line: who gave it, how much, and when. Every field is optional, so
+      the separators hang off the field that follows rather than the one before,
+      and a missing amount or date doesn't leave a dangling dot.
+    {% endcomment %}
+    <p class="funding__meta">
+      {% comment %}
+        The link hangs off the funder, not the award title: a grant rarely has a
+        page of its own, so the URL points at the body that made it.
+      {% endcomment %}
+      {% if item.funder %}
+        <span class="funding__funder">{% if item.url %}<a href="{{ item.url }}">{{ item.funder }}</a>{% else %}{{ item.funder }}{% endif %}</span>
+      {% endif %}
+      {% if item.amount %}
+        {% if item.funder %}<span class="funding__sep">&middot;</span>{% endif %}
+        <span class="funding__amount">{{ item.amount }}</span>
+      {% endif %}
+      {% if item.date %}
+        {% if item.funder or item.amount %}<span class="funding__sep">&middot;</span>{% endif %}
+        <span class="funding__date">{{ item.date }}{% if item.term %}, {{ item.term }}{% endif %}</span>
+      {% endif %}
+    </p>
+
+    {% if item.project %}<p class="funding__project">{{ item.project }}</p>{% endif %}
+    {% if item.description %}<p>{{ item.description }}</p>{% endif %}
+    {% if item.note %}<p class="funding__note">{{ item.note }}</p>{% endif %}
+  </div>
+{% endfor %}

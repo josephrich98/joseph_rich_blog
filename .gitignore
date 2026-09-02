@@ -190,3 +190,24 @@ posts/**/data
 .vercel
 CLAUDE.md
 .claude
+# ── Unpublished site sections ────────────────────────────────────────────────
+# This repo is PUBLIC, and Vercel builds the site from what is committed here.
+# So "don't publish it yet" means "don't commit it yet" — front matter alone
+# (published: false) would still put the text on GitHub for anyone to read.
+#
+# These are name patterns, not a list of specific files, so that this committed
+# file gives away nothing about what is being drafted. Anything matching builds
+# on a local `jekyll serve` and never leaves this machine:
+#
+#   *.draft.*          a draft page or collection entry (permalink and date come
+#                      from front matter, so the filename can be anything)
+#   _data/*_local.yml  a draft section's content, or an overlay of draft entries
+#                      appended to an existing section (see _pages/software.html)
+#   images/drafts/     any image those drafts use
+#
+# See DEVELOPMENT.md, "Unpublished sections", for the three staging patterns and
+# how to publish one. To see what is currently held back:
+#   git status --ignored --short site
+site/**/*.draft.*
+site/_data/*_local.yml
+site/images/drafts/

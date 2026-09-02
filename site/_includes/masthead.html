@@ -9,6 +9,19 @@
             <a href="{{ base_path }}/">{{ site.title }}</a>
           </li>
           {% for link in site.data.navigation.main %}
+            {% comment %}
+              A draft section keeps its nav entry here while its page and data
+              file stay uncommitted (see DEVELOPMENT.md, "Unpublished
+              sections"). `requires_data` names the _data file that ships with
+              the section, so the link renders only where that file exists —
+              locally, and not in the live build.
+            {% endcomment %}
+            {% if link.requires_data %}
+              {% assign required_data = site.data[link.requires_data] %}
+              {% unless required_data and required_data != empty %}
+                {% continue %}
+              {% endunless %}
+            {% endif %}
             {% if link.url contains 'http' %}
               {% assign domain = '' %}
             {% else %}

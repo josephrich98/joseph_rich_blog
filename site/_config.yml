@@ -39,6 +39,8 @@ publication_category:
     title: 'Original Research'
   preprints:
     title: 'Preprints'
+  oral_presentations:
+    title: 'Oral Presentations'
   reviews:
     title: 'Reviews'
   case_reports:

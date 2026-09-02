@@ -71,6 +71,13 @@ hr + .list__item .archive__item-title {
   }
 }
 
+/* the "Venue: …" line publications carry above their citation */
+.archive__item-venue {
+  margin: 0.5em 0 0;
+  font-size: $type-size-6;
+  color: var(--global-text-color-light);
+}
+
 .archive__item-excerpt {
   margin-top: 0;
   font-size: $type-size-6;
@@ -429,4 +436,134 @@ hr + .list__item .archive__item-title {
 .video__empty {
   color: var(--global-text-color-light);
   font-style: italic;
+}
+
+
+/*
+   Funding list (/funding/)
+   ========================================================================== */
+
+.funding__item {
+  margin-bottom: 2em;
+
+  + .funding__item {
+    padding-top: 1.5em;
+    border-top: 1px solid var(--global-border-color);
+  }
+}
+
+.funding__title {
+  margin: 0 0 0.25em;
+  font-family: $sans-serif-narrow;
+}
+
+.funding__meta {
+  margin: 0 0 0.5em;
+  font-size: 0.8em;
+  color: var(--global-text-color-light);
+}
+
+/* The award size is the one number on the line worth scanning for. */
+.funding__amount {
+  font-weight: bold;
+}
+
+.funding__sep {
+  margin: 0 0.4em;
+}
+
+/* The funded project's title, set like a citation title rather than a heading —
+   it sits between the meta line and the prose description. */
+.funding__project {
+  margin: 0 0 0.25em;
+  font-style: italic;
+}
+
+.funding__note {
+  margin: 0.5em 0 0;
+  font-size: $type-size-6;
+  color: var(--global-text-color-light);
+}
+
+
+/*
+   Model list (/models/)
+   ========================================================================== */
+
+.model__item {
+  margin-bottom: 2em;
+
+  + .model__item {
+    padding-top: 1.5em;
+    border-top: 1px solid var(--global-border-color);
+  }
+}
+
+.model__title {
+  margin: 0 0 0.15em;
+  font-family: $sans-serif-narrow;
+}
+
+.model__subtitle {
+  margin: 0 0 0.75em;
+  font-size: $type-size-5;
+  color: var(--global-text-color-light);
+}
+
+.model__links {
+  margin: 0 0 1em;
+
+  .btn {
+    margin-right: 0.75em;
+  }
+}
+
+.model__note {
+  font-size: $type-size-6;
+  color: var(--global-text-color-light);
+}
+
+.model__heading {
+  margin: 1.25em 0 0.25em;
+  font-family: $sans-serif-narrow;
+}
+
+/* Architecture diagrams are wide and line-art heavy, so they get the full
+   column width and a white plate — the figures are drawn for paper, and read
+   as smudges on the dark theme's background without one. */
+.model__figure {
+  margin: 0 0 0.5em;
+
+  img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    padding: 0.5em;
+    background-color: #fff;
+    border: 1px solid var(--global-border-color);
+    border-radius: $border-radius;
+  }
+
+  &--large img {
+    padding: 0.75em;
+  }
+}
+
+.model__caption {
+  margin: 0 0 1em;
+  font-size: $type-size-6;
+  color: var(--global-text-color-light);
+}
+
+.model__highlights {
+  margin: 1em 0;
+}
+
+.model__status {
+  margin: 1em 0 0;
+  padding: 0.75em 1em;
+  font-size: $type-size-6;
+  background-color: var(--global-code-background-color);
+  border-left: 3px solid var(--global-border-color);
+  border-radius: $border-radius;
 }

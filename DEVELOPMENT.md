@@ -104,6 +104,68 @@ python3 scripts/sync_posts.py
 > matter — pandoc ignores those keys when building the PDF, and `sync_posts.py`
 > uses them for the website. Directories named `template` are skipped.
 
+## 🚧 Unpublished sections
+
+This repository is **public**, and Vercel builds joseph-rich.com from whatever
+is committed to `main`. So a draft is held back by *not committing it* —
+`published: false` in front matter would keep it off the site but still publish
+the text on GitHub.
+
+The "Unpublished site sections" block at the bottom of `.gitignore` holds three
+**name patterns**, so that committed file never names what is being drafted:
+
+| Pattern | For |
+| --- | --- |
+| `site/**/*.draft.*` | a draft page or collection entry — permalink and date come from front matter, so the filename is free |
+| `site/_data/*_local.yml` | a draft section's content, or draft entries overlaid onto an existing section |
+| `site/images/drafts/` | any image those drafts use |
+
+Anything matching builds on a local `jekyll serve` and cannot be committed, even
+by `git add -A`. There are three shapes of draft:
+
+**1. A whole new section** (this is how `/models/` is staged):
+
+| Piece | Where | Committed? |
+| --- | --- | --- |
+| The page | `site/_pages/<name>.draft.html`, with `permalink: /<name>/` | no |
+| Its content | `site/_data/<name>_local.yml`, read by the page | no |
+| Its images | `site/images/drafts/` | no |
+| Its nav entry | `site/_data/navigation.yml` | yes, with `requires_data:` |
+
+The nav entry is the one committed piece, because `navigation.yml` is a shared
+file. It carries `requires_data: <name>_local`, naming the `_data` file that
+ships with the section; `site/_includes/masthead.html` skips any link whose
+`requires_data` file is missing. Locally that file exists and the link shows; on
+Vercel it does not, so there is no link and no page. Its styles can stay in
+`_sass/` — class names give nothing away — or go in a `<style>` block inside the
+draft page if even that matters.
+
+**2. A draft entry in a section that is already public.** `_data/software.yml`
+and `_data/videos.yml` are single tracked files, so an entry cannot be held back
+inside one. Put it in `_data/<name>_local.yml` instead; the section's page
+appends that overlay when it exists (see the `concat` in `_pages/software.html`,
+which is the pattern to copy for another section). Overlay entries render after
+the tracked ones, so in a sorted section — software is ordered by GitHub stars —
+a draft lands at the end regardless of where it belongs.
+
+**3. A draft entry in a file-per-item collection** (`_publications/`, `_posts/`):
+name it `<usual-name>.draft.md`. A publication category heading only renders when
+it has at least one entry, so an ignored file takes its heading with it.
+
+**Checking what is held back.** The patterns are deliberately uninformative, so
+ask git rather than reading `.gitignore`:
+
+```bash
+git status --ignored --short site   # lines starting with !! are held back
+```
+
+**Going public.** Rename the file out of the draft pattern — drop `.draft`, move
+`<name>_local.yml` to `<name>.yml` (updating the page and the nav entry's
+`requires_data`), move images from `images/drafts/` to the section's image
+folder — then commit. For an overlay entry, move its block into the tracked
+`.yml` at the right position in the ordering. The section appears on the next
+deploy.
+
 ## 🔖 Validating citations
 
 The same pre-commit hook also validates references. Whenever a commit **creates

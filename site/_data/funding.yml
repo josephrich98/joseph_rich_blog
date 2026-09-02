@@ -1,0 +1,63 @@
+# Research funding listed on /funding/ (rendered by _pages/funding.html).
+#
+# Mirrors the "Grants, Fellowships, Honors, and Scholarships" section of the CV
+# (site/files/joseph_rich_cv.pdf), narrowed to research funding — the teaching
+# honors, prizes, and undergraduate merit scholarships listed there stay on the
+# CV. Keep the two in sync when either changes.
+#
+# Entries are newest first. `date` is a display string, so the template can't
+# sort it — add a new award at the top of the file.
+#
+# Fields (per entry):
+#   title        the award's name
+#   funder       the awarding body, spelled out
+#   url          the funder's public page, linked from the funder's name
+#                (optional — omit rather than link a page that is behind a login
+#                or has since moved, as the AI West Med conference site is)
+#   amount       award size as a display string, e.g. "$10,000"
+#   date         when it was awarded, e.g. "June 2026"
+#   term         the award period, when it is fixed (optional), e.g. "one year"
+#   project      the funded project's title (optional)
+#   description  a sentence on what the award supports
+#   note         anything that qualifies the entry (optional) — e.g. an award
+#                paid to a mentee rather than to me
+
+- title: "Beckman Institute Neuro Mini-Grant"
+  funder: "Beckman Institute, California Institute of Technology"
+  url: "https://beckmaninstitute.caltech.edu/"
+  amount: "$4,400"
+  date: "June 2026"
+  description: "Supports work on interpreting the latent spaces of medical imaging models, applied to neurodegenerative disease."
+
+- title: "Summer Undergraduate Research Fellowship (SURF), as research mentor"
+  funder: "Student-Faculty Programs, California Institute of Technology"
+  url: "https://sfp.caltech.edu/undergraduate-research/programs/surf"
+  amount: "$8,110"
+  date: "June 2026"
+  description: "Funds a summer of work on encoder pretraining and self-supervised learning for our radiogenomics contrastive learning model."
+  note: "Awarded to David Jin, the Caltech undergraduate I mentor, for work I proposed and supervise — the stipend is his, not mine."
+
+- title: "Merkin Spark Grant"
+  funder: "Merkin Institute for Translational Research, California Institute of Technology"
+  url: "https://merkin.caltech.edu/"
+  amount: "$10,000"
+  date: "October 2025"
+  project: "Efficient and accurate variant detection applied to cancer transcriptomics with varseek"
+  description: "Supports varseek, an alignment-free method for screening sequence variants directly in RNA-seq reads, applied to cancer transcriptomes."
+
+- title: "AI West Med Conference Grant"
+  funder: "Keck School of Medicine of the University of Southern California"
+  amount: "$5,000"
+  date: "February 2024"
+  term: "one year"
+  project: "Image Imputation with Conditional Generative Adversarial Networks Captures Clinically Relevant Imaging Features on Computed Tomography"
+  description: "Funded a study of whether conditional GANs, asked to synthesize a missing CT contrast phase, reproduce the imaging features a radiologist would read from the real acquisition."
+
+- title: "Research Medical Student Grant"
+  funder: "Radiological Society of North America (RSNA)"
+  url: "https://www.rsna.org/research/funding-opportunities"
+  amount: "$6,000"
+  date: "June 2023"
+  term: "one year"
+  project: "Deep Learning Image Segmentation of Prostate Cancer Bone Metastases"
+  description: "Funded a year of work on automated segmentation of bone metastases in prostate cancer imaging."

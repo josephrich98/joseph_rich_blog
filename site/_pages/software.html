@@ -18,7 +18,17 @@ author_profile: true
 
 <p>Open-source packages I have written or co-written.</p>
 
-{% for item in site.data.software %}
+{% comment %}
+  Draft entries live in the gitignored _data/software_local.yml overlay, which is
+  appended here when it exists — so they render locally and are absent from the
+  live build. See DEVELOPMENT.md, "Unpublished sections".
+{% endcomment %}
+{% assign software_items = site.data.software %}
+{% if site.data.software_local %}
+  {% assign software_items = software_items | concat: site.data.software_local %}
+{% endif %}
+
+{% for item in software_items %}
   <div class="software__item">
     <h2 class="software__title"><a href="{{ item.url }}">{{ item.title }}</a></h2>
 
