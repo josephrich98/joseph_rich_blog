@@ -27,6 +27,7 @@
   url: "https://beckmaninstitute.caltech.edu/"
   amount: "$4,400"
   date: "June 2026"
+  project: "Describing the Directions a Brain Model Learns: A Variance-Attribution Metric for Interpretable Neuro-AI"
   description: "Supports work on interpreting the latent spaces of medical imaging models, applied to neurodegenerative disease."
 
 - title: "Summer Undergraduate Research Fellowship (SURF), as research mentor"
@@ -34,8 +35,9 @@
   url: "https://sfp.caltech.edu/undergraduate-research/programs/surf"
   amount: "$8,110"
   date: "June 2026"
+  project: "Encoder Pretraining and Self-Supervised Learning for Radiogenomics Contrastive Learning"
   description: "Funds a summer of work on encoder pretraining and self-supervised learning for our radiogenomics contrastive learning model."
-  note: "Awarded to David Jin, the Caltech undergraduate I mentor, for work I proposed and supervise — the stipend is his, not mine."
+  note: "Awarded to David Jin, the Caltech undergraduate I mentor, for work I proposed and supervise."
 
 - title: "Merkin Spark Grant"
   funder: "Merkin Institute for Translational Research, California Institute of Technology"
@@ -49,7 +51,6 @@
   funder: "Keck School of Medicine of the University of Southern California"
   amount: "$5,000"
   date: "February 2024"
-  term: "one year"
   project: "Image Imputation with Conditional Generative Adversarial Networks Captures Clinically Relevant Imaging Features on Computed Tomography"
   description: "Funded a study of whether conditional GANs, asked to synthesize a missing CT contrast phase, reproduce the imaging features a radiologist would read from the real acquisition."
 
@@ -58,6 +59,5 @@
   url: "https://www.rsna.org/research/funding-opportunities"
   amount: "$6,000"
   date: "June 2023"
-  term: "one year"
   project: "Deep Learning Image Segmentation of Prostate Cancer Bone Metastases"
   description: "Funded a year of work on automated segmentation of bone metastases in prostate cancer imaging."
