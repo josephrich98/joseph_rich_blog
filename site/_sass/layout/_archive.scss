@@ -71,10 +71,38 @@ hr + .list__item .archive__item-title {
   }
 }
 
+/* "Selected works" — the short title + venue list at the top of /publications */
+.selected-works {
+  margin: 0 0 2em;
+  padding: 0;
+  list-style: none;
+}
+
+.selected-works__item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0 1.5em;
+  margin-bottom: 0.6em;
+  font-family: $sans-serif-narrow;
+}
+
+.selected-works__title {
+  flex: 1 1 18em;
+}
+
+.selected-works__venue {
+  flex: 0 1 auto;
+  font-size: $type-size-6;
+  color: var(--global-text-color-light);
+  text-align: right;
+}
+
 /* the "Venue: …" line publications carry above their citation */
 .archive__item-venue {
   margin: 0.5em 0 0;
-  font-size: $type-size-6;
+  font-size: $type-size-5; /* match the description / citation lines */
   color: var(--global-text-color-light);
 }
 

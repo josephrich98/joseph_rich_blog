@@ -7,6 +7,28 @@ author_profile: true
 
 {% include base_path %}
 
+{% comment %}
+  "Selected works" — a short, scannable list at the top of the page, driven by
+  `selected: true` in a publication's front matter (no hand-kept list here).
+  Each entry shows only title + venue/year; the full entry still appears in its
+  category below. `short_venue` overrides the long `venue` string when set.
+{% endcomment %}
+{% assign selected_works = site.publications | where: "selected", true | sort: "date" | reverse %}
+{% if selected_works.size > 0 %}
+  <h2>Selected Works</h2><hr />
+  <ul class="selected-works">
+    {% for post in selected_works %}
+      {% assign external_link = post.link | default: post.paperurl %}
+      <li class="selected-works__item">
+        <span class="selected-works__title">
+          {% if external_link %}<a href="{{ external_link }}">{{ post.title }}</a>{% else %}{{ post.title }}{% endif %}
+        </span>
+        <span class="selected-works__venue">{{ post.short_venue | default: post.venue }} ({{ post.date | date: "%Y" }})</span>
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
 <!-- New style rendering if publication categories are defined -->
 {% if site.publication_category %}
   {% for category in site.publication_category  %}

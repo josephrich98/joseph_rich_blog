@@ -2,6 +2,7 @@
 title: "Reference-based variant detection with varseek"
 collection: publications
 category: preprints
+selected: true
 permalink: /publications/2025-09-02-reference-based-variant-detection-with-varseek
 date: 2025-09-02
 venue: 'bioRxiv'

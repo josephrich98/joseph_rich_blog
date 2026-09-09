@@ -2,6 +2,7 @@
 title: "Image imputation with conditional generative adversarial networks captures clinically relevant imaging features on computed tomography"
 collection: publications
 category: original_research
+selected: true
 permalink: /publications/2025-08-13-image-imputation-with-conditional-generative-adversarial-networks-captures
 date: 2025-08-13
 venue: 'PLOS Digital Health'

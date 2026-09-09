@@ -2,6 +2,7 @@
 title: "The impact of package selection and versioning on single-cell RNA-seq analysis"
 collection: publications
 category: original_research
+selected: true
 permalink: /publications/2026-03-27-the-impact-of-package-selection-and-versioning-on
 date: 2026-03-27
 venue: 'Cell Systems'
