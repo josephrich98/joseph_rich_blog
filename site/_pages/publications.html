@@ -23,7 +23,9 @@ author_profile: true
         <span class="selected-works__title">
           {% if external_link %}<a href="{{ external_link }}">{{ post.title }}</a>{% else %}{{ post.title }}{% endif %}
         </span>
-        <span class="selected-works__venue">{{ post.short_venue | default: post.venue }} ({{ post.date | date: "%Y" }})</span>
+        {% assign venue_label = post.short_venue | default: post.venue %}
+        {% if post.category == "oral_presentations" %}{% assign venue_label = venue_label | append: ", oral" %}{% endif %}
+        <span class="selected-works__venue">{{ venue_label }} ({{ post.date | date: "%Y" }})</span>
       </li>
     {% endfor %}
   </ul>

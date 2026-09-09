@@ -2,6 +2,7 @@
 title: "Optimizing alluvial plots"
 collection: publications
 category: preprints
+selected: true
 permalink: /publications/2025-09-03-optimizing-alluvial-plots
 date: 2025-09-03
 venue: 'arXiv'

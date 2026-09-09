@@ -45,7 +45,7 @@ jobs:
     outputs:
       matrix: ${{ steps.select.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0  # need history to diff the pushed range / PR base
 
@@ -149,7 +149,7 @@ jobs:
         include: ${{ fromJSON(needs.detect.outputs.matrix) }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - name: Add conda to system path
       run: |
@@ -179,7 +179,30 @@ jobs:
 
     - name: Install LaTeX toolchain (Eisvogel dependencies)
       run: |
-        sudo apt-get update
+        set -uo pipefail
+        # The hosted runner image ships third-party apt sources (Google Chrome,
+        # Microsoft, ...) that this job never installs from and that
+        # intermittently serve a stale index: `apt-get update` then exits 100 and
+        # fails the whole leg for a reason unrelated to this repo. Seen
+        # 2026-09-09 on all three matrix legs:
+        #   E: Failed to fetch .../chrome-stable/.../Packages.gz Hash Sum mismatch
+        # Drop just those lists — the Ubuntu archives themselves live in
+        # /etc/apt/sources.list and, on 24.04, the deb822
+        # /etc/apt/sources.list.d/ubuntu.sources, neither of which matches here.
+        sudo rm -f $(grep -rlE 'dl\.google\.com|packages\.microsoft\.com|apt\.releases\.hashicorp\.com|download\.docker\.com|apt\.postgresql\.org' \
+          /etc/apt/sources.list.d/ 2>/dev/null || true)
+        # Then retry, so a genuinely transient mirror hiccup on the Ubuntu
+        # archives doesn't fail the run either.
+        for attempt in 1 2 3; do
+          if sudo apt-get update; then break; fi
+          if [ "$attempt" = 3 ]; then
+            echo "apt-get update failed 3 times; giving up." >&2
+            exit 1
+          fi
+          echo "apt-get update failed (attempt $attempt); clearing lists and retrying in 15s" >&2
+          sudo rm -rf /var/lib/apt/lists/*
+          sleep 15
+        done
         sudo apt-get install -y --no-install-recommends \
           texlive-xetex texlive-latex-base texlive-latex-extra \
           texlive-fonts-recommended texlive-fonts-extra latexmk lmodern
