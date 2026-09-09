@@ -20,8 +20,12 @@ main:
   - title: "Videos"
     url: /videos/
 
+  # Draft section: its page and its _data/funding_local.yml content are
+  # gitignored, so this link only renders where that data file exists (i.e.
+  # locally). Drop requires_data when the section goes public.
   - title: "Funding"
     url: /funding/
+    requires_data: funding_local
 
   - title: "Contact"
     url: /contact/
