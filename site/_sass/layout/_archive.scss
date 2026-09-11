@@ -70,8 +70,16 @@ h2 + hr {
   margin-bottom: 0.5em;
   padding: 0.4em 0 0.3em;
   font-size: $type-size-section-title;
-  background: var(--global-bg-color);
   border-bottom: 1px solid var(--global-border-color);
+
+  /* The heading has to be opaque, or the entries would scroll visibly through
+     it. It takes that color by inheritance rather than from
+     --global-bg-color so that it follows whatever is actually painting the
+     page: a Safari dark-mode extension repaints <body> but leaves the theme's
+     variables alone, which used to leave a white slab sitting in a dark page.
+     Inheriting means the heading is whatever the page behind it is, always.
+     See the chain on #main / .archive / .archive__section below. */
+  background-color: inherit;
 }
 
 .archive__section-title + .list__item .archive__item-title {
@@ -86,6 +94,15 @@ h2 + hr {
 .archive__section {
   margin: 0;
   padding: 0;
+}
+
+/* Carry <body>'s background color down to the sticky heading. Each step is
+   painted the same color the page already is, so nothing looks different; it
+   just gives .archive__section-title a real color to inherit. */
+#main,
+.archive,
+.archive__section {
+  background-color: inherit;
 }
 
 hr + .list__item .archive__item-title {
