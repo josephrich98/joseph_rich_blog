@@ -40,7 +40,9 @@ publication_category:
   preprints:
     title: 'Preprints'
   oral_presentations:
-    title: 'Oral Presentations'
+    title: 'Oral Presentations (selected)'
+  poster_presentations:
+    title: 'Poster Presentations (selected)'
   reviews:
     title: 'Reviews'
   case_reports:

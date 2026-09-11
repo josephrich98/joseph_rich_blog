@@ -25,6 +25,7 @@ author_profile: true
         </span>
         {% assign venue_label = post.short_venue | default: post.venue %}
         {% if post.category == "oral_presentations" %}{% assign venue_label = venue_label | append: ", oral" %}{% endif %}
+        {% if post.category == "poster_presentations" %}{% assign venue_label = venue_label | append: ", poster" %}{% endif %}
         <span class="selected-works__venue">{{ venue_label }} ({{ post.date | date: "%Y" }})</span>
       </li>
     {% endfor %}
@@ -54,6 +55,5 @@ author_profile: true
 
 <hr />
 <p style="font-size: smaller"><sup>*</sup> denotes co-first author</p>
-
 
 
