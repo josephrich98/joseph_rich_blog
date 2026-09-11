@@ -61,6 +61,10 @@ function updateNav() {
   // update masthead height and the body/sidebar top padding
   var mastheadHeight = $('.masthead').height();
   $('body').css('padding-top', mastheadHeight + 'px');
+  // Publish the measured height so CSS can use it too: the sticky section
+  // headings on /publications sit flush under the masthead, whose height
+  // changes with the viewport (font size, wrapped nav).
+  document.documentElement.style.setProperty('--masthead-height', mastheadHeight + 'px');
   if ($(".author__urls-wrapper button").is(":visible")) {
     $(".sidebar").css("padding-top", "");
   } else {
@@ -74,6 +78,18 @@ function updateNav() {
 $(window).on('resize', function () {
   updateNav();
 });
+
+// The first pass runs before the page has fully settled (web fonts, images),
+// so the masthead it measures can be taller than the one the reader ends up
+// with. Re-measure once everything has loaded.
+$(window).on('load', function () {
+  updateNav();
+});
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(function () {
+    updateNav();
+  });
+}
 screen.orientation.addEventListener("change", function () {
   updateNav();
 });

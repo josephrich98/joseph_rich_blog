@@ -49,13 +49,43 @@
 }
 
 /* remove the top gap above the first section heading */
-.archive > h2:first-child {
+.archive > .archive__section:first-child .archive__section-title {
   margin-top: 0;
 }
 
 /* close the gap between a section heading/rule and its first item */
 h2 + hr {
   margin-bottom: 0.5em;
+}
+
+/* Section headings on /publications ("Original Research", "Preprints", …).
+   Each one sticks just below the fixed masthead while its own section is on
+   screen, and is pushed off by the next heading, so the reader always sees
+   which category the entries below belong to. The rule that used to be a
+   separate <hr /> is the heading's own border-bottom, so it travels with it. */
+.archive__section-title {
+  position: sticky;
+  top: var(--masthead-height, #{$masthead-height}); /* JS keeps this in sync with the real masthead */
+  z-index: 5; /* above the list, below the masthead (z-index 20) */
+  margin-bottom: 0.5em;
+  padding: 0.4em 0 0.3em;
+  font-size: $type-size-section-title;
+  background: var(--global-bg-color);
+  border-bottom: 1px solid var(--global-border-color);
+}
+
+.archive__section-title + .list__item .archive__item-title {
+  margin-top: 0;
+}
+
+/* One wrapper per category. A sticky element can only travel inside its own
+   parent, so the wrapper is what makes each heading give way to the next one
+   instead of the headings piling up on top of each other. It is deliberately a
+   plain block with no clearfix or `flow-root`: either would stop the margins of
+   adjacent sections from collapsing and double the gap between them. */
+.archive__section {
+  margin: 0;
+  padding: 0;
 }
 
 hr + .list__item .archive__item-title {

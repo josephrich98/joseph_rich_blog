@@ -39,6 +39,9 @@ $type-size-6                : 0.75em;   // ~12px
 $type-size-7                : 0.6875em; // ~11px
 $type-size-8                : 0.625em;  // ~10px
 
+/* Off-scale: the sticky section headings on /publications, a step above h2 */
+$type-size-section-title    : 1.375em;  // ~22px
+
 $global-font-family         : $sans-serif;
 $header-font-family         : $sans-serif;
 $caption-font-family        : $serif;

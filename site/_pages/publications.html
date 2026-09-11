@@ -15,7 +15,8 @@ author_profile: true
 {% endcomment %}
 {% assign selected_works = site.publications | where: "selected", true | sort: "date" | reverse %}
 {% if selected_works.size > 0 %}
-  <h2>Selected Works</h2><hr />
+  <div class="archive__section">
+  <h2 class="archive__section-title">Selected Works</h2>
   <ul class="selected-works">
     {% for post in selected_works %}
       {% assign external_link = post.link | default: post.paperurl %}
@@ -30,6 +31,7 @@ author_profile: true
       </li>
     {% endfor %}
   </ul>
+  </div>
 {% endif %}
 
 <!-- New style rendering if publication categories are defined -->
@@ -41,11 +43,13 @@ author_profile: true
         {% continue %}
       {% endif %}
       {% unless title_shown %}
-        <h2>{{ category[1].title }}</h2><hr />
+        <div class="archive__section">
+        <h2 class="archive__section-title">{{ category[1].title }}</h2>
         {% assign title_shown = true %}
       {% endunless %}
       {% include archive-single.html %}
     {% endfor %}
+    {% if title_shown %}</div>{% endif %}
   {% endfor %}
 {% else %}
   {% for post in site.publications reversed %}
