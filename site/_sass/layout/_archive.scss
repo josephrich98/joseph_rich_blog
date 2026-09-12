@@ -119,8 +119,9 @@ hr + .list__item .archive__item-title {
 }
 
 /* "Selected works" — the short list at the top of /publications. Each entry
-   stacks title / venue / authorship on its own line, at the same type size as
-   the citations below so the page reads as one list rather than two. */
+   stacks title / venue / authorship on its own line, sized to match the full
+   entries below: the title like an .archive__item-title (h2), the two detail
+   lines like the venue / description / citation lines. */
 .selected-works {
   margin: 0 0 2em;
   padding: 0;
@@ -128,10 +129,22 @@ hr + .list__item .archive__item-title {
 }
 
 .selected-works__item {
-  margin-bottom: 1.2em;
+  margin-bottom: 1.4em;
   font-family: $sans-serif-narrow;
   font-size: $type-size-5; /* match the description / citation lines */
   line-height: 1.4;
+}
+
+/* Size and weight carry the title, not an underline: most of these entries link
+   out and pick up .archive's underline, but a few have no paperurl, and
+   underlining those would promise a link that isn't there. Matching the h2 of a
+   full entry keeps the two halves of the page consistent and separates the
+   title from the gray detail lines whether or not it is a link. */
+.selected-works__title {
+  font-size: $type-size-4;
+  font-weight: bold;
+  line-height: 1.2;
+  margin-bottom: 0.1em;
 }
 
 .selected-works__venue,
