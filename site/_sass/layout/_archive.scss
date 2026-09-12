@@ -118,7 +118,9 @@ hr + .list__item .archive__item-title {
   }
 }
 
-/* "Selected works" — the short title + venue list at the top of /publications */
+/* "Selected works" — the short list at the top of /publications. Each entry
+   stacks title / venue / authorship on its own line, at the same type size as
+   the citations below so the page reads as one list rather than two. */
 .selected-works {
   margin: 0 0 2em;
   padding: 0;
@@ -126,24 +128,15 @@ hr + .list__item .archive__item-title {
 }
 
 .selected-works__item {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0 1.5em;
-  margin-bottom: 0.6em;
+  margin-bottom: 1.2em;
   font-family: $sans-serif-narrow;
+  font-size: $type-size-5; /* match the description / citation lines */
+  line-height: 1.4;
 }
 
-.selected-works__title {
-  flex: 1 1 18em;
-}
-
-.selected-works__venue {
-  flex: 0 1 auto;
-  font-size: $type-size-6;
+.selected-works__venue,
+.selected-works__authorship {
   color: var(--global-text-color-light);
-  text-align: right;
 }
 
 /* the "Venue: …" line publications carry above their citation */

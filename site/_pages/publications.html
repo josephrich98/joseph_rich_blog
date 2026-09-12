@@ -10,8 +10,9 @@ author_profile: true
 {% comment %}
   "Selected works" — a short, scannable list at the top of the page, driven by
   `selected: true` in a publication's front matter (no hand-kept list here).
-  Each entry shows only title + venue/year; the full entry still appears in its
-  category below. `short_venue` overrides the long `venue` string when set.
+  Each entry stacks title / venue+year / authorship; the full entry still appears
+  in its category below. `short_venue` overrides the long `venue` string when set,
+  and `authorship` (e.g. "First author") is optional.
 {% endcomment %}
 {% assign selected_works = site.publications | where: "selected", true | sort: "date" | reverse %}
 {% if selected_works.size > 0 %}
@@ -21,13 +22,16 @@ author_profile: true
     {% for post in selected_works %}
       {% assign external_link = post.link | default: post.paperurl %}
       <li class="selected-works__item">
-        <span class="selected-works__title">
+        <div class="selected-works__title">
           {% if external_link %}<a href="{{ external_link }}">{{ post.title }}</a>{% else %}{{ post.title }}{% endif %}
-        </span>
+        </div>
         {% assign venue_label = post.short_venue | default: post.venue %}
         {% if post.category == "oral_presentations" %}{% assign venue_label = venue_label | append: ", oral" %}{% endif %}
         {% if post.category == "poster_presentations" %}{% assign venue_label = venue_label | append: ", poster" %}{% endif %}
-        <span class="selected-works__venue">{{ venue_label }} ({{ post.date | date: "%Y" }})</span>
+        <div class="selected-works__venue">{{ venue_label }} ({{ post.date | date: "%Y" }})</div>
+        {% if post.authorship %}
+          <div class="selected-works__authorship">{{ post.authorship }}</div>
+        {% endif %}
       </li>
     {% endfor %}
   </ul>
