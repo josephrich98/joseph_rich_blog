@@ -176,13 +176,12 @@ hr + .list__item .archive__item-title {
   }
 }
 
+/* No hover underline on .archive__item-title itself: linked titles are already
+   underlined through their <a>, and underlining the heading would fake a link
+   on publications that have no paperurl. */
 .archive__item:hover {
   .archive__item-teaser {
     box-shadow: 0 0 10px rgba(#000, 0.25);
-  }
-
-  .archive__item-title {
-    text-decoration: underline;
   }
 }
 
