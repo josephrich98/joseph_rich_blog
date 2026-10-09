@@ -1,0 +1,44 @@
+{% comment %}
+  One entry on /software/. Expects `item` (an entry from _data/software.yml or
+  _data/software_contributions.yml) and the `download_badge` / `stars_badge`
+  query strings assigned in _pages/software.html.
+{% endcomment %}
+<div class="software__item">
+  <h3 class="software__title"><a href="{{ item.url }}">{{ item.title }}</a></h3>
+
+  {% if item.pypi or item.repo %}
+    <p class="software__badges">
+      {% if item.pypi %}
+        <a href="https://pepy.tech/project/{{ item.pypi }}" title="Total PyPI downloads">
+          <img src="https://static.pepy.tech/personalized-badge/{{ item.pypi }}{{ download_badge }}" alt="Total PyPI downloads for {{ item.title }}">
+        </a>
+      {% endif %}
+      {% if item.repo %}
+        <a href="https://github.com/{{ item.repo }}" title="GitHub stars">
+          <img src="https://img.shields.io/github/stars/{{ item.repo }}{{ stars_badge }}" alt="GitHub stars for {{ item.title }}">
+        </a>
+      {% endif %}
+    </p>
+  {% endif %}
+
+  {% if item.description %}<p>{{ item.description }}</p>{% endif %}
+
+  {% if item.contributions %}
+    <div class="software__contributions">
+      <p><strong>Contributions:</strong></p>
+      <ul>
+        {% for contribution in item.contributions %}<li>{{ contribution }}</li>{% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  {% if item.manuscript %}
+    <p class="software__manuscript">Manuscript ({{ item.manuscript.venue }}): <a href="{{ item.manuscript.url }}">{{ item.manuscript.url | remove_first: "https://" }}</a></p>
+  {% endif %}
+
+  {% if item.image %}
+    <p class="software__figure{% if item.image_size == 'large' %} software__figure--large{% endif %}">
+      <a href="{{ item.url }}"><img src="{{ item.image | prepend: base_path }}" alt="{{ item.title }}"></a>
+    </p>
+  {% endif %}
+</div>

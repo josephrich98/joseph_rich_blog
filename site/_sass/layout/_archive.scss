@@ -359,9 +359,25 @@ hr + .list__item .archive__item-title {
   }
 }
 
+/* entries are h3 under the section headings, but keep the h2 size they had
+   before the page was split into sections */
 .software__title {
   margin: 0 0 0.25em;
+  font-size: $type-size-4;
   font-family: $sans-serif-narrow;
+}
+
+/* "Contributions:" list on entries in _data/software_contributions.yml */
+.software__contributions {
+  margin: 0.5em 0 0;
+
+  p {
+    margin: 0 0 0.25em;
+  }
+
+  ul {
+    margin: 0;
+  }
 }
 
 /* shields.io badges: total PyPI downloads (pepy) and GitHub stars */

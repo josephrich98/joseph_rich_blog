@@ -1,0 +1,37 @@
+# Established open-source packages, written by others, that I have contributed to.
+# Rendered under "Software Contributions" on /software/ (_pages/software.html),
+# below the packages in _data/software.yml. Same fields as software.yml, plus:
+#   contributions  list of HTML strings, one per contribution, shown as bullets
+# Entries are listed in descending order of GitHub stars (snapshot: 2026-10-09).
+
+# 1206 stars. The repo moved from pachterlab/gget to scverse/gget.
+- title: "gget"
+  url: "https://github.com/scverse/gget"
+  repo: "scverse/gget"
+  pypi: "gget"
+  description: "Command-line tool and Python package for efficient querying of genomic reference databases (Ensembl, UniProt, NCBI, PDB, cBioPortal, COSMIC, and more), where each module answers a single question in a single line of code."
+  contributions:
+    - "<code>gget mutate</code>: builds mutated sequences from a reference genome or transcriptome and a list of mutations."
+    - "<code>gget cbio</code>: queries cBioPortal and plots cancer genomics heatmaps for a set of genes."
+    - "<code>gget cosmic</code>: searches and downloads the COSMIC (Catalogue of Somatic Mutations in Cancer) databases."
+    - "<code>gget opentargets</code>: queries Open Targets for the diseases, drugs, and other annotations associated with a gene."
+
+# 192 stars
+- title: "kb-python"
+  url: "https://github.com/pachterlab/kb_python"
+  repo: "pachterlab/kb_python"
+  pypi: "kb-python"
+  description: "Python wrapper around the kallisto | bustools workflow that preprocesses single-cell RNA-seq data, going from raw FASTQ files to a count matrix in a single command across a wide range of technologies."
+  contributions:
+    - "Reduced peak memory usage when writing count matrices to AnnData (<code>.h5ad</code>), removing the RAM spike on datasets with a large number of genes."
+    - "Added the new <code>kb sweep</code> module, which runs cellsweep ambient-RNA denoising on <code>kb count</code> output."
+
+# 13 stars. Heading links to the Voyager site, which hosts the Python tutorials.
+- title: "Voyager (Python)"
+  url: "https://pachterlab.github.io/voyager/"
+  repo: "pachterlab/voyagerpy"
+  pypi: "voyagerpy"
+  description: "Python implementation of Voyager, a package for exploratory spatial data analysis of spatial transcriptomics data: univariate and bivariate spatial statistics (such as Moran's I and Geary's C) computed over spatial neighborhood graphs, built on AnnData and scanpy."
+  contributions:
+    - "<a href=\"https://pachterlab.github.io/voyager/articles/visium_landing.html\">Visium tutorials</a>: Python vignettes for analyzing 10x Genomics Visium spatial gene expression data."
+    - "<a href=\"https://pachterlab.github.io/voyager/articles/xenium_landing.html\">Xenium tutorials</a>: Python vignettes for analyzing 10x Genomics Xenium single-cell-resolution in situ data."
