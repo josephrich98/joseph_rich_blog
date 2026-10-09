@@ -69,6 +69,13 @@
   image_size: large
   description: "AI agent that compiles major conferences across medicine, genomics/bioinformatics, and data science into one searchable table, with website links and color-coded submission deadlines and meeting dates, refreshed biweekly. Any row can be exported as a subscribable calendar feed (<code>.ics</code>)."
 
+# 1 star. No pypi field: the PyPI name "probability_distributions" belongs to an
+# unrelated project.
+- title: "probability_distributions"
+  url: "https://github.com/josephrich98/probability_distributions"
+  repo: "josephrich98/probability_distributions"
+  description: "Python package for visualizing and learning probability distributions. A single <code>Distribution</code> object covers 29 discrete, continuous, and multivariate distributions and carries everything you need to know about each one: its story, parameter space, support, PMF/PDF, CDF, mean, variance, MGF, use cases, and special facts. It also draws PMF/PDF/CDF plots, with sliders for the parameters in Jupyter, and samples from the distribution."
+
 # 0 stars. Replaced tcia-radiology-processing, whose protocol this package
 # implements — the image is that repo's figure, which ctkit ships unchanged.
 - title: "ctkit"
