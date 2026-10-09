@@ -74,6 +74,7 @@
 - title: "probability_distributions"
   url: "https://github.com/josephrich98/probability_distributions"
   repo: "josephrich98/probability_distributions"
+  image: "/images/software/probability_distributions.png"
   description: "Python package for visualizing and learning probability distributions. A single <code>Distribution</code> object covers 29 discrete, continuous, and multivariate distributions and carries everything you need to know about each one: its story, parameter space, support, PMF/PDF, CDF, mean, variance, MGF, use cases, and special facts. It also draws PMF/PDF/CDF plots, with sliders for the parameters in Jupyter, and samples from the distribution."
 
 # 0 stars. Replaced tcia-radiology-processing, whose protocol this package
