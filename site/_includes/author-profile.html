@@ -130,6 +130,9 @@
         <li><a href="https://www.linkedin.com/in/{{ author.linkedin }}"><i class="fab fa-fw fa-linkedin icon-pad-right" aria-hidden="true"></i>LinkedIn</a></li>
       {% endif %}
       <li><a href="{{ base_path }}/files/joseph_rich_cv.pdf" download><i class="fas fa-fw fa-file-lines icon-pad-right" aria-hidden="true"></i>CV</a></li>
+      {% if author.show_resume %}
+        <li><a href="{{ base_path }}/files/joseph_rich_resume.pdf" download><i class="fas fa-fw fa-file icon-pad-right" aria-hidden="true"></i>Resume</a></li>
+      {% endif %}
       {% if author.mastodon %}
         <li><a href="{{ author.mastodon }}"><i class="fab fa-fw fa-mastodon icon-pad-right" aria-hidden="true"></i>Mastodon</a></li>
       {% endif %}

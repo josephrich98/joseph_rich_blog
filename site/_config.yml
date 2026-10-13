@@ -32,6 +32,7 @@ author:
   # Code / social
   github           : "josephrich98"
   linkedin         : "joseph-rich-5bb533123"   # the username after /in/
+  show_resume      : false   # true lists files/joseph_rich_resume.pdf under the CV link
 
 # Publication categories shown (and their headings) on the Publications page
 publication_category:
