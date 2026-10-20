@@ -77,6 +77,14 @@
   image: "/images/software/probability_distributions.png"
   description: "Python package for visualizing and learning probability distributions. A single <code>Distribution</code> object covers 29 discrete, continuous, and multivariate distributions and carries everything you need to know about each one: its story, parameter space, support, PMF/PDF, CDF, mean, variance, MGF, use cases, and special facts. It also draws PMF/PDF/CDF plots, with sliders for the parameters in Jupyter, and samples from the distribution."
 
+# 1 star. Heading links to the live site; the editor/website code is in
+# josephrich98/biocartoon-app, the badge tracks the database/CLI repo.
+- title: "BioCartoon"
+  url: "https://www.biocartoon.com"
+  repo: "josephrich98/biocartoon"
+  pypi: "biocartoon"
+  description: "Free, open-source tool for making biology figures: a searchable database of 15,000+ open-licensed scientific illustrations with a web and desktop figure editor, plus a CLI and MCP server."
+
 # 0 stars. Replaced tcia-radiology-processing, whose protocol this package
 # implements — the image is that repo's figure, which ctkit ships unchanged.
 - title: "ctkit"
