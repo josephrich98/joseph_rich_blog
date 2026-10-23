@@ -9,16 +9,19 @@
 #   pypi        PyPI project name — drives the pepy download-count badge (omit for no badge)
 #   image       a figure from the repo's README, downscaled into /images/software/
 #   image_size  "large" for app screenshots, which need more height than a logo
+#   links       extra destinations shown under the description, as a list of {label, url}
 #   manuscript  venue + link for the accompanying paper (update the venue on journal acceptance)
 
-# 129 stars
+# 207 stars. Image is the Nature portal screenshot from the repo's
+# docs/portal_screenshots/ (the README has no figure).
 - title: "paperpush"
   url: "https://github.com/pachterlab/paperpush"
   repo: "pachterlab/paperpush"
   pypi: "paperpush"
+  image: "/images/software/paperpush.png"
   description: "Automates manuscript submission. Point it at a manuscript directory and a target venue and it generates a submission file, validates it against the venue's pre-submission checks, and fills out the submission portal for you — stopping short of clicking submit. Supports arXiv, bioRxiv, and medRxiv along with a growing list of journals."
 
-# 32 stars
+# 33 stars. The repo has no image on any branch, so none is shown.
 - title: "fastQpick"
   url: "https://github.com/pachterlab/fastQpick"
   repo: "pachterlab/fastQpick"
@@ -69,6 +72,32 @@
   image_size: large
   description: "AI agent that compiles major conferences across medicine, genomics/bioinformatics, and data science into one searchable table, with website links and color-coded submission deadlines and meeting dates, refreshed biweekly. Any row can be exported as a subscribable calendar feed (<code>.ics</code>)."
 
+# 3 stars. Co-developed (with lakigigar). The repo has no screenshot, so no image.
+- title: "Manimble"
+  url: "https://github.com/pachterlab/manimble"
+  repo: "pachterlab/manimble"
+  description: "Co-developed macOS app that gives <a href=\"https://github.com/3b1b/manim\">Manim</a> animations a graphical slideshow editor: a deck is a folder of Manim scene classes, played back as slides, with Keynote import/export, BioCartoon icon search, and a <code>manimbler</code> CLI that converts portable <code>.manimble</code> projects to MP4 or PDF."
+
+# 2 stars (biocartoon) + 3 (biocartoon-app). Heading links to the live site;
+# the badge tracks the database/CLI repo, and `links` covers the web app and
+# the editor/website repo. Image is the app screenshot from biocartoon-app.
+- title: "BioCartoon"
+  url: "https://www.biocartoon.com"
+  repo: "josephrich98/biocartoon"
+  pypi: "biocartoon"
+  image: "/images/software/biocartoon.png"
+  image_size: large
+  description: "Free, open-source tool for making biology figures: a searchable database of 15,000+ open-licensed scientific illustrations with a web and desktop figure editor, plus a CLI and MCP server."
+  links:
+    - label: "biocartoon.com"
+      url: "https://www.biocartoon.com"
+    - label: "Web app"
+      url: "https://app.biocartoon.com"
+    - label: "GitHub (database, CLI, MCP)"
+      url: "https://github.com/josephrich98/biocartoon"
+    - label: "GitHub (editor and website)"
+      url: "https://github.com/josephrich98/biocartoon-app"
+
 # 1 star. No pypi field: the PyPI name "probability_distributions" belongs to an
 # unrelated project.
 - title: "probability_distributions"
@@ -76,14 +105,6 @@
   repo: "josephrich98/probability_distributions"
   image: "/images/software/probability_distributions.png"
   description: "Python package for visualizing and learning probability distributions. A single <code>Distribution</code> object covers 29 discrete, continuous, and multivariate distributions and carries everything you need to know about each one: its story, parameter space, support, PMF/PDF, CDF, mean, variance, MGF, use cases, and special facts. It also draws PMF/PDF/CDF plots, with sliders for the parameters in Jupyter, and samples from the distribution."
-
-# 1 star. Heading links to the live site; the editor/website code is in
-# josephrich98/biocartoon-app, the badge tracks the database/CLI repo.
-- title: "BioCartoon"
-  url: "https://www.biocartoon.com"
-  repo: "josephrich98/biocartoon"
-  pypi: "biocartoon"
-  description: "Free, open-source tool for making biology figures: a searchable database of 15,000+ open-licensed scientific illustrations with a web and desktop figure editor, plus a CLI and MCP server."
 
 # 0 stars. Replaced tcia-radiology-processing, whose protocol this package
 # implements — the image is that repo's figure, which ctkit ships unchanged.

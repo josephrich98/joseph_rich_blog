@@ -21,7 +21,17 @@
     </p>
   {% endif %}
 
+  {% if item.image %}
+    <p class="software__figure{% if item.image_size == 'large' %} software__figure--large{% endif %}">
+      <a href="{{ item.url }}"><img src="{{ item.image | prepend: base_path }}" alt="{{ item.title }}"></a>
+    </p>
+  {% endif %}
+
   {% if item.description %}<p>{{ item.description }}</p>{% endif %}
+
+  {% if item.links %}
+    <p class="software__links">{% for link in item.links %}<a href="{{ link.url }}">{{ link.label }}</a>{% unless forloop.last %} · {% endunless %}{% endfor %}</p>
+  {% endif %}
 
   {% if item.contributions %}
     <div class="software__contributions">
@@ -34,11 +44,5 @@
 
   {% if item.manuscript %}
     <p class="software__manuscript">Manuscript ({{ item.manuscript.venue }}): <a href="{{ item.manuscript.url }}">{{ item.manuscript.url | remove_first: "https://" }}</a></p>
-  {% endif %}
-
-  {% if item.image %}
-    <p class="software__figure{% if item.image_size == 'large' %} software__figure--large{% endif %}">
-      <a href="{{ item.url }}"><img src="{{ item.image | prepend: base_path }}" alt="{{ item.title }}"></a>
-    </p>
   {% endif %}
 </div>
