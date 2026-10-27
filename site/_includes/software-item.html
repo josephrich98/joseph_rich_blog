@@ -45,4 +45,8 @@
   {% if item.manuscript %}
     <p class="software__manuscript">Manuscript ({{ item.manuscript.venue }}): <a href="{{ item.manuscript.url }}">{{ item.manuscript.url | remove_first: "https://" }}</a></p>
   {% endif %}
+
+  {% if item.title == "BioCartoon" %}
+    {% include biocartoon-metrics.html %}
+  {% endif %}
 </div>

@@ -20,6 +20,9 @@
   pypi: "paperpush"
   image: "/images/software/paperpush.png"
   description: "Automates manuscript submission. Point it at a manuscript directory and a target venue and it generates a submission file, validates it against the venue's pre-submission checks, and fills out the submission portal for you — stopping short of clicking submit. Supports arXiv, bioRxiv, and medRxiv along with a growing list of journals."
+  links:
+    - label: "www.paperpush.onrender.com"
+      url: "https://www.paperpush.onrender.com"
 
 # 33 stars. The repo has no image on any branch, so none is shown.
 - title: "fastQpick"
@@ -71,6 +74,9 @@
   image: "/images/software/conference-agent.png"
   image_size: large
   description: "AI agent that compiles major conferences across medicine, genomics/bioinformatics, and data science into one searchable table, with website links and color-coded submission deadlines and meeting dates, refreshed biweekly. Any row can be exported as a subscribable calendar feed (<code>.ics</code>)."
+  links:
+    - label: "conferenceagent.vercel.app"
+      url: "https://conferenceagent.vercel.app"
 
 # 3 stars. Co-developed (with lakigigar). The repo has no screenshot, so no image.
 - title: "Manimble"

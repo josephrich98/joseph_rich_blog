@@ -1,0 +1,13 @@
+{% assign metrics = site.data.biocartoon_metrics %}
+<div class="software__metrics" aria-label="BioCartoon usage metrics">
+  <h4>BioCartoon usage</h4>
+  <ul class="software__metrics-grid">
+    <li><strong>{% if metrics.desktop_downloads != nil %}{{ metrics.desktop_downloads }}{% else %}—{% endif %}</strong><span>Desktop downloads <small>all GitHub releases</small></span></li>
+    <li><strong>{% if metrics.www_visits_14d != nil %}{{ metrics.www_visits_14d }}{% else %}—{% endif %}</strong><span>www.biocartoon.com visits <small>past 14 days</small></span></li>
+    <li><strong>{% if metrics.app_visits_14d != nil %}{{ metrics.app_visits_14d }}{% else %}—{% endif %}</strong><span>app.biocartoon.com visits <small>past 14 days</small></span></li>
+    <li><strong>{% if metrics.biocartoon_clones_14d != nil %}{{ metrics.biocartoon_clones_14d }}{% else %}—{% endif %}</strong><span>biocartoon GitHub clones <small>past 14 days</small></span></li>
+    <li><strong>{% if metrics.biocartoon_app_clones_14d != nil %}{{ metrics.biocartoon_app_clones_14d }}{% else %}—{% endif %}</strong><span>biocartoon-app GitHub clones <small>past 14 days</small></span></li>
+    <li><strong><a href="https://pepy.tech/project/biocartoon" aria-label="BioCartoon PyPI downloads"><img class="software__metrics-pepy" src="https://static.pepy.tech/personalized-badge/biocartoon?period=total&amp;units=international_system&amp;left_color=grey&amp;right_color=grey&amp;left_text=%E2%AC%87" alt="Live total PyPI downloads for BioCartoon"></a></strong><span>PyPI downloads <small>all time</small></span></li>
+  </ul>
+  <p class="software__metrics-note">Snapshot updated {{ metrics.updated_at | date: "%b %-d, %Y" }}; the PyPI badge updates live. A dash means analytics access is not configured. Visits are Cloudflare entry visits; clone counts include automated clones.</p>
+</div>

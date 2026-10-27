@@ -91,3 +91,25 @@ comment box.
 
 `Gemfile.lock` is committed (with the `x86_64-linux` platform) so Vercel's build
 is reproducible — don't delete it.
+
+### 3. BioCartoon usage counts
+
+The BioCartoon card on `/software/` reads `_data/biocartoon_metrics.json`.
+`.github/workflows/BioCartoonMetrics.yml` refreshes it daily and commits changed
+counts. GitHub release downloads are public, and the PyPI badge is fetched live
+from pepy. The remaining counts need these GitHub repository settings:
+
+- Secret `BIOCARTOON_GITHUB_TOKEN`: a fine-grained GitHub token with read-only
+  **Administration** permission for `josephrich98/biocartoon` and
+  `josephrich98/biocartoon-app` (required by GitHub's traffic API).
+- Secret `CLOUDFLARE_ANALYTICS_TOKEN`: a Cloudflare token with **Account
+  Analytics: Read** access to the account and `biocartoon.com` zone.
+- Variable `CLOUDFLARE_ZONE_ID`: the zone ID shown on Cloudflare's
+  `biocartoon.com` Overview page.
+
+After setting these, run **BioCartoon metrics** once from GitHub Actions to
+populate the two visit counts. A missing credential shows a dash, never a
+fabricated zero. Visits are Cloudflare entry visits filtered to each hostname
+over the past 14 UTC calendar days. GitHub reports repository clones for its
+own rolling 14-day window. Desktop downloads sum installer assets across all
+GitHub releases; the PyPI badge remains a separate all-time package count.
