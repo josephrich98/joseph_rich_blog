@@ -402,58 +402,6 @@ hr + .list__item .archive__item-title {
   }
 }
 
-.software__metrics {
-  margin: 1em 0 0;
-
-  h4 {
-    margin: 0 0 0.6em;
-    font-size: $type-size-6;
-  }
-}
-
-.software__metrics-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
-  gap: 0.6em;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-
-  li {
-    padding: 0.75em;
-    border: 1px solid var(--global-border-color);
-    border-radius: 4px;
-  }
-
-  strong, span, small {
-    display: block;
-  }
-
-  strong {
-    font-size: $type-size-4;
-    line-height: 1.2;
-  }
-
-  .software__metrics-pepy {
-    height: 20px;
-    vertical-align: middle;
-  }
-
-  span {
-    font-size: $type-size-7;
-  }
-
-  small {
-    color: var(--global-text-color-light);
-  }
-}
-
-.software__metrics-note {
-  margin: 0.5em 0 0;
-  font-size: $type-size-8;
-  color: var(--global-text-color-light);
-}
-
 .software__manuscript {
   margin: 0.5em 0 0;
 }

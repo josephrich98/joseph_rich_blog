@@ -6,7 +6,9 @@
 <div class="software__item">
   <h3 class="software__title"><a href="{{ item.url }}">{{ item.title }}</a></h3>
 
-  {% if item.pypi or item.repo %}
+  {% if item.title == "BioCartoon" %}
+    {% include biocartoon-badges.html %}
+  {% elsif item.pypi or item.repo %}
     <p class="software__badges">
       {% if item.pypi %}
         <a href="https://pepy.tech/project/{{ item.pypi }}" title="Total PyPI downloads">
@@ -44,9 +46,5 @@
 
   {% if item.manuscript %}
     <p class="software__manuscript">Manuscript ({{ item.manuscript.venue }}): <a href="{{ item.manuscript.url }}">{{ item.manuscript.url | remove_first: "https://" }}</a></p>
-  {% endif %}
-
-  {% if item.title == "BioCartoon" %}
-    {% include biocartoon-metrics.html %}
   {% endif %}
 </div>

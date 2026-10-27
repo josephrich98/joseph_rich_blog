@@ -84,12 +84,15 @@
   repo: "pachterlab/manimble"
   description: "Co-developed macOS app that gives <a href=\"https://github.com/3b1b/manim\">Manim</a> animations a graphical slideshow editor: a deck is a folder of Manim scene classes, played back as slides, with Keynote import/export, BioCartoon icon search, and a <code>manimbler</code> CLI that converts portable <code>.manimble</code> projects to MP4 or PDF."
 
-# 2 stars (biocartoon) + 3 (biocartoon-app). Heading links to the live site;
-# the badge tracks the database/CLI repo, and `links` covers the web app and
-# the editor/website repo. Image is the app screenshot from biocartoon-app.
+# 2 stars (biocartoon) + 3 (biocartoon-app). Heading links to the live site.
+# Its badge row comes from _includes/biocartoon-badges.html (site visits, PyPI,
+# then stars for each of `repos`). Image is the app screenshot from biocartoon-app.
 - title: "BioCartoon"
   url: "https://www.biocartoon.com"
   repo: "josephrich98/biocartoon"
+  repos:
+    - "josephrich98/biocartoon"
+    - "josephrich98/biocartoon-app"
   pypi: "biocartoon"
   image: "/images/software/biocartoon.png"
   image_size: large

@@ -1,0 +1,30 @@
+{% comment %}
+  BioCartoon's badge row, in place of the generic one in software-item.html.
+  Visit counts come from _data/biocartoon_metrics.json (refreshed daily by
+  .github/workflows/BioCartoonMetrics.yml) and are hidden until Cloudflare
+  analytics is configured, rather than shown as a dash or a fabricated zero.
+{% endcomment %}
+{% assign metrics = site.data.biocartoon_metrics %}
+{% assign visits_badge = "?style=flat&amp;labelColor=555&amp;color=555" %}
+<p class="software__badges">
+  {% if metrics.app_visits_14d != nil %}
+    <a href="https://app.biocartoon.com" title="app.biocartoon.com visits, past 14 days">
+      <img src="https://img.shields.io/badge/app.biocartoon.com-{{ metrics.app_visits_14d }}%20visits%20(14d)-555{{ visits_badge }}" alt="{{ metrics.app_visits_14d }} app.biocartoon.com visits in the past 14 days">
+    </a>
+  {% endif %}
+  {% if metrics.www_visits_14d != nil %}
+    <a href="https://www.biocartoon.com" title="www.biocartoon.com visits, past 14 days">
+      <img src="https://img.shields.io/badge/www.biocartoon.com-{{ metrics.www_visits_14d }}%20visits%20(14d)-555{{ visits_badge }}" alt="{{ metrics.www_visits_14d }} www.biocartoon.com visits in the past 14 days">
+    </a>
+  {% endif %}
+  <a href="https://pepy.tech/project/biocartoon" title="Total PyPI downloads">
+    <img src="https://static.pepy.tech/personalized-badge/biocartoon{{ download_badge }}" alt="Total PyPI downloads for BioCartoon">
+  </a>
+  {% for repo in item.repos %}
+    {% assign repo_name = repo | split: "/" | last %}
+    {% assign repo_label = "label=" | append: repo_name | append: "&amp;" %}
+    <a href="https://github.com/{{ repo }}" title="GitHub stars">
+      <img src="https://img.shields.io/github/stars/{{ repo }}{{ stars_badge | replace: 'label=&amp;', repo_label }}" alt="GitHub stars for {{ repo }}">
+    </a>
+  {% endfor %}
+</p>
