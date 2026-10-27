@@ -71,6 +71,7 @@
 # than GitHub. Its star count still determines its position here.
 - title: "Conference Agent"
   url: "https://conferenceagent.vercel.app"
+  goatcounter: "conferenceagent"
   image: "/images/software/conference-agent.png"
   image_size: large
   description: "AI agent that compiles major conferences across medicine, genomics/bioinformatics, and data science into one searchable table, with website links and color-coded submission deadlines and meeting dates, refreshed biweekly. Any row can be exported as a subscribable calendar feed (<code>.ics</code>)."

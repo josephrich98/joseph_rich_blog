@@ -94,19 +94,11 @@ is reproducible — don't delete it.
 
 ### 3. BioCartoon visit counts
 
-The BioCartoon card on `/software/` shows app.biocartoon.com and
+The BioCartoon card on `/software/` shows all-time app.biocartoon.com and
 www.biocartoon.com visits as badges beside the PyPI and GitHub-star badges
-(`_includes/biocartoon-badges.html`). The visit counts come from
-`_data/biocartoon_metrics.json`, which `.github/workflows/BioCartoonMetrics.yml`
-refreshes daily and commits when they change. It needs these GitHub repository
-settings:
-
-- Secret `CLOUDFLARE_ANALYTICS_TOKEN`: a Cloudflare token with **Zone →
-  Analytics → Read** access to the `biocartoon.com` zone.
-- Variable `CLOUDFLARE_ZONE_ID`: the zone ID shown on Cloudflare's
-  `biocartoon.com` Overview page.
-
-After setting these, run **BioCartoon metrics** once from GitHub Actions. Until
-then the visit badges are hidden rather than showing a fabricated zero. Visits
-are Cloudflare entry visits filtered to each hostname over the past 14 UTC
-calendar days.
+(`_includes/biocartoon-badges.html`). They read GoatCounter's public counters
+(`biocartoon-app.goatcounter.com` and `biocartoon.goatcounter.com`, with
+"Allow adding visitor counts on your website" enabled in each site's settings)
+live through shields.io, so no workflow or secret is needed. GoatCounter only
+counts from when its script was added to each site, and ad blockers that block
+it make the counts an undercount.

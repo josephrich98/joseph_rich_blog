@@ -8,6 +8,17 @@
 
   {% if item.title == "BioCartoon" %}
     {% include biocartoon-badges.html %}
+  {% elsif item.goatcounter %}
+    {% comment %}
+      Live all-time visit count: shields reads GoatCounter's public counter on
+      each page load, so nothing in this repo needs refreshing.
+    {% endcomment %}
+    {% assign site_host = item.url | remove_first: "https://" %}
+    <p class="software__badges">
+      <a href="https://{{ item.goatcounter }}.goatcounter.com" title="{{ site_host }} visits">
+        <img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2F{{ item.goatcounter }}.goatcounter.com%2Fcounter%2FTOTAL.json&amp;query=%24.count&amp;label={{ site_host }}&amp;suffix=%20visits&amp;style=flat&amp;labelColor=555&amp;color=555&amp;cacheSeconds=3600" alt="Total visits to {{ site_host }}">
+      </a>
+    </p>
   {% elsif item.pypi or item.repo %}
     <p class="software__badges">
       {% if item.pypi %}
