@@ -108,6 +108,19 @@
     - label: "GitHub (editor and website)"
       url: "https://github.com/josephrich98/biocartoon-app"
 
+# 1 star. The repo (josephrich98/pediatric_radiology_ai) is private, so `repo` is
+# unset and no stars badge is shown; the heading links to the live site, and the
+# badge row is the GoatCounter visit count instead.
+- title: "Pediatric Radiology AI Database"
+  url: "https://pedrad-ai.vercel.app"
+  goatcounter: "pedrad-ai"
+  image: "/images/software/pedrad-ai.png"
+  image_size: large
+  description: "Searchable, filterable tables mapping the landscape of AI in pediatric radiology: 3,000+ primary studies from a scoping review (annotated for modality, task, age group, clinical problem, and model release status), 500+ open-source software repositories, FDA-authorized and CE-marked commercial products, trade-press stories, and public datasets. Supports a field-level query syntax (e.g., <code>modality:MRI AND task:segmentation</code>) and CSV export of any view."
+  links:
+    - label: "pedrad-ai.vercel.app"
+      url: "https://pedrad-ai.vercel.app"
+
 # 1 star. No pypi field: the PyPI name "probability_distributions" belongs to an
 # unrelated project.
 - title: "probability_distributions"
