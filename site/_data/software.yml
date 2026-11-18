@@ -1,18 +1,24 @@
 # Open-source packages listed on /software/ (rendered by _pages/software.html).
-# Entries are listed in descending order of GitHub stars (snapshot: 2026-08-13);
-# re-sort when adding an entry or when the counts have drifted. The stars badge
-# itself is live, so only the ordering here goes stale.
+# The ORDER ON THE PAGE is not the order here: it comes from
+# _data/software_ranking.json, written weekly by scripts/update_software_ranking.py
+# (.github/workflows/SoftwareRanking.yml), which ranks entries by
+#   score = GitHub stars + website visits / 100.
+# Entries missing from that snapshot are appended in the order they appear here.
 # Fields:
 #   title       display name
 #   url         where the heading links (the GitHub repo, unless the project has its own site)
 #   repo        owner/name on GitHub — drives the stars badge (omit for no badge)
+#   stars_repo  owner/name whose stars count toward the ranking when `repo` is
+#               deliberately unset (no badge shown)
+#   goatcounter GoatCounter site code (or list of codes); visits count toward the
+#               ranking, and a single code also drives the visits badge
 #   pypi        PyPI project name — drives the pepy download-count badge (omit for no badge)
 #   image       a figure from the repo's README, downscaled into /images/software/
 #   image_size  "large" for app screenshots, which need more height than a logo
 #   links       extra destinations shown under the description, as a list of {label, url}
 #   manuscript  venue + link for the accompanying paper (update the venue on journal acceptance)
 
-# 207 stars. Image is the Nature portal screenshot from the repo's
+# Image is the Nature portal screenshot from the repo's
 # docs/portal_screenshots/ (the README has no figure).
 - title: "paperpush"
   url: "https://github.com/pachterlab/paperpush"
@@ -24,7 +30,7 @@
     - label: "www.paperpush.onrender.com"
       url: "https://www.paperpush.onrender.com"
 
-# 33 stars. The repo has no image on any branch, so none is shown.
+# The repo has no image on any branch, so none is shown.
 - title: "fastQpick"
   url: "https://github.com/pachterlab/fastQpick"
   repo: "pachterlab/fastQpick"
@@ -34,7 +40,6 @@
     venue: "bioRxiv"
     url: "https://doi.org/10.64898/2026.06.23.734068"
 
-# 31 stars
 - title: "wompwomp"
   url: "https://github.com/pachterlab/wompwomp"
   repo: "pachterlab/wompwomp"
@@ -44,7 +49,6 @@
     venue: "arXiv"
     url: "https://doi.org/10.48550/arXiv.2509.03761"
 
-# 26 stars
 - title: "cellsweep"
   url: "https://github.com/pachterlab/cellsweep"
   repo: "pachterlab/cellsweep"
@@ -55,7 +59,6 @@
     venue: "bioRxiv"
     url: "https://doi.org/10.64898/2026.03.04.709349"
 
-# 19 stars
 - title: "varseek"
   url: "https://github.com/pachterlab/varseek"
   repo: "pachterlab/varseek"
@@ -66,11 +69,12 @@
     venue: "bioRxiv"
     url: "https://doi.org/10.1101/2025.09.03.674039"
 
-# 8 stars. The repo is josephrich98/conference-agent, but `repo` is deliberately
+# The repo is josephrich98/conference-agent, but `repo` is deliberately
 # unset so no stars badge is shown — this entry points at the live site rather
-# than GitHub. Its star count still determines its position here.
+# than GitHub. `stars_repo` still counts its stars toward the ranking.
 - title: "Conference Agent"
   url: "https://conferenceagent.vercel.app"
+  stars_repo: "josephrich98/conference-agent"
   goatcounter: "conferenceagent"
   image: "/images/software/conference-agent.png"
   image_size: large
@@ -79,21 +83,24 @@
     - label: "conferenceagent.vercel.app"
       url: "https://conferenceagent.vercel.app"
 
-# 3 stars. Co-developed (with lakigigar). The repo has no screenshot, so no image.
+# Co-developed (with lakigigar). The repo has no screenshot, so no image.
 - title: "Manimble"
   url: "https://github.com/pachterlab/manimble"
   repo: "pachterlab/manimble"
   description: "Co-developed macOS app that gives <a href=\"https://github.com/3b1b/manim\">Manim</a> animations a graphical slideshow editor: a deck is a folder of Manim scene classes, played back as slides, with Keynote import/export, BioCartoon icon search, and a <code>manimbler</code> CLI that converts portable <code>.manimble</code> projects to MP4 or PDF."
 
-# 2 stars (biocartoon) + 3 (biocartoon-app). Heading links to the live site.
-# Its badge row comes from _includes/biocartoon-badges.html (site visits, PyPI,
-# then stars for each of `repos`). Image is the app screenshot from biocartoon-app.
+# Heading links to the live site. Its badge row comes from
+# _includes/biocartoon-badges.html (site visits, PyPI, then stars for each of
+# `repos`). Image is the app screenshot from biocartoon-app.
 - title: "BioCartoon"
   url: "https://www.biocartoon.com"
   repo: "josephrich98/biocartoon"
   repos:
     - "josephrich98/biocartoon"
     - "josephrich98/biocartoon-app"
+  goatcounter:
+    - "biocartoon"
+    - "biocartoon-app"
   pypi: "biocartoon"
   image: "/images/software/biocartoon.png"
   image_size: large
@@ -108,11 +115,13 @@
     - label: "GitHub (editor and website)"
       url: "https://github.com/josephrich98/biocartoon-app"
 
-# 1 star. The repo (josephrich98/pediatric_radiology_ai) is private, so `repo` is
+# The repo (josephrich98/pediatric_radiology_ai) is private, so `repo` is
 # unset and no stars badge is shown; the heading links to the live site, and the
-# badge row is the GoatCounter visit count instead.
+# badge row is the GoatCounter visit count instead. The ranking reads its stars
+# via `stars_repo`, which needs a token with access to the private repo.
 - title: "Pediatric Radiology AI Database"
   url: "https://pedrad-ai.vercel.app"
+  stars_repo: "josephrich98/pediatric_radiology_ai"
   goatcounter: "pedrad-ai"
   image: "/images/software/pedrad-ai.png"
   image_size: large
@@ -121,7 +130,7 @@
     - label: "pedrad-ai.vercel.app"
       url: "https://pedrad-ai.vercel.app"
 
-# 1 star. No pypi field: the PyPI name "probability_distributions" belongs to an
+# No pypi field: the PyPI name "probability_distributions" belongs to an
 # unrelated project.
 - title: "probability_distributions"
   url: "https://github.com/josephrich98/probability_distributions"
@@ -129,7 +138,7 @@
   image: "/images/software/probability_distributions.png"
   description: "Python package for visualizing and learning probability distributions. A single <code>Distribution</code> object covers 29 discrete, continuous, and multivariate distributions and carries everything you need to know about each one: its story, parameter space, support, PMF/PDF, CDF, mean, variance, MGF, use cases, and special facts. It also draws PMF/PDF/CDF plots, with sliders for the parameters in Jupyter, and samples from the distribution."
 
-# 0 stars. Replaced tcia-radiology-processing, whose protocol this package
+# Replaced tcia-radiology-processing, whose protocol this package
 # implements — the image is that repo's figure, which ctkit ships unchanged.
 - title: "ctkit"
   url: "https://github.com/pachterlab/ctkit"

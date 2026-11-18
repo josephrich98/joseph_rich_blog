@@ -1,0 +1,45 @@
+name: Software_ranking
+
+# Re-rank /software/ by GitHub stars + website visits (see
+# scripts/update_software_ranking.py). The snapshot is committed only when the
+# order changes; that push makes Vercel redeploy. Pushes made with GITHUB_TOKEN
+# do not trigger other workflows, so this never kicks off the notebook tests.
+on:
+  schedule:
+    - cron: "0 7 * * 1"  # 07:00 UTC every Monday
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  rank:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.10"
+
+      - run: pip install pyyaml==6.0.2
+
+      - name: Update ranking
+        env:
+          # Optional repo secret: a fine-grained PAT with read access to the
+          # private josephrich98/pediatric_radiology_ai repo. Without it, that
+          # entry keeps the star count from the last local run.
+          GITHUB_TOKEN: ${{ secrets.SOFTWARE_RANKING_TOKEN || secrets.GITHUB_TOKEN }}
+        run: python scripts/update_software_ranking.py
+
+      - name: Commit if the order changed
+        run: |
+          if git diff --quiet -- site/_data/software_ranking.json; then
+            echo "Order unchanged."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
+          git add site/_data/software_ranking.json
+          git commit -m "Re-rank software page by stars + visits"
+          git push

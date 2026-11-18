@@ -31,7 +31,22 @@ author_profile: true
   {% assign software_items = software_items | concat: site.data.software_local %}
 {% endif %}
 
+{% comment %}
+  Order by _data/software_ranking.json (score = GitHub stars + visits / 100,
+  refreshed weekly by scripts/update_software_ranking.py). Entries the snapshot
+  doesn't know yet, including the local drafts, follow in file order.
+{% endcomment %}
+{% assign ranking = site.data.software_ranking.order %}
+{% assign ranked_items = "" | split: "" %}
+{% for title in ranking %}
+  {% assign match = software_items | where: "title", title | first %}
+  {% if match %}{% assign ranked_items = ranked_items | push: match %}{% endif %}
+{% endfor %}
 {% for item in software_items %}
+  {% unless ranking contains item.title %}{% assign ranked_items = ranked_items | push: item %}{% endunless %}
+{% endfor %}
+
+{% for item in ranked_items %}
   {% include software-item.html %}
 {% endfor %}
 </div>
