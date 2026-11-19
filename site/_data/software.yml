@@ -2,7 +2,7 @@
 # The ORDER ON THE PAGE is not the order here: it comes from
 # _data/software_ranking.json, written weekly by scripts/update_software_ranking.py
 # (.github/workflows/SoftwareRanking.yml), which ranks entries by
-#   score = GitHub stars + website visits / 100.
+#   score = GitHub stars + website visits / 200.
 # Entries missing from that snapshot are appended in the order they appear here.
 # Fields:
 #   title       display name
@@ -15,16 +15,19 @@
 #   pypi        PyPI project name — drives the pepy download-count badge (omit for no badge)
 #   image       a figure from the repo's README, downscaled into /images/software/
 #   image_size  "large" for app screenshots, which need more height than a logo
+#   logo        small project logo shown beside the title (in /images/software/logos/)
 #   links       extra destinations shown under the description, as a list of {label, url}
 #   manuscript  venue + link for the accompanying paper (update the venue on journal acceptance)
 
-# Image is the Nature portal screenshot from the repo's
-# docs/portal_screenshots/ (the README has no figure).
+# Image is the AI-skill workflow schematic, rendered from the repo's
+# docs/_static/schematic.pdf; logo is docs/_static/logo.svg.
 - title: "paperpush"
   url: "https://github.com/pachterlab/paperpush"
   repo: "pachterlab/paperpush"
   pypi: "paperpush"
+  logo: "/images/software/logos/paperpush.svg"
   image: "/images/software/paperpush.png"
+  image_size: large
   description: "Automates manuscript submission. Point it at a manuscript directory and a target venue and it generates a submission file, validates it against the venue's pre-submission checks, and fills out the submission portal for you — stopping short of clicking submit. Supports arXiv, bioRxiv, and medRxiv along with a growing list of journals."
   links:
     - label: "www.paperpush.onrender.com"
@@ -69,13 +72,13 @@
     venue: "bioRxiv"
     url: "https://doi.org/10.1101/2025.09.03.674039"
 
-# The repo is josephrich98/conference-agent, but `repo` is deliberately
-# unset so no stars badge is shown — this entry points at the live site rather
-# than GitHub. `stars_repo` still counts its stars toward the ranking.
+# Heading links to the live site; the badge row shows its visits and the
+# repo's GitHub stars. Logo is conference_agent/web/static/logo.svg.
 - title: "Conference Agent"
   url: "https://conferenceagent.vercel.app"
-  stars_repo: "josephrich98/conference-agent"
+  repo: "josephrich98/conference-agent"
   goatcounter: "conferenceagent"
+  logo: "/images/software/logos/conference-agent.svg"
   image: "/images/software/conference-agent.png"
   image_size: large
   description: "AI agent that compiles major conferences across medicine, genomics/bioinformatics, and data science into one searchable table, with website links and color-coded submission deadlines and meeting dates, refreshed biweekly. Any row can be exported as a subscribable calendar feed (<code>.ics</code>)."
@@ -91,7 +94,8 @@
 
 # Heading links to the live site. Its badge row comes from
 # _includes/biocartoon-badges.html (site visits, PyPI, then stars for each of
-# `repos`). Image is the app screenshot from biocartoon-app.
+# `repos`). Image is app/assets/app_screenshot.png and logo is
+# app/assets/icon.svg, both from biocartoon-app.
 - title: "BioCartoon"
   url: "https://www.biocartoon.com"
   repo: "josephrich98/biocartoon"
@@ -102,6 +106,7 @@
     - "biocartoon"
     - "biocartoon-app"
   pypi: "biocartoon"
+  logo: "/images/software/logos/biocartoon.svg"
   image: "/images/software/biocartoon.png"
   image_size: large
   description: "Free, open-source tool for making biology figures: a searchable database of 15,000+ open-licensed scientific illustrations with a web and desktop figure editor, plus a CLI and MCP server."

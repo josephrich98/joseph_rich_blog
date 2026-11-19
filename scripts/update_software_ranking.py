@@ -10,7 +10,8 @@ Score
     score = stars + visits / VISITS_PER_STAR
 
 A star is a deliberate act, a visit is not: across GitHub, roughly 1% of a
-repository's visitors star it, so one star is treated as worth ~100 visits.
+repository's visitors star it, and a website visit is a weaker signal still
+(no sign-in, often a bounce), so one star is treated as worth 200 visits.
 Stars come from every repo in `repos` (or the single `repo`), plus `stars_repo`
 for entries that deliberately show no stars badge. Visits come from every
 GoatCounter site in `goatcounter` (a code or a list of codes).
@@ -45,7 +46,7 @@ from pathlib import Path
 
 import yaml
 
-VISITS_PER_STAR = 100
+VISITS_PER_STAR = 200
 
 ROOT = Path(__file__).resolve().parents[1]
 SOFTWARE_YML = ROOT / "site" / "_data" / "software.yml"

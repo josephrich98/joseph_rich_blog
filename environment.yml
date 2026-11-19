@@ -1,7 +1,6 @@
 name: joseph_rich_blog
 channels:
   - conda-forge
-  - defaults
 dependencies:
   - python=3.10.16
   # Ruby toolchain for building/serving the Jekyll site in site/ (academicpages).

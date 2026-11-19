@@ -1,7 +1,6 @@
 name: genomics-vs-nlp
 channels:
   - conda-forge
-  - defaults
 dependencies:
   - python=3.10.16
   - pip=25.1

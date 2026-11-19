@@ -4,23 +4,22 @@
   query strings assigned in _pages/software.html.
 {% endcomment %}
 <div class="software__item">
-  <h3 class="software__title"><a href="{{ item.url }}">{{ item.title }}</a></h3>
+  <h3 class="software__title"><a href="{{ item.url }}">{% if item.logo %}<img class="software__logo" src="{{ item.logo | prepend: base_path }}" alt="">{% endif %}{{ item.title }}</a></h3>
 
   {% if item.title == "BioCartoon" %}
     {% include biocartoon-badges.html %}
-  {% elsif item.goatcounter %}
-    {% comment %}
-      Live all-time visit count: shields reads GoatCounter's public counter on
-      each page load, so nothing in this repo needs refreshing.
-    {% endcomment %}
-    {% assign site_host = item.url | remove_first: "https://" %}
+  {% elsif item.goatcounter or item.pypi or item.repo %}
     <p class="software__badges">
-      <a href="https://{{ item.goatcounter }}.goatcounter.com" title="{{ site_host }} visits">
-        <img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2F{{ item.goatcounter }}.goatcounter.com%2Fcounter%2FTOTAL.json&amp;query=%24.count&amp;label={{ site_host }}&amp;suffix=%20visits&amp;style=flat&amp;labelColor=555&amp;color=555&amp;cacheSeconds=3600" alt="Total visits to {{ site_host }}">
-      </a>
-    </p>
-  {% elsif item.pypi or item.repo %}
-    <p class="software__badges">
+      {% if item.goatcounter %}
+        {% comment %}
+          Live all-time visit count: shields reads GoatCounter's public counter on
+          each page load, so nothing in this repo needs refreshing.
+        {% endcomment %}
+        {% assign site_host = item.url | remove_first: "https://" %}
+        <a href="https://{{ item.goatcounter }}.goatcounter.com" title="{{ site_host }} visits">
+          <img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2F{{ item.goatcounter }}.goatcounter.com%2Fcounter%2FTOTAL.json&amp;query=%24.count&amp;label={{ site_host }}&amp;suffix=%20visits&amp;style=flat&amp;labelColor=555&amp;color=555&amp;cacheSeconds=3600" alt="Total visits to {{ site_host }}">
+        </a>
+      {% endif %}
       {% if item.pypi %}
         <a href="https://pepy.tech/project/{{ item.pypi }}" title="Total PyPI downloads">
           <img src="https://static.pepy.tech/personalized-badge/{{ item.pypi }}{{ download_badge }}" alt="Total PyPI downloads for {{ item.title }}">

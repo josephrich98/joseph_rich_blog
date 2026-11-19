@@ -151,10 +151,18 @@ jobs:
     steps:
     - uses: actions/checkout@v5
 
-    - name: Add conda to system path
-      run: |
-        # $CONDA is an environment variable pointing to the root of the miniconda directory
-        echo $CONDA/bin >> $GITHUB_PATH
+    - name: Install Miniforge
+      # The ubuntu-26.04 image (ubuntu-latest since Oct 2026) no longer ships a
+      # bundled Miniconda, so $CONDA is unset and `conda` is not on PATH. Install
+      # Miniforge explicitly: it defaults to conda-forge only, avoiding the
+      # Anaconda `defaults` channel, which returns HTTP 403 to CI runners (seen
+      # 2026-11-07). The action exports $CONDA and puts condabin on PATH.
+      uses: conda-incubator/setup-miniconda@v3
+      with:
+        miniforge-version: latest
+        auto-activate-base: false
+        activate-environment: ""
+        conda-remove-defaults: "true"
 
     - name: Install this post's env (notebook legs)
       if: ${{ matrix.notebook }}
