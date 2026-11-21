@@ -37,15 +37,16 @@ I'm open to collaborating and consulting on projects involving artificial intell
 
 **AI and science education.** Explaining AI to clinicians and science to students.
 
+- [The landscape of AI in pediatric radiology]({{ '/publications/2027-05-18-the-landscape-of-artificial-intelligence-in-pediatric-radiology' | relative_url }}), a scoping review of 3,000+ studies and FDA-listed devices presented at SPR 2027, with a [companion database](https://pedrad-ai.vercel.app)
 - Radiology AI grand rounds at Children's Hospital Los Angeles (CHLA)
 - Radiology AI grand rounds at the Keck School of Medicine of USC
 - MCAT tutoring
 
 **Open-source academic software.** Tools that take friction out of research.
 
-- [paperpush](https://github.com/pachterlab/paperpush), which automates academic submission portals
+- [PaperPush](https://github.com/pachterlab/paperpush), which automates academic submission portals
 - [BioCartoon](https://www.biocartoon.com), a free biology figure editor built on 15,000+ open-licensed illustrations
-- manimble
+- [Manimble](https://github.com/pachterlab/manimble), a tool for editing slideshows with Manim animations
 - [Conference Agent](https://conferenceagent.vercel.app), a searchable table of conference deadlines across medicine, genomics, and data science
 
 **Applied mathematics.** Turning a vague modeling question into a precise, provable one.
