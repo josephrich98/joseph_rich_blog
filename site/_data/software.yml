@@ -92,6 +92,21 @@
   repo: "pachterlab/manimble"
   description: "Co-developed macOS app that gives <a href=\"https://github.com/3b1b/manim\">Manim</a> animations a graphical slideshow editor: a deck is a folder of Manim scene classes, played back as slides, with Keynote import/export, BioCartoon icon search, and a <code>manimbler</code> CLI that converts portable <code>.manimble</code> projects to MP4 or PDF."
 
+# Built on Manimble. Logo is docs/assets/fignimble-icon.svg; image is the
+# README's docs/screenshot.png, downscaled to 1400 px wide.
+- title: "Fignimble"
+  url: "https://pachterlab.github.io/Fignimble/"
+  repo: "pachterlab/Fignimble"
+  logo: "/images/software/logos/fignimble.svg"
+  image: "/images/software/fignimble.png"
+  image_size: large
+  description: "macOS app for assembling multi-panel publication figures from Python. Each figure is a short Python file that places panels, pictures, text, and arrows in millimeters, and each panel is drawn by matplotlib code. You edit on the canvas (drag, resize, align), in the code pane, or by asking a coding agent in the built-in terminal; all three change the same files and the figure re-renders live. Patchwork-style layout operators line up plot areas across panels and can collect legends into one."
+  links:
+    - label: "User guide"
+      url: "https://pachterlab.github.io/Fignimble/"
+    - label: "GitHub"
+      url: "https://github.com/pachterlab/Fignimble"
+
 # Heading links to the live site. Its badge row comes from
 # _includes/biocartoon-badges.html (site visits, PyPI, then stars for each of
 # `repos`). Image is app/assets/app_screenshot.png and logo is
