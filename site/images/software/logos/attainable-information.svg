@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">attainable-information</title>
+  <desc id="desc">A saturating curve rises toward a dashed horizontal ceiling: attainable recoverability R_n approaches the channel value rho squared as sample size grows. The shaded gap between them is the information not yet learnable at that sample size.</desc>
+  <defs>
+    <linearGradient id="bg" x2="0" y2="1">
+      <stop stop-color="#2b2b2b"/>
+      <stop offset="1" stop-color="#141414"/>
+    </linearGradient>
+    <linearGradient id="gap" x2="0" y2="1">
+      <stop stop-color="#ffffff" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity=".03"/>
+    </linearGradient>
+    <linearGradient id="under" x2="0" y2="1">
+      <stop stop-color="#ffffff" stop-opacity=".10"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="240" height="240" rx="40" fill="url(#bg)" stroke="#5a5a5a" stroke-width="2"/>
+  <!-- unattainable gap: between ceiling and curve -->
+  <path d="M44.0 206.0 L48.4 188.5 L52.7 175.1 L57.0 164.4 L61.4 155.8 L65.8 148.6 L70.1 142.5 L74.5 137.4 L78.8 132.9 L83.2 129.0 L87.5 125.6 L91.8 122.6 L96.2 119.9 L100.6 117.4 L104.9 115.2 L109.2 113.2 L113.6 111.4 L118.0 109.7 L122.3 108.2 L126.6 106.8 L131.0 105.5 L135.4 104.3 L139.7 103.2 L144.1 102.1 L148.4 101.1 L152.8 100.2 L157.1 99.3 L161.4 98.5 L165.8 97.8 L170.1 97.0 L174.5 96.4 L178.8 95.7 L183.2 95.1 L187.5 94.5 L191.9 94.0 L196.2 93.4 L200.6 92.9 L205.0 92.5 L209.3 92.0 L213.7 91.6 L218.0 91.1 L218 72 L44 72 Z" fill="url(#gap)"/>
+  <!-- attained area under curve -->
+  <path d="M44.0 206.0 L48.4 188.5 L52.7 175.1 L57.0 164.4 L61.4 155.8 L65.8 148.6 L70.1 142.5 L74.5 137.4 L78.8 132.9 L83.2 129.0 L87.5 125.6 L91.8 122.6 L96.2 119.9 L100.6 117.4 L104.9 115.2 L109.2 113.2 L113.6 111.4 L118.0 109.7 L122.3 108.2 L126.6 106.8 L131.0 105.5 L135.4 104.3 L139.7 103.2 L144.1 102.1 L148.4 101.1 L152.8 100.2 L157.1 99.3 L161.4 98.5 L165.8 97.8 L170.1 97.0 L174.5 96.4 L178.8 95.7 L183.2 95.1 L187.5 94.5 L191.9 94.0 L196.2 93.4 L200.6 92.9 L205.0 92.5 L209.3 92.0 L213.7 91.6 L218.0 91.1 L218 206 Z" fill="url(#under)"/>
+  <!-- axes -->
+  <path d="M44 46V206H222" fill="none" stroke="#8a8a8a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- channel ceiling rho^2 -->
+  <path d="M44 72H222" fill="none" stroke="#d0d0d0" stroke-width="4" stroke-dasharray="10 8" stroke-linecap="round"/>
+  <!-- attainable curve R_n -->
+  <path d="M44.0 206.0 L48.4 188.5 L52.7 175.1 L57.0 164.4 L61.4 155.8 L65.8 148.6 L70.1 142.5 L74.5 137.4 L78.8 132.9 L83.2 129.0 L87.5 125.6 L91.8 122.6 L96.2 119.9 L100.6 117.4 L104.9 115.2 L109.2 113.2 L113.6 111.4 L118.0 109.7 L122.3 108.2 L126.6 106.8 L131.0 105.5 L135.4 104.3 L139.7 103.2 L144.1 102.1 L148.4 101.1 L152.8 100.2 L157.1 99.3 L161.4 98.5 L165.8 97.8 L170.1 97.0 L174.5 96.4 L178.8 95.7 L183.2 95.1 L187.5 94.5 L191.9 94.0 L196.2 93.4 L200.6 92.9 L205.0 92.5 L209.3 92.0 L213.7 91.6 L218.0 91.1" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- learning cost nu: half the channel attained -->
+  <path d="M73 206V139" fill="none" stroke="#8a8a8a" stroke-width="2.5" stroke-dasharray="4 5" stroke-linecap="round"/>
+  <circle cx="73" cy="139" r="7.5" fill="#141414" stroke="#ffffff" stroke-width="4"/>
+</svg>

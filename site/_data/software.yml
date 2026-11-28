@@ -33,19 +33,23 @@
     - label: "www.paperpush.onrender.com"
       url: "https://www.paperpush.onrender.com"
 
-# The repo has no image on any branch, so none is shown.
+# The repo has no image on any branch, so none is shown. Logo is
+# docs/_static/icon.svg.
 - title: "fastQpick"
   url: "https://github.com/pachterlab/fastQpick"
   repo: "pachterlab/fastQpick"
   pypi: "fastQpick"
+  logo: "/images/software/logos/fastqpick.svg"
   description: "Fast, memory-efficient sampling of FASTQ reads with or without replacement — for generating bootstrap replicates that quantify technical variance at the level of raw reads, and for subsampling large libraries for testing and benchmarking. Streaming I/O and ISA-L-accelerated gzip bootstrap a 500-million-read library in roughly 26 minutes."
   manuscript:
     venue: "bioRxiv"
     url: "https://doi.org/10.64898/2026.06.23.734068"
 
+# Logo is figures/logo.svg from the wompywompy repo.
 - title: "wompwomp"
   url: "https://github.com/pachterlab/wompwomp"
   repo: "pachterlab/wompwomp"
+  logo: "/images/software/logos/wompwomp.svg"
   image: "/images/software/wompwomp.png"
   description: "R package (on CRAN) that untangles k-partite graphs by heuristically optimizing node order, layer order, and node grouping to nearly minimize edge crossings. Its main use is making alluvial plots legible when the raw category ordering leaves the flows in a knot."
   manuscript:
@@ -62,10 +66,12 @@
     venue: "bioRxiv"
     url: "https://doi.org/10.64898/2026.03.04.709349"
 
+# Logo is the fingerprint circle cropped from the repo's figures/logo.png.
 - title: "varseek"
   url: "https://github.com/pachterlab/varseek"
   repo: "pachterlab/varseek"
   pypi: "varseek"
+  logo: "/images/software/logos/varseek.png"
   image: "/images/software/varseek.png"
   description: "Command-line tool and Python package for variant screening of DNA-seq, bulk RNA-seq, and single-cell RNA-seq data. <code>vk ref</code> turns a variant database (COSMIC, ClinVar, dbSNP, or custom) plus its reference genome/transcriptome into a variant-containing reference sequence (VCRS) index; <code>vk count</code> pseudoaligns reads against that index and returns a samples × variants count matrix in AnnData format, ready for clustering, differential expression, or pathway analysis."
   manuscript:
@@ -110,6 +116,14 @@
       url: "https://pachterlab.github.io/Fignimble/"
     - label: "GitHub"
       url: "https://github.com/pachterlab/Fignimble"
+
+# The repo has no README figure (only logos), so no image is shown, and it is
+# not on PyPI (installed from GitHub). Logo is docs/_static/logo.svg.
+- title: "attainable-information"
+  url: "https://github.com/pachterlab/attainable-information"
+  repo: "pachterlab/attainable-information"
+  logo: "/images/software/logos/attainable-information.svg"
+  description: "Python package and CLI that measures how much of one data modality any model can recover from another, and how much of that is learnable at your cohort size. Given two row-aligned matrices (e.g., genomics and imaging), regularized canonical correlation analysis gives the channel recoverability spectrum (the infinite-data limit), and a closed-form finite-sample ceiling gives the most out-of-sample R<sup>2</sup> any learning algorithm trained on <i>n</i> samples can reach, along with the cohort size needed to attain a given fraction of the channel."
 
 # Heading links to the live site. Its badge row comes from
 # _includes/biocartoon-badges.html (site visits, PyPI, then stars for each of

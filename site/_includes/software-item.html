@@ -3,7 +3,7 @@
   _data/software_contributions.yml) and the `download_badge` / `stars_badge`
   query strings assigned in _pages/software.html.
 {% endcomment %}
-<div class="software__item">
+<div class="software__item" id="{{ item.title | slugify }}">
   <h3 class="software__title"><a href="{{ item.url }}">{% if item.logo %}<img class="software__logo" src="{{ item.logo | prepend: base_path }}" alt="">{% endif %}{{ item.title }}</a></h3>
 
   {% if item.title == "BioCartoon" %}

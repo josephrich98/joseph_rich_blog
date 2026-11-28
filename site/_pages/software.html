@@ -16,11 +16,6 @@ author_profile: true
 {% assign download_badge = "?period=total&amp;units=international_system&amp;left_color=grey&amp;right_color=grey&amp;left_text=%E2%AC%87" %}
 {% assign stars_badge = "?style=flat&amp;labelColor=555&amp;color=555&amp;label=&amp;logo=github&amp;logoColor=white" %}
 
-<div class="archive__section">
-<h2 class="archive__section-title">Software Development</h2>
-
-<p>Open-source packages I have written or co-written.</p>
-
 {% comment %}
   Draft entries live in the gitignored _data/software_local.yml overlay, which is
   appended here when it exists — so they render locally and are absent from the
@@ -45,6 +40,22 @@ author_profile: true
 {% for item in software_items %}
   {% unless ranking contains item.title %}{% assign ranked_items = ranked_items | push: item %}{% endunless %}
 {% endfor %}
+
+{% comment %}
+  Logo strip: one link per ranked entry that has a logo, in the same
+  descending order as the list below, jumping to that entry's anchor
+  (id = title | slugify, set in _includes/software-item.html).
+{% endcomment %}
+<nav class="software__logo-nav" aria-label="Jump to software">
+  {% for item in ranked_items %}{% if item.logo %}
+    <a href="#{{ item.title | slugify }}" title="{{ item.title }}"><img src="{{ item.logo | prepend: base_path }}" alt="{{ item.title }}"></a>
+  {% endif %}{% endfor %}
+</nav>
+
+<div class="archive__section">
+<h2 class="archive__section-title">Software Development</h2>
+
+<p>Open-source packages I have written or co-written.</p>
 
 {% for item in ranked_items %}
   {% include software-item.html %}

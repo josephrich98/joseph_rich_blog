@@ -352,6 +352,7 @@ hr + .list__item .archive__item-title {
 
 .software__item {
   margin-bottom: 2em;
+  scroll-margin-top: 5em; /* logo-strip anchor targets clear the sticky masthead */
 
   + .software__item {
     padding-top: 1.5em;
@@ -370,6 +371,33 @@ hr + .list__item .archive__item-title {
     display: inline-flex;
     align-items: center;
     gap: 0.4em;
+  }
+}
+
+/* row of logos under the page title, each jumping to its entry */
+.software__logo-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75em 1.25em;
+  margin: 0 0 1.5em;
+
+  a {
+    display: inline-block;
+    line-height: 0;
+    text-decoration: none;
+
+    &:hover img {
+      box-shadow: none;
+      opacity: 0.75;
+      transform: translateY(-2px);
+    }
+  }
+
+  img {
+    height: 2.5em;
+    width: auto;
+    transition: opacity 0.15s, transform 0.15s;
   }
 }
 
