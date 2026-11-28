@@ -18,10 +18,13 @@
 #   logo        small project logo shown beside the title (in /images/software/logos/)
 #   links       extra destinations shown under the description, as a list of {label, url}
 #   manuscript  venue + link for the accompanying paper (update the venue on journal acceptance)
+#   website     the project's own website (not GitHub); gets a second barcode on its
+#               hidden /software_barcodes/<slug>/ page
 
 # Image is the AI-skill workflow schematic, rendered from the repo's
 # docs/_static/schematic.pdf; logo is docs/_static/logo.svg.
 - title: "paperpush"
+  website: "https://paperpush.onrender.com"   # the www. host does not resolve
   url: "https://github.com/pachterlab/paperpush"
   repo: "pachterlab/paperpush"
   pypi: "paperpush"
@@ -81,6 +84,7 @@
 # Heading links to the live site; the badge row shows its visits and the
 # repo's GitHub stars. Logo is conference_agent/web/static/logo.svg.
 - title: "Conference Agent"
+  website: "https://conferenceagent.vercel.app"
   url: "https://conferenceagent.vercel.app"
   repo: "josephrich98/conference-agent"
   goatcounter: "conferenceagent"
@@ -95,6 +99,7 @@
 # Co-developed (with lakigigar). Logo is the app icon (PNG); image is an
 # app screenshot, downscaled to 1400 px wide.
 - title: "Manimble"
+  website: "https://pachterlab.github.io/Manimble/"
   url: "https://github.com/pachterlab/manimble"
   repo: "pachterlab/manimble"
   logo: "/images/software/logos/manimble.png"
@@ -105,6 +110,7 @@
 # Built on Manimble. Logo is docs/assets/fignimble-icon.svg; image is the
 # README's docs/screenshot.png, downscaled to 1400 px wide.
 - title: "Fignimble"
+  website: "https://pachterlab.github.io/Fignimble/"
   url: "https://pachterlab.github.io/Fignimble/"
   repo: "pachterlab/Fignimble"
   logo: "/images/software/logos/fignimble.svg"
@@ -130,6 +136,7 @@
 # `repos`). Image is app/assets/app_screenshot.png and logo is
 # app/assets/icon.svg, both from biocartoon-app.
 - title: "BioCartoon"
+  website: "https://www.biocartoon.com"
   url: "https://www.biocartoon.com"
   repo: "josephrich98/biocartoon"
   repos:
@@ -158,6 +165,7 @@
 # badge row is the GoatCounter visit count instead. The ranking reads its stars
 # via `stars_repo`, which needs a token with access to the private repo.
 - title: "Pediatric Radiology AI Database"
+  website: "https://pedrad-ai.vercel.app"
   url: "https://pedrad-ai.vercel.app"
   stars_repo: "josephrich98/pediatric_radiology_ai"
   goatcounter: "pedrad-ai"

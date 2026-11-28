@@ -16,45 +16,7 @@ author_profile: true
 {% assign download_badge = "?period=total&amp;units=international_system&amp;left_color=grey&amp;right_color=grey&amp;left_text=%E2%AC%87" %}
 {% assign stars_badge = "?style=flat&amp;labelColor=555&amp;color=555&amp;label=&amp;logo=github&amp;logoColor=white" %}
 
-{% comment %}
-  Draft entries live in the gitignored _data/software_local.yml overlay, which is
-  appended here when it exists — so they render locally and are absent from the
-  live build. See DEVELOPMENT.md, "Unpublished sections".
-{% endcomment %}
-{% assign software_items = site.data.software %}
-{% if site.data.software_local %}
-  {% assign software_items = software_items | concat: site.data.software_local %}
-{% endif %}
-
-{% comment %}
-  Order by _data/software_ranking.json (score = GitHub stars + visits / 200,
-  refreshed weekly by scripts/update_software_ranking.py). Entries the snapshot
-  doesn't know yet, including the local drafts, follow in file order.
-{% endcomment %}
-{% assign ranking = site.data.software_ranking.order %}
-{% assign ranked_items = "" | split: "" %}
-{% for title in ranking %}
-  {% assign match = software_items | where: "title", title | first %}
-  {% if match %}{% assign ranked_items = ranked_items | push: match %}{% endif %}
-{% endfor %}
-{% for item in software_items %}
-  {% unless ranking contains item.title %}{% assign ranked_items = ranked_items | push: item %}{% endunless %}
-{% endfor %}
-
-{% comment %}
-  Logo strip: one link per ranked entry that has a logo, in the same
-  descending order as the list below, then any contribution entries with a
-  logo, each jumping to that entry's anchor (id = title | slugify, set in
-  _includes/software-item.html).
-{% endcomment %}
-<nav class="software__logo-nav" aria-label="Jump to software">
-  {% for item in ranked_items %}{% if item.logo %}
-    <a href="#{{ item.title | slugify }}" title="{{ item.title }}"><img src="{{ item.logo | prepend: base_path }}" alt="{{ item.title }}"></a>
-  {% endif %}{% endfor %}
-  {% for item in site.data.software_contributions %}{% if item.logo %}
-    <a href="#{{ item.title | slugify }}" title="{{ item.title }}"><img src="{{ item.logo | prepend: base_path }}" alt="{{ item.title }}"></a>
-  {% endif %}{% endfor %}
-</nav>
+{% include software-logo-nav.html %}
 
 <div class="archive__section">
 <h2 class="archive__section-title">Software Development</h2>

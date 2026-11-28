@@ -1,0 +1,16 @@
+---
+layout: archive
+title: "Software Barcodes"
+permalink: /software_barcodes/
+author_profile: true
+sitemap: false
+---
+
+{% include base_path %}
+
+{% comment %}
+  Hidden page (not in the navigation or sitemap). Same logo strip as
+  /software/, but each logo opens that project's barcode page, rendered by
+  _layouts/barcode.html from a stub in _pages/software_barcodes/.
+{% endcomment %}
+{% include software-logo-nav.html target="barcode" %}

@@ -1,0 +1,88 @@
+---
+---
+{% include base_path %}
+{% comment %}
+  Hidden full-screen barcode page for one software entry, chosen by the stub's
+  `software:` front matter (a title in _data/software.yml or
+  _data/software_contributions.yml). Shows a scannable Code 128 barcode of the
+  GitHub URL and, below it, a second one for the project's `website` if set.
+  Each barcode is also a link to the URL it encodes.
+{% endcomment %}
+{% assign all_items = site.data.software | concat: site.data.software_contributions %}
+{% assign item = all_items | where: "title", page.software | first %}
+{% assign gh_repo = item.repo | default: item.stars_repo %}
+{% capture github_url %}https://github.com/{{ gh_repo }}{% endcapture %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>{{ item.title }} barcode</title>
+  <link rel="icon" type="image/svg+xml" href="{{ base_path }}/images/favicon.svg">
+  <style>
+    html, body { margin: 0; background: #fff; color: #1b1f23; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    .barcode-card {
+      min-height: 100vh; min-height: 100svh; box-sizing: border-box;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 4vh 16px;
+    }
+    .barcode-card + .barcode-card { border-top: 1px solid #e5e5e5; }
+    .barcode-link { display: block; width: min(1100px, 100%); color: inherit; text-decoration: none; }
+    .barcode { position: relative; line-height: 0; }
+    .barcode svg { display: block; width: 100%; height: min(60vh, 520px); }
+    /* The logo covers a horizontal band in the middle only: a 1-D barcode is
+       read along any horizontal line, so the strips above and below still scan. */
+    .barcode__logo {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+      background: #fff; padding: 2.5vh 3vh; border-radius: 16px; line-height: 0;
+    }
+    .barcode__logo img { height: min(18vh, 150px); width: auto; display: block; }
+    .barcode-label {
+      display: flex; align-items: center; justify-content: center; gap: 0.5em;
+      margin-top: 3vh; font-size: clamp(1.5rem, 5vw, 3rem); font-weight: 600; line-height: 1.2;
+      text-align: center;
+    }
+    .barcode-label img { height: 1em; width: auto; flex-shrink: 0; }
+    .barcode-hint { margin-top: 2vh; color: #888; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+{% assign codes = "" | split: "" %}
+{% if gh_repo %}{% assign codes = codes | push: "github" %}{% endif %}
+{% if item.website %}{% assign codes = codes | push: "web" %}{% endif %}
+{% for kind in codes %}
+  {% if kind == "github" %}
+    {% assign target = github_url %}{% assign kind_icon = "/images/software/barcodes/github.svg" %}{% assign kind_alt = "GitHub" %}
+  {% else %}
+    {% assign target = item.website %}{% assign kind_icon = "/images/software/barcodes/web.png" %}{% assign kind_alt = "Website" %}
+  {% endif %}
+  <section class="barcode-card">
+    <a class="barcode-link" href="{{ target }}" title="{{ target }}">
+      <div class="barcode">
+        <svg class="js-barcode" data-value="{{ target }}" role="img" aria-label="Barcode for {{ target }}"></svg>
+        {% if item.logo %}<div class="barcode__logo"><img src="{{ item.logo | prepend: base_path }}" alt=""></div>{% endif %}
+      </div>
+      <div class="barcode-label">
+        {% if item.logo %}<img src="{{ item.logo | prepend: base_path }}" alt="">{% endif %}
+        <span>{{ item.title }}</span>
+        <img src="{{ kind_icon | prepend: base_path }}" alt="{{ kind_alt }}">
+      </div>
+    </a>
+    {% if forloop.first and codes.size > 1 %}<div class="barcode-hint">Scroll for the website &darr;</div>{% endif %}
+  </section>
+{% endfor %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.6/JsBarcode.all.min.js"></script>
+<script>
+  document.querySelectorAll(".js-barcode").forEach(function (svg) {
+    JsBarcode(svg, svg.dataset.value, { format: "CODE128", displayValue: false, margin: 0, width: 2, height: 100 });
+    // Stretch to the CSS box: keep the module ratios, let width/height scale independently.
+    var w = svg.getAttribute("width"), h = svg.getAttribute("height");
+    svg.setAttribute("viewBox", "0 0 " + parseFloat(w) + " " + parseFloat(h));
+    svg.setAttribute("preserveAspectRatio", "none");
+    svg.removeAttribute("width"); svg.removeAttribute("height"); svg.removeAttribute("style");
+  });
+</script>
+</body>
+</html>
