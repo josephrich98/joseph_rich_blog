@@ -6,11 +6,12 @@
   `software:` front matter (a title in _data/software.yml or
   _data/software_contributions.yml). Shows the
   GitHub URL as a QR code and, below it, a second one for the project's
-  `website` if set. Each code is also a link to the URL it encodes. Codes use
+  `website` if set. Entries from _data/barcode_profiles.yml get a single code
+  for their `url` instead. Each code is also a link to the URL it encodes. Codes use
   error-correction level H (~30% recoverable), so the centered logo, which
   covers well under that, does not stop them scanning.
 {% endcomment %}
-{% assign all_items = site.data.software | concat: site.data.software_contributions %}
+{% assign all_items = site.data.software | concat: site.data.software_contributions | concat: site.data.barcode_profiles %}
 {% assign item = all_items | where: "title", page.software | first %}
 {% assign gh_repo = item.repo | default: item.stars_repo %}
 {% capture github_url %}https://github.com/{{ gh_repo }}{% endcapture %}
@@ -52,11 +53,15 @@
 </head>
 <body>
 {% assign codes = "" | split: "" %}
+{% assign profile = site.data.barcode_profiles | where: "title", page.software | first %}
+{% if profile %}{% assign codes = codes | push: "profile" %}{% endif %}
 {% if gh_repo %}{% assign codes = codes | push: "github" %}{% endif %}
 {% if item.website %}{% assign codes = codes | push: "web" %}{% endif %}
 {% for kind in codes %}
   {% if kind == "github" %}
     {% assign target = github_url %}{% assign kind_icon = "/images/software/barcodes/github.svg" %}{% assign kind_alt = "GitHub" %}
+  {% elsif kind == "profile" %}
+    {% assign target = item.url %}{% assign kind_icon = nil %}
   {% else %}
     {% assign target = item.website %}{% assign kind_icon = "/images/software/barcodes/web.png" %}{% assign kind_alt = "Website" %}
   {% endif %}
@@ -69,7 +74,7 @@
       <div class="barcode-label">
         {% if item.logo %}<img src="{{ item.logo | prepend: base_path }}" alt="">{% endif %}
         <span>{{ item.title }}</span>
-        <img src="{{ kind_icon | prepend: base_path }}" alt="{{ kind_alt }}">
+        {% if kind_icon %}<img src="{{ kind_icon | prepend: base_path }}" alt="{{ kind_alt }}">{% endif %}
       </div>
     </a>
   </section>

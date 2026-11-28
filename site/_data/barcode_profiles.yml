@@ -1,0 +1,12 @@
+# Personal links shown first on the hidden /software_barcodes/ page, ahead of
+# the software logos. Each opens a QR page (_layouts/barcode.html) for `url`,
+# from a stub in _pages/software_barcodes/ whose `software:` is the title here.
+- title: "joseph-rich.com"
+  url: "https://joseph-rich.com"
+  logo: "/images/favicon.svg"
+- title: "GitHub"
+  url: "https://github.com/josephrich98"
+  logo: "/images/software/barcodes/github.svg"
+- title: "LinkedIn"
+  url: "https://www.linkedin.com/in/joseph-rich-5bb533123"
+  logo: "/images/software/barcodes/linkedin.svg"

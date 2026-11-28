@@ -36,6 +36,9 @@
   _includes/software-item.html).
 {% endcomment %}
 <nav class="software__logo-nav{% if include.target == "barcode" %} software__logo-nav--large{% endif %}" aria-label="Jump to software">
+  {% if include.target == "barcode" %}{% for item in site.data.barcode_profiles %}
+    <a href="{{ base_path }}/software_barcodes/{{ item.title | slugify }}/" title="{{ item.title }}"><img src="{{ item.logo | prepend: base_path }}" alt="{{ item.title }}"></a>
+  {% endfor %}{% endif %}
   {% for item in ranked_items %}{% if item.logo %}
     <a href="{% if include.target == "barcode" %}{{ base_path }}/software_barcodes/{{ item.title | slugify }}/{% else %}#{{ item.title | slugify }}{% endif %}" title="{{ item.title }}"><img src="{{ item.logo | prepend: base_path }}" alt="{{ item.title }}"></a>
   {% endif %}{% endfor %}
