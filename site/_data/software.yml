@@ -186,10 +186,12 @@
 
 # Replaced tcia-radiology-processing, whose protocol this package
 # implements — the image is that repo's figure, which ctkit ships unchanged.
+# Logo is docs/_static/logo.svg.
 - title: "ctkit"
   url: "https://github.com/pachterlab/ctkit"
   repo: "pachterlab/ctkit"
   pypi: "ctkit"
+  logo: "/images/software/logos/ctkit.svg"
   image: "/images/software/tcia-radiology-processing.png"
   description: "Protocol and Python package for turning TCGA/TCIA radiology studies into AI-ready arrays: download and filtering, DICOM → NIfTI conversion, reorientation, segmentation, Hounsfield-unit clipping, resampling, mask-and-crop, and intensity normalization, with Jupyter notebooks walking through each step."
   manuscript:
