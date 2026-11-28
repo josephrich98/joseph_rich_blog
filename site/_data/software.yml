@@ -86,10 +86,14 @@
     - label: "conferenceagent.vercel.app"
       url: "https://conferenceagent.vercel.app"
 
-# Co-developed (with lakigigar). The repo has no screenshot, so no image.
+# Co-developed (with lakigigar). Logo is the app icon (PNG); image is an
+# app screenshot, downscaled to 1400 px wide.
 - title: "Manimble"
   url: "https://github.com/pachterlab/manimble"
   repo: "pachterlab/manimble"
+  logo: "/images/software/logos/manimble.png"
+  image: "/images/software/manimble.png"
+  image_size: large
   description: "Co-developed macOS app that gives <a href=\"https://github.com/3b1b/manim\">Manim</a> animations a graphical slideshow editor: a deck is a folder of Manim scene classes, played back as slides, with Keynote import/export, BioCartoon icon search, and a <code>manimbler</code> CLI that converts portable <code>.manimble</code> projects to MP4 or PDF."
 
 # Built on Manimble. Logo is docs/assets/fignimble-icon.svg; image is the
