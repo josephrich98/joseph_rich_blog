@@ -2,11 +2,13 @@
 ---
 {% include base_path %}
 {% comment %}
-  Hidden full-screen barcode page for one software entry, chosen by the stub's
+  Hidden full-screen QR-code page for one software entry, chosen by the stub's
   `software:` front matter (a title in _data/software.yml or
-  _data/software_contributions.yml). Shows a scannable Code 128 barcode of the
-  GitHub URL and, below it, a second one for the project's `website` if set.
-  Each barcode is also a link to the URL it encodes.
+  _data/software_contributions.yml). Shows the
+  GitHub URL as a QR code and, below it, a second one for the project's
+  `website` if set. Each code is also a link to the URL it encodes. Codes use
+  error-correction level H (~30% recoverable), so the centered logo, which
+  covers well under that, does not stop them scanning.
 {% endcomment %}
 {% assign all_items = site.data.software | concat: site.data.software_contributions %}
 {% assign item = all_items | where: "title", page.software | first %}
@@ -18,7 +20,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
-  <title>{{ item.title }} barcode</title>
+  <title>{{ item.title }} QR code</title>
   <link rel="icon" type="image/svg+xml" href="{{ base_path }}/images/favicon.svg">
   <style>
     html, body { margin: 0; background: #fff; color: #1b1f23; }
@@ -29,23 +31,23 @@
       padding: 4vh 16px;
     }
     .barcode-card + .barcode-card { border-top: 1px solid #e5e5e5; }
-    .barcode-link { display: block; width: min(1100px, 100%); color: inherit; text-decoration: none; }
-    .barcode { position: relative; line-height: 0; }
-    .barcode svg { display: block; width: 100%; height: min(60vh, 520px); }
-    /* The logo covers a horizontal band in the middle only: a 1-D barcode is
-       read along any horizontal line, so the strips above and below still scan. */
+    .barcode-link { display: flex; flex-direction: column; align-items: center; color: inherit; text-decoration: none; }
+    .barcode { position: relative; line-height: 0; width: min(68vh, 90vw, 640px); aspect-ratio: 1; }
+    .barcode svg { display: block; width: 100%; height: 100%; }
+    /* Small enough (~5% of the code's area) for level-H error correction to absorb. */
     .barcode__logo {
       position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-      background: #fff; padding: 2.5vh 3vh; border-radius: 16px; line-height: 0;
+      background: #fff; padding: 1.5%; border-radius: 12%; line-height: 0;
+      width: 19%; height: 19%; box-sizing: border-box;
+      display: flex; align-items: center; justify-content: center;
     }
-    .barcode__logo img { height: min(18vh, 150px); width: auto; display: block; }
+    .barcode__logo img { max-width: 100%; max-height: 100%; display: block; }
     .barcode-label {
       display: flex; align-items: center; justify-content: center; gap: 0.5em;
       margin-top: 3vh; font-size: clamp(1.5rem, 5vw, 3rem); font-weight: 600; line-height: 1.2;
       text-align: center;
     }
-    .barcode-label img { height: 1em; width: auto; flex-shrink: 0; }
-    .barcode-hint { margin-top: 2vh; color: #888; font-size: 0.9rem; }
+    .barcode-label img { height: 1.4em; width: auto; flex-shrink: 0; }
   </style>
 </head>
 <body>
@@ -61,7 +63,7 @@
   <section class="barcode-card">
     <a class="barcode-link" href="{{ target }}" title="{{ target }}">
       <div class="barcode">
-        <svg class="js-barcode" data-value="{{ target }}" role="img" aria-label="Barcode for {{ target }}"></svg>
+        <svg class="js-barcode" data-value="{{ target }}" role="img" aria-label="QR code for {{ target }}"></svg>
         {% if item.logo %}<div class="barcode__logo"><img src="{{ item.logo | prepend: base_path }}" alt=""></div>{% endif %}
       </div>
       <div class="barcode-label">
@@ -70,18 +72,21 @@
         <img src="{{ kind_icon | prepend: base_path }}" alt="{{ kind_alt }}">
       </div>
     </a>
-    {% if forloop.first and codes.size > 1 %}<div class="barcode-hint">Scroll for the website &darr;</div>{% endif %}
   </section>
 {% endfor %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.6/JsBarcode.all.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script>
   document.querySelectorAll(".js-barcode").forEach(function (svg) {
-    JsBarcode(svg, svg.dataset.value, { format: "CODE128", displayValue: false, margin: 0, width: 2, height: 100 });
-    // Stretch to the CSS box: keep the module ratios, let width/height scale independently.
-    var w = svg.getAttribute("width"), h = svg.getAttribute("height");
-    svg.setAttribute("viewBox", "0 0 " + parseFloat(w) + " " + parseFloat(h));
-    svg.setAttribute("preserveAspectRatio", "none");
-    svg.removeAttribute("width"); svg.removeAttribute("height"); svg.removeAttribute("style");
+    var qr = qrcode(0, "H");  // type 0 = smallest version that fits
+    qr.addData(svg.dataset.value);
+    qr.make();
+    var n = qr.getModuleCount(), quiet = 2, size = n + 2 * quiet, d = "";
+    for (var r = 0; r < n; r++)
+      for (var c = 0; c < n; c++)
+        if (qr.isDark(r, c)) d += "M" + (c + quiet) + " " + (r + quiet) + "h1v1h-1z";
+    svg.setAttribute("viewBox", "0 0 " + size + " " + size);
+    svg.setAttribute("shape-rendering", "crispEdges");
+    svg.innerHTML = '<rect width="' + size + '" height="' + size + '" fill="#fff"/><path d="' + d + '" fill="#1b1f23"/>';
   });
 </script>
 </body>
