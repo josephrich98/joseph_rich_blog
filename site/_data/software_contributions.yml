@@ -4,11 +4,13 @@
 #   contributions  list of HTML strings, one per contribution, shown as bullets
 # Entries are listed in descending order of GitHub stars (snapshot: 2026-10-09).
 
-# 1206 stars. The repo moved from pachterlab/gget to scverse/gget.
+# 1206 stars. The repo moved from pachterlab/gget to scverse/gget. Logo is
+# docs/theme/favicon.png, downscaled to 256 px.
 - title: "gget"
   url: "https://github.com/scverse/gget"
   repo: "scverse/gget"
   pypi: "gget"
+  logo: "/images/software/logos/gget.png"
   description: "Command-line tool and Python package for efficient querying of genomic reference databases (Ensembl, UniProt, NCBI, PDB, cBioPortal, COSMIC, and more), where each module answers a single question in a single line of code."
   contributions:
     - "<code>gget mutate</code>: builds mutated sequences from a reference genome or transcriptome and a list of mutations."

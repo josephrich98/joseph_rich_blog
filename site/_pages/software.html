@@ -43,11 +43,15 @@ author_profile: true
 
 {% comment %}
   Logo strip: one link per ranked entry that has a logo, in the same
-  descending order as the list below, jumping to that entry's anchor
-  (id = title | slugify, set in _includes/software-item.html).
+  descending order as the list below, then any contribution entries with a
+  logo, each jumping to that entry's anchor (id = title | slugify, set in
+  _includes/software-item.html).
 {% endcomment %}
 <nav class="software__logo-nav" aria-label="Jump to software">
   {% for item in ranked_items %}{% if item.logo %}
+    <a href="#{{ item.title | slugify }}" title="{{ item.title }}"><img src="{{ item.logo | prepend: base_path }}" alt="{{ item.title }}"></a>
+  {% endif %}{% endfor %}
+  {% for item in site.data.software_contributions %}{% if item.logo %}
     <a href="#{{ item.title | slugify }}" title="{{ item.title }}"><img src="{{ item.logo | prepend: base_path }}" alt="{{ item.title }}"></a>
   {% endif %}{% endfor %}
 </nav>
