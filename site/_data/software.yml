@@ -59,10 +59,13 @@
     venue: "arXiv"
     url: "https://doi.org/10.48550/arXiv.2509.03761"
 
+# Logo is the broom-and-cell graphic cropped (without the wordmark) from the
+# README image, with its white background made transparent.
 - title: "cellsweep"
   url: "https://github.com/pachterlab/cellsweep"
   repo: "pachterlab/cellsweep"
   pypi: "cellsweep"
+  logo: "/images/software/logos/cellsweep.png"
   image: "/images/software/cellsweep.png"
   description: "Python package and CLI that sweeps noisy, ambient counts out of single-cell RNA-seq data. A single call to <code>denoise_count_matrix</code> takes a raw AnnData count matrix with cell-type labels and returns a denoised one, plus utilities for the downstream processing, plotting, and analysis."
   manuscript:
