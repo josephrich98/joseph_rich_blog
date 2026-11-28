@@ -401,6 +401,28 @@ hr + .list__item .archive__item-title {
   }
 }
 
+/* hidden /software_barcodes/ page: big logos, three per row */
+.software__logo-nav--large {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2em;
+  justify-items: center;
+
+  a {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  img {
+    height: auto;
+    width: 100%;
+    max-width: 10em;
+    max-height: 10em;
+    object-fit: contain;
+  }
+}
+
 /* project logo inside the title link */
 .software__logo {
   height: 1.25em;
